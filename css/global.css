@@ -1,0 +1,429 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0c0b0a;
+  --surface: #141210;
+  --surface-2: #1b1815;
+  --border: #3b342c;
+  --text: #e9e1d4;
+  --muted: #a99f91;
+  --accent: #c6a15b;
+  --accent-light: #e3c783;
+  --danger: #b86c6c;
+  --success: #769d78;
+  --max: 1180px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top, #201b15 0, var(--bg) 42rem);
+  color: var(--text);
+  font-family: Inter, sans-serif;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--border);
+  background: rgba(12, 11, 10, .94);
+  backdrop-filter: blur(10px);
+}
+
+.nav {
+  max-width: var(--max);
+  margin: auto;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 0 24px;
+}
+
+.logo {
+  font: 700 20px Cinzel, serif;
+  letter-spacing: .08em;
+  margin-right: auto;
+}
+
+.nav-links {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--muted);
+}
+
+.nav-links a:hover {
+  color: var(--accent-light);
+}
+
+.container {
+  width: min(var(--max), calc(100% - 40px));
+  margin: auto;
+}
+
+main {
+  min-height: calc(100vh - 150px);
+}
+
+.hero {
+  padding: 110px 0 90px;
+  text-align: center;
+}
+
+.eyebrow {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+h1,
+h2,
+h3 {
+  font-family: Cinzel, serif;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(38px, 6vw, 72px);
+  margin: 12px 0;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+.hero p {
+  max-width: 680px;
+  margin: 20px auto 30px;
+  color: var(--muted);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #17120c;
+  font-weight: 700;
+  border-radius: 3px;
+}
+
+.button:hover {
+  background: var(--accent-light);
+}
+
+.button-small {
+  min-height: 36px;
+  padding: 0 14px;
+}
+
+.section {
+  padding: 70px 0;
+}
+
+.section-heading {
+  margin-bottom: 28px;
+}
+
+.section-heading h2 {
+  margin: 8px 0 0;
+}
+
+.grid {
+  display: grid;
+  gap: 18px;
+}
+
+.player-grid {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.player-card,
+.clan-card,
+.badge-card {
+  border: 1px solid var(--border);
+  background: linear-gradient(145deg, var(--surface-2), var(--surface));
+  padding: 20px;
+  transition: transform .2s, border-color .2s;
+}
+
+.player-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.player-card:hover,
+.clan-card:hover,
+.badge-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.player-card h3,
+.clan-card h3,
+.badge-card h3 {
+  margin: 0 0 5px;
+}
+
+.player-card p,
+.clan-card p,
+.badge-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.avatar {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--accent);
+  background: #211c16;
+  color: var(--accent-light);
+  font: 700 18px Cinzel, serif;
+}
+
+.avatar-large {
+  width: 150px;
+  height: 150px;
+  flex-basis: 150px;
+  font-size: 40px;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-hero {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  padding: 80px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-hero h1 {
+  margin: 8px 0 12px;
+}
+
+.profile-hero p {
+  max-width: 700px;
+  color: var(--muted);
+}
+
+.meta {
+  display: flex;
+  gap: 18px;
+  color: var(--accent-light);
+  font-size: 13px;
+}
+
+.badge-card {
+  display: flex;
+  gap: 18px;
+}
+
+.badge-icon,
+.clan-emblem {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--accent);
+  color: var(--accent-light);
+  font-size: 26px;
+}
+
+.badge-icon img,
+.clan-emblem img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.form-card {
+  width: min(520px, 100%);
+  margin: 70px auto;
+  padding: 32px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.form-card h1 {
+  font-size: 34px;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  padding: 12px 13px;
+  color: var(--text);
+  background: #0d0c0b;
+  border: 1px solid var(--border);
+  outline: none;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: var(--accent);
+}
+
+.status {
+  margin: 15px 0;
+  color: var(--muted);
+}
+
+.status.error {
+  color: var(--danger);
+}
+
+.status.success {
+  color: var(--success);
+}
+
+.search {
+  margin-bottom: 25px;
+}
+
+.search input {
+  width: 100%;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+}
+
+th,
+td {
+  text-align: left;
+  padding: 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  color: var(--accent);
+  font: 600 13px Cinzel, serif;
+  text-transform: uppercase;
+}
+
+td a {
+  color: var(--accent-light);
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  margin-top: 60px;
+  padding: 30px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.user-chip {
+  color: var(--accent-light);
+  font-size: 13px;
+}
+
+.link-button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+}
+
+.link-button:hover {
+  color: var(--accent-light);
+}
+
+@media (max-width: 800px) {
+  .nav {
+    flex-wrap: wrap;
+    padding: 15px 20px;
+  }
+
+  .nav-links {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
+  .profile-hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

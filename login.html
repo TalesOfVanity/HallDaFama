@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar</title>
+  <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a class="logo" href="index.html">RPG</a>
+    <div class="nav-links">
+      <a href="jogadores.html">Jogadores</a>
+      <a href="ranking.html">Ranking</a>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <form id="login-form" class="form-card">
+    <span class="eyebrow">Acesso</span>
+    <h1>Entrar</h1>
+
+    <div class="field">
+      <label for="email">E-mail</label>
+      <input id="email" name="email" type="email" required>
+    </div>
+
+    <div class="field">
+      <label for="password">Senha</label>
+      <input id="password" name="password" type="password" required>
+    </div>
+
+    <button class="button" type="submit">Entrar</button>
+    <p id="login-status" class="status"></p>
+    <p>Não possui conta? <a href="cadastro.html">Cadastre-se</a>.</p>
+  </form>
+</main>
+
+<script type="module" src="js/login.js"></script>
+</body>
+</html>

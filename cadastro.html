@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a class="logo" href="index.html">RPG</a>
+  </nav>
+</header>
+
+<main class="container">
+  <form id="register-form" class="form-card">
+    <span class="eyebrow">Novo registro</span>
+    <h1>Criar conta</h1>
+
+    <div class="field">
+      <label for="display_name">Nome público</label>
+      <input id="display_name" name="display_name" required>
+    </div>
+
+    <div class="field">
+      <label for="country">País</label>
+      <input id="country" name="country">
+    </div>
+
+    <div class="field">
+      <label for="email">E-mail</label>
+      <input id="email" name="email" type="email" required>
+    </div>
+
+    <div class="field">
+      <label for="password">Senha</label>
+      <input id="password" name="password" type="password" minlength="6" required>
+    </div>
+
+    <button class="button" type="submit">Criar registro</button>
+    <p id="register-status" class="status"></p>
+  </form>
+</main>
+
+<script type="module" src="js/cadastro.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ranking</title>
+  <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a class="logo" href="index.html">RPG</a>
+    <div class="nav-links">
+      <a href="jogadores.html">Jogadores</a>
+      <a href="ranking.html">Ranking</a>
+      <a href="clans.html">Clãs</a>
+      <a href="regras.html">Regras</a>
+      <span data-auth-area></span>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="section">
+    <div class="section-heading">
+      <span class="eyebrow">Classificação</span>
+      <h1>Ranking</h1>
+    </div>
+
+    <p id="ranking-status" class="status"></p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Jogador</th>
+            <th>Pontos</th>
+            <th>Vitórias</th>
+            <th>Derrotas</th>
+            <th>Empates</th>
+          </tr>
+        </thead>
+        <tbody id="ranking-body"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/ranking.js"></script>
+</body>
+</html>

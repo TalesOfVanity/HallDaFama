@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administração</title>
+  <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a class="logo" href="index.html">RPG</a>
+    <div class="nav-links">
+      <a href="index.html">Site</a>
+      <a href="jogadores.html">Jogadores</a>
+      <span data-auth-area></span>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <section id="admin-content" class="section">
+    <span class="eyebrow">Painel</span>
+    <h1>Administração</h1>
+
+    <p id="admin-status" class="status"></p>
+
+    <form id="badge-form" class="form-card" style="margin-left:0">
+      <h2>Nova insígnia</h2>
+
+      <div class="field">
+        <label>Nome</label>
+        <input name="name" required>
+      </div>
+
+      <div class="field">
+        <label>Descrição</label>
+        <textarea name="description" rows="4"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Categoria</label>
+        <input name="category" placeholder="Participação">
+      </div>
+
+      <div class="field">
+        <label>Raridade</label>
+        <input name="rarity" placeholder="Comum">
+      </div>
+
+      <div class="field">
+        <label>URL do ícone</label>
+        <input name="icon" placeholder="https://...">
+      </div>
+
+      <button class="button" type="submit">Criar insígnia</button>
+    </form>
+  </section>
+</main>
+
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/admin.js"></script>
+</body>
+</html>

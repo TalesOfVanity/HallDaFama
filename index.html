@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro do Reino</title>
+  <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a class="logo" href="index.html">RPG</a>
+    <div class="nav-links">
+      <a href="jogadores.html">Jogadores</a>
+      <a href="ranking.html">Ranking</a>
+      <a href="clans.html">Clãs</a>
+      <a href="regras.html">Regras</a>
+      <span data-auth-area></span>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero container">
+    <span class="eyebrow">Registro do Reino</span>
+    <h1>Crônicas dos Jogadores</h1>
+    <p>
+      Um portal para registrar personagens, clãs, feitos,
+      insígnias e classificações do seu RPG.
+    </p>
+    <a class="button" href="cadastro.html">Registrar personagem</a>
+  </section>
+
+  <section class="section container">
+    <div class="section-heading">
+      <span class="eyebrow">Registros</span>
+      <h2>Jogadores</h2>
+    </div>
+    <div id="featured-players" class="grid player-grid"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">Portal do RPG · GitHub Pages + Supabase</div>
+</footer>
+
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogadores</title>
+  <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a class="logo" href="index.html">RPG</a>
+    <div class="nav-links">
+      <a href="jogadores.html">Jogadores</a>
+      <a href="ranking.html">Ranking</a>
+      <a href="clans.html">Clãs</a>
+      <a href="regras.html">Regras</a>
+      <span data-auth-area></span>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="section">
+    <div class="section-heading">
+      <span class="eyebrow">Registros</span>
+      <h1>Jogadores</h1>
+    </div>
+
+    <div class="search">
+      <input id="player-search" type="search" placeholder="Pesquisar jogador...">
+    </div>
+
+    <p id="players-status" class="status"></p>
+    <div id="players-grid" class="grid player-grid"></div>
+  </section>
+</main>
+
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/jogadores.js"></script>
+</body>
+</html>
