@@ -1,75 +1,37 @@
-# RPG Website — GitHub Pages + Supabase
+# Hall da Fama
 
-Estrutura inicial de um portal de RPG com:
-- GitHub Pages para hospedagem do frontend
-- Supabase para autenticação, PostgreSQL e Storage
-- JavaScript puro, sem framework
-- Perfis de jogadores/personagens
-- Ranking inicial
-- Badges/insígnias
-- Clãs
+O **Hall da Fama** é o portal oficial de uma experiência de RPG narrativo medieval e fantástico, criado para reunir em um único espaço os jogadores, personagens, clãs, conquistas e registros que constroem a história do universo.
 
-## 1. Supabase
+Mais do que um simples sistema de ranking, o portal funciona como um registro da trajetória de cada jogador dentro do RPG. Participação, notoriedade, reputação, confrontos, conquistas e insígnias contribuem para formar o legado de cada personagem e jogador ao longo do tempo.
 
-1. Crie um projeto no Supabase.
-2. Abra SQL Editor.
-3. Execute `supabase/schema.sql`.
-4. Em Authentication > URL Configuration, adicione a URL do GitHub Pages:
-   `https://SEU-USUARIO.github.io/SEU-REPOSITORIO/`
-5. Copie a Project URL e a anon/public key.
+## O que você encontrará
 
-## 2. Configuração
+**Jogadores**  
+Perfis individuais com informações, histórico, conquistas e trajetória dentro do RPG.
 
-Edite:
+**Personagens**  
+Registros dos personagens criados pelos jogadores, suas características, notoriedade, reputação e vínculos.
 
-`js/config.example.js`
+**Clãs**  
+Organizações formadas pelos jogadores, com seus membros, líderes, símbolos e histórias.
 
-e salve como:
+**Ranking**  
+Um registro competitivo baseado nos resultados e feitos realizados dentro do RPG.
 
-`js/config.js`
+**Insígnias**  
+Condecorações concedidas por participação, conquistas e feitos relevantes. Cada insígnia representa uma marca na trajetória do jogador.
 
-Preencha:
-- SUPABASE_URL
-- SUPABASE_ANON_KEY
+**Confrontos**  
+Registro dos duelos e disputas realizados, formando parte do histórico competitivo do RPG.
 
-A anon key pode ficar no frontend. Nunca coloque uma service_role key no repositório.
+## O propósito
 
-## 3. GitHub Pages
+O Hall da Fama existe para transformar a participação no RPG em algo permanente.
 
-Suba todos os arquivos para um repositório.
+Cada personagem possui uma história. Cada jogador constrói uma reputação. Cada conquista deixa uma marca.
 
-Em:
-Settings > Pages
+O portal reúne essas marcas para que a trajetória construída dentro do RPG possa ser acompanhada, reconhecida e preservada.
 
-selecione:
-- Deploy from a branch
-- Branch: main
-- Folder: / (root)
+---
 
-Depois abra a URL fornecida pelo GitHub.
-
-## 4. Primeiro administrador
-
-O cadastro normal cria um perfil com role `player`.
-
-Para transformar uma conta em administrador, execute no SQL Editor:
-
-UPDATE public.profiles
-SET role = 'admin'
-WHERE id = 'UUID_DO_USUARIO';
-
-## Estrutura
-
-- `index.html` — página inicial
-- `login.html` — login
-- `cadastro.html` — cadastro
-- `jogadores.html` — listagem
-- `jogador.html?id=...` — perfil
-- `ranking.html` — ranking
-- `clans.html` — clãs
-- `admin.html` — painel administrativo
-- `regras.html` — regras
-- `css/` — estilos
-- `js/` — lógica
-- `supabase/schema.sql` — banco e políticas
-- `assets/` — imagens e ícones
+*Tales of Vanity — Hall da Fama*
