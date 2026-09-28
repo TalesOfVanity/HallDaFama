@@ -18,3 +18,18 @@ export function badgeFrame(badge, award, size=""){
   const r=rarityInfo(award?.rarity || badge?.rarity);
   return `<div class="badge-frame rarity-${r.key} ${size}" title="${e(r.label)}">${badge?.icon?`<img src="${e(badge.icon)}" alt="">`:"✦"}</div>`;
 }
+
+export function rarityFromProgress(badge, progressValue) {
+  if (!badge || badge.is_mvp || badge.progression_mode !== "quantitative") return null;
+  const steps = Array.isArray(badge.progression_steps) ? badge.progression_steps.map(Number) : [];
+  const current = Number(progressValue || 0);
+  let index = -1;
+  for (let i = 0; i < Math.min(steps.length, RARITIES.length); i++) if (current >= steps[i]) index = i;
+  if (index < 0) return null;
+  const [key,label,exp] = RARITIES[index];
+  return { key,label,exp,index };
+}
+export function derivedAward(badge, progressValue) {
+  const r = rarityFromProgress(badge, progressValue);
+  return r ? { rarity:r.key, progress_value:Number(progressValue||0) } : null;
+}

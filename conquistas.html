@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conquistas — Tales of Vanity</title>
+  <link rel="stylesheet" href="css/global.css?v=7">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a class="logo" href="index.html">Tales of Vanity</a>
+    <div class="nav-links">
+      <a href="jogadores.html">Jogadores</a>
+      <a href="personagens.html">Personagens</a>
+      <a href="ranking.html">Ranking</a>
+      <a href="clans.html">Partys</a>
+      <span data-auth-area></span>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="section achievements-page">
+    <div class="section-heading achievements-heading">
+      <div>
+        <span class="eyebrow">Seu progresso</span>
+        <h1>Conquistas</h1>
+        <p>Seu acervo de Brasões em Tales of Vanity. Conquistas ainda não obtidas permanecem seladas até o primeiro grau.</p>
+      </div>
+      <div class="achievement-summary" id="achievement-summary" aria-live="polite"></div>
+    </div>
+
+    <p id="achievements-status" class="status"></p>
+    <div id="achievements-grid" class="achievements-grid"></div>
+  </section>
+</main>
+
+<script type="module" src="js/auth.js?v=8"></script>
+<script type="module" src="js/conquistas.js?v=1"></script>
+</body>
+</html>

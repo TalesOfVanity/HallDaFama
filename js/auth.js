@@ -79,6 +79,10 @@ export async function updateNavigation() {
       ${profile?.display_name || session.user.email}
     </span>
 
+    <a href="conquistas.html">
+      Conquistas
+    </a>
+
     <a href="perfil.html">
       Meu Perfil
     </a>

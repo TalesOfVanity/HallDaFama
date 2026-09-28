@@ -1,6 +1,6 @@
 import { supabase } from "./supabase.js";
 import { escapeHTML } from "./utils.js";
-import { badgeExp } from "./badges.js";
+import { badgeExp, derivedAward } from "./badges.js";
 
 const status = document.querySelector("#ranking-status");
 const playerBody = document.querySelector("#players-ranking-body");
@@ -23,7 +23,8 @@ async function loadRanking() {
     badgesRes,
     awardsRes,
     charactersRes,
-    clansRes
+    clansRes,
+    characterProgressRes
   ] = await Promise.all([
     supabase
       .from("profiles")
@@ -32,7 +33,7 @@ async function loadRanking() {
 
     supabase
       .from("badges")
-      .select("id, name, icon, is_mvp, exp_multiplier"),
+      .select("id, name, icon, is_mvp, exp_multiplier, source_scope, progression_mode, progression_steps"),
 
     supabase
       .from("player_badges")
@@ -45,7 +46,11 @@ async function loadRanking() {
 
     supabase
       .from("clans")
-      .select("id, name, status")
+      .select("id, name, status"),
+
+    supabase
+      .from("character_badge_progress")
+      .select("character_id, badge_id, progress_value")
   ]);
 
   const failed = [
@@ -53,7 +58,8 @@ async function loadRanking() {
     badgesRes,
     awardsRes,
     charactersRes,
-    clansRes
+    clansRes,
+    characterProgressRes
   ].find(r => r.error);
 
   if (failed) {
@@ -66,6 +72,7 @@ async function loadRanking() {
   const awards = awardsRes.data || [];
   const characters = charactersRes.data || [];
   const clans = clansRes.data || [];
+  const characterProgress = characterProgressRes.data || [];
 
   const profileMap = new Map(
     profiles.map(p => [p.id, p])
@@ -83,20 +90,20 @@ async function loadRanking() {
 
   const players = profiles
     .map(player => {
-      const ownAwards = awards.filter(
-        a => a.player_id === player.id
-      );
+      const ownAwards = awards.filter(a => a.player_id === player.id);
+      const ownCharacterIds = new Set(characters.filter(c => c.owner_id === player.id).map(c => c.id));
+      const sums = new Map();
+      characterProgress.forEach(x => { if (ownCharacterIds.has(x.character_id)) sums.set(x.badge_id, (sums.get(x.badge_id)||0) + Number(x.progress_value||0)); });
+      const derived = badges.filter(b => b.source_scope === "character").map(b => ({badge:b, award:derivedAward(b,sums.get(b.id)||0)})).filter(x=>x.award);
+      const direct = ownAwards.map(a=>({badge:badgeMap.get(a.badge_id),award:a})).filter(x=>x.badge && x.badge.source_scope !== "character");
+      const allEarned=[...derived,...direct];
 
       return {
         ...player,
-
-        badgeCount: ownAwards.length,
-
-        points: ownAwards.reduce((sum, a) =>
-          sum + badgeExp(badgeMap.get(a.badge_id), a), 0),
-
-        isMvp: ownAwards.some(a => badgeMap.get(a.badge_id)?.is_mvp),
-        mvpBadge: ownAwards.map(a => badgeMap.get(a.badge_id)).find(b => b?.is_mvp),
+        badgeCount: allEarned.filter(x=>!x.badge.is_mvp).length,
+        points: allEarned.reduce((sum,x)=>sum+badgeExp(x.badge,x.award),0),
+        isMvp: direct.some(x=>x.badge?.is_mvp),
+        mvpBadge: direct.find(x=>x.badge?.is_mvp)?.badge,
 
         characterCount: characters.filter(
           c => c.owner_id === player.id
