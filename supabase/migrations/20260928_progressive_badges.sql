@@ -4,7 +4,8 @@
 ALTER TABLE public.badges
   ADD COLUMN IF NOT EXISTS progression_mode text NOT NULL DEFAULT 'quantitative',
   ADD COLUMN IF NOT EXISTS exp_multiplier numeric(6,2) NOT NULL DEFAULT 1,
-  ADD COLUMN IF NOT EXISTS is_mvp boolean NOT NULL DEFAULT false;
+  ADD COLUMN IF NOT EXISTS is_mvp boolean NOT NULL DEFAULT false,
+  ADD COLUMN IF NOT EXISTS progression_steps jsonb NOT NULL DEFAULT '[]'::jsonb;
 
 ALTER TABLE public.badges
   DROP CONSTRAINT IF EXISTS badges_progression_mode_check;
