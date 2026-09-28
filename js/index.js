@@ -23,6 +23,7 @@ async function loadFeatured() {
 }
 
 loadFeatured();
+  if (!featured) return;
 
 async function showAdminButton() {
   const button = document.querySelector("#admin-register-character");
