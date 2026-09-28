@@ -51,7 +51,7 @@ function renderPlayers() {
         </div>
         <div>
           <h3>${escapeHTML(name)}</h3>
-          <p>${escapeHTML(player.country || "Reino desconhecido")}</p>
+          <p>${escapeHTML(player.country || "Localidade não informada")}</p>
         </div>
       </a>
     `;

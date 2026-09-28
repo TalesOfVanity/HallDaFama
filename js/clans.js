@@ -5,7 +5,7 @@ const grid = document.querySelector("#clans-grid");
 const status = document.querySelector("#clans-status");
 
 async function loadClans() {
-  status.textContent = "Carregando clãs...";
+  status.textContent = "Carregando partys...";
 
   const { data, error } = await supabase
     .from("clans")
@@ -17,7 +17,7 @@ async function loadClans() {
     return;
   }
 
-  status.textContent = `${data?.length || 0} clã(s) registrado(s).`;
+  status.textContent = `${data?.length || 0} party(s) registrada(s).`;
 
   grid.innerHTML = (data || []).map(clan => `
     <article class="clan-card">

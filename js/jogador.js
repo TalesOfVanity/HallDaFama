@@ -48,7 +48,7 @@ async function loadPlayer() {
       </div>
 
       <div>
-        <span class="eyebrow">Registro do Reino</span>
+        <span class="eyebrow">Registro de Localidade</span>
         <h1>${escapeHTML(name)}</h1>
         <p>${escapeHTML(player.bio || "Nenhuma biografia registrada.")}</p>
         <div class="meta">
