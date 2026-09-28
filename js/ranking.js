@@ -7,12 +7,13 @@ const characterBody = document.querySelector("#characters-ranking-body");
 const partyBody = document.querySelector("#partys-ranking-body");
 
 const e = value => escapeHTML(String(value ?? ""));
+const participationLabel = value => ({ interpreter: "Intérprete", narrator: "Narrador", both: "Ambos" }[value] || "Intérprete");
 
 async function loadRanking() {
   status.textContent = "Carregando classificações...";
 
   const [profilesRes, badgesRes, awardsRes, charactersRes, clansRes] = await Promise.all([
-    supabase.from("profiles").select("id, display_name, username, active").eq("active", true),
+    supabase.from("profiles").select("id, display_name, username, active, participation_type").eq("active", true),
     supabase.from("badges").select("id, points"),
     supabase.from("player_badges").select("player_id, badge_id"),
     supabase.from("characters").select("id, owner_id, name, points, clan_id, status").eq("status", "approved"),
@@ -49,6 +50,7 @@ async function loadRanking() {
     <tr>
       <td>${i + 1}</td>
       <td><a href="jogador.html?id=${encodeURIComponent(p.id)}">${e(p.display_name || p.username || "Jogador")}</a></td>
+      <td>${e(participationLabel(p.participation_type))}</td>
       <td>${p.points}</td>
       <td>${p.badgeCount}</td>
       <td>${p.characterCount}</td>

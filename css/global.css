@@ -874,3 +874,5 @@ td a {
 .manage-player-info h3 { margin-bottom:6px; }
 .manage-player-info p { margin:4px 0; }
 .manage-player-card .form-actions { margin-top:12px; }
+
+.profile-type-section .choice-row{display:flex;align-items:center;gap:9px;margin:9px 0;cursor:pointer}.profile-type-section .choice-row input{width:auto!important;margin:0}.form-help{opacity:.72;margin:0 0 10px}

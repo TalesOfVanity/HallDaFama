@@ -2,6 +2,7 @@ import { supabase } from "./supabase.js";
 import { escapeHTML, initials } from "./utils.js";
 
 const grid = document.querySelector("#players-grid");
+const participationLabel = v => ({interpreter:"Intérprete", narrator:"Narrador", both:"Intérprete & Narrador"}[v] || "Intérprete");
 const search = document.querySelector("#player-search");
 const status = document.querySelector("#players-status");
 
@@ -12,7 +13,7 @@ async function loadPlayers() {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, display_name, username, avatar_url, country, bio, created_at, active")
+    .select("id, display_name, username, avatar_url, country, bio, created_at, active, participation_type")
     .eq("active", true)
     .order("display_name", { ascending: true });
 
@@ -52,7 +53,7 @@ function renderPlayers() {
         </div>
         <div>
           <h3>${escapeHTML(name)}</h3>
-          <p>${escapeHTML(player.country || "Localidade não informada")}</p>
+          <p>${escapeHTML(player.country || "Localidade não informada")} · ${escapeHTML(participationLabel(player.participation_type))}</p>
         </div>
       </a>
     `;
