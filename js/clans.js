@@ -1,37 +1,4 @@
-import { supabase } from "./supabase.js";
-import { escapeHTML } from "./utils.js";
-
-const grid = document.querySelector("#clans-grid");
-const status = document.querySelector("#clans-status");
-
-async function loadClans() {
-  status.textContent = "Carregando partys...";
-
-  const { data, error } = await supabase
-    .from("clans")
-    .select("*")
-    .order("name", { ascending: true });
-
-  if (error) {
-    status.textContent = error.message;
-    return;
-  }
-
-  status.textContent = `${data?.length || 0} party(s) registrada(s).`;
-
-  grid.innerHTML = (data || []).map(clan => `
-    <article class="clan-card">
-      <div class="clan-emblem">
-        ${clan.emblem_url
-          ? `<img src="${escapeHTML(clan.emblem_url)}" alt="">`
-          : "♜"}
-      </div>
-      <div>
-        <h3>${escapeHTML(clan.name)}</h3>
-        <p>${escapeHTML(clan.description || "")}</p>
-      </div>
-    </article>
-  `).join("");
-}
-
-loadClans();
+import { supabase } from "./supabase.js"; import { escapeHTML } from "./utils.js";
+const grid=document.querySelector("#clans-grid"),status=document.querySelector("#clans-status");
+async function load(){status.textContent="Carregando ranking de partys...";const [pr,cr]=await Promise.all([supabase.from("clans").select("*").order("name"),supabase.from("characters").select("id,name,clan_id,points,status").eq("status","approved")]);if(pr.error){status.textContent=pr.error.message;return}if(cr.error){status.textContent=cr.error.message;return}const chars=cr.data||[];const rows=(pr.data||[]).map(p=>{const members=chars.filter(c=>c.clan_id===p.id);return {...p,members,points:members.reduce((n,c)=>n+Number(c.points||0),0)}}).sort((a,b)=>b.points-a.points||b.members.length-a.members.length||a.name.localeCompare(b.name));status.textContent=`${rows.length} party(s) no ranking.`;grid.innerHTML=rows.map((p,i)=>`<article class="clan-card party-ranking-card"><div class="party-rank">#${i+1}</div><div class="clan-emblem">${p.emblem_url?`<img src="${escapeHTML(p.emblem_url)}" alt="">`:"♜"}</div><div><h3>${escapeHTML(p.name)}</h3><p><strong>${p.points} pts</strong> · ${p.members.length} personagem(ns)</p><p>${escapeHTML(p.description||"")}</p>${p.members.length?`<p class="party-members">${p.members.map(c=>escapeHTML(c.name)).join(" · ")}</p>`:""}</div></article>`).join("")||"<p>Nenhuma party registrada.</p>"}
+load();

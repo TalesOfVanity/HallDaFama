@@ -834,3 +834,17 @@ td a {
     padding: 16px 13px 19px;
   }
 }
+
+/* Etapa 2 — acervo, partys e administração */
+.character-mini-card { align-items: center; min-height: 96px; }
+.character-mini-card .avatar { width: 68px; height: 68px; flex-basis: 68px; border-radius: 4px; }
+.character-mini-info { min-width: 0; }
+.character-mini-info h3 { margin-bottom: 4px; }
+.character-mini-info p { font-size: 13px; margin-top: 2px; }
+.character-card-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.admin-badge-layout { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; align-items: start; }
+.admin-badge-layout .form-card { width: 100%; margin: 30px 0 0; }
+.party-ranking-card { position: relative; display: flex; gap: 16px; align-items: flex-start; }
+.party-rank { min-width: 36px; font: 700 18px Cinzel,serif; color: var(--accent-light); }
+.party-members { margin-top: 9px !important; font-size: 12px; }
+@media (max-width: 760px) { .admin-badge-layout { grid-template-columns: 1fr; } }

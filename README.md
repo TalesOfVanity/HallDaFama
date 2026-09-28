@@ -1,6 +1,6 @@
 # Hall da Fama
 
-O **Hall da Fama** é o portal oficial de uma experiência de RPG narrativo medieval e fantástico, criado para reunir em um único espaço os jogadores, personagens, clãs, conquistas e registros que constroem a história do universo.
+O **Hall da Fama** é o portal oficial de uma experiência de RPG narrativo medieval e fantástico, criado para reunir em um único espaço os jogadores, personagens, partys, conquistas e registros que constroem a história do universo.
 
 Mais do que um simples sistema de ranking, o portal funciona como um registro da trajetória de cada jogador dentro do RPG. Participação, notoriedade, reputação, confrontos, conquistas e insígnias contribuem para formar o legado de cada personagem e jogador ao longo do tempo.
 

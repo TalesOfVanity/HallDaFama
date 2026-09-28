@@ -13,10 +13,10 @@
       <a class="logo" href="index.html">Tales of Vanity</a>
       <div class="nav-links">
         <a href="jogadores.html">Jogadores</a>
+      <a href="personagens.html">Personagens</a>
         <a href="ranking.html">Ranking</a>
         <a href="clans.html">Partys</a>
-        <a href="regras.html">Regras</a>
-        <span data-auth-area></span>
+          <span data-auth-area></span>
       </div>
     </nav>
   </header>
@@ -124,6 +124,16 @@
             name="reputation"
             placeholder="Ex.: Honrado, Temido, Infame"
           >
+
+          <label for="character-points">Pontos de ranking</label>
+          <input
+            id="character-points"
+            name="points"
+            type="number"
+            min="0"
+            value="0"
+            placeholder="0"
+          >
         </fieldset>
 
         <fieldset class="character-form-section">
@@ -163,16 +173,17 @@
         ></p>
       </form>
 
-      <section class="section">
-        <div class="section-heading">
-          <span class="eyebrow">Acervo oficial</span>
-          <h2>Personagens registrados</h2>
-        </div>
+    </section>
 
-        <div id="character-list" class="grid player-grid">
-          <p>Carregando personagens...</p>
-        </div>
-      </section>
+    <section class="section">
+      <div class="section-heading">
+        <span class="eyebrow">Acervo oficial</span>
+        <h2>Personagens registrados</h2>
+      </div>
+
+      <div id="character-list" class="grid player-grid">
+        <p>Carregando personagens...</p>
+      </div>
     </section>
 
     <p
@@ -188,7 +199,7 @@
     <div class="container">Tales of Vanity · Hall da Fama</div>
   </footer>
 
-  <script type="module" src="js/auth.js"></script>
-  <script type="module" src="js/personagens.js?v=3"></script>
+  <script type="module" src="js/auth.js?v=2"></script>
+  <script type="module" src="js/personagens.js?v=4"></script>
 </body>
 </html>

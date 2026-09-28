@@ -31,18 +31,5 @@ async function loadFeatured() {
   `).join("");
 }
 
-async function showAdminButton() {
-  const button = document.querySelector("#admin-register-character");
-  if (!button) return;
-
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
-
-  const ADMIN_UID = "632c1241-d71f-42b0-85a0-cbf739e2625b";
-
-  button.hidden = user?.id !== ADMIN_UID;
-}
 
 loadFeatured();
-showAdminButton();

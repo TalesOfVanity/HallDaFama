@@ -1,54 +1,10 @@
-import { supabase } from "./supabase.js";
-import { getSession, getProfile } from "./auth.js";
-import { escapeHTML, setStatus } from "./utils.js";
-
-const status = document.querySelector("#admin-status");
-const badgeForm = document.querySelector("#badge-form");
-
-async function guardAdmin() {
-  const session = await getSession();
-
-  if (!session) {
-    window.location.href = "login.html";
-    return false;
-  }
-
-  const profile = await getProfile(session.user.id);
-
-  if (profile.role !== "admin") {
-    document.querySelector("#admin-content").innerHTML =
-      `<p class="status error">Acesso restrito aos administradores.</p>`;
-    return false;
-  }
-
-  return true;
-}
-
-badgeForm?.addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const allowed = await guardAdmin();
-  if (!allowed) return;
-
-  const payload = {
-    name: badgeForm.name.value.trim(),
-    description: badgeForm.description.value.trim(),
-    category: badgeForm.category.value.trim(),
-    rarity: badgeForm.rarity.value.trim(),
-    icon: badgeForm.icon.value.trim() || null
-  };
-
-  setStatus(status, "Criando insígnia...");
-
-  const { error } = await supabase.from("badges").insert(payload);
-
-  if (error) {
-    setStatus(status, error.message, "error");
-    return;
-  }
-
-  setStatus(status, "Insígnia criada.", "success");
-  badgeForm.reset();
-});
-
-guardAdmin();
+import { supabase } from "./supabase.js"; import { getSession,getProfile } from "./auth.js"; import { escapeHTML,setStatus } from "./utils.js";
+const status=document.querySelector("#admin-status"), badgeForm=document.querySelector("#badge-form"), awardForm=document.querySelector("#award-form"), badgeList=document.querySelector("#badge-list"), awardList=document.querySelector("#award-list"), cancel=document.querySelector("#cancel-badge-edit"); let badges=[],players=[],awards=[],adminId=null; const e=v=>escapeHTML(String(v??""));
+async function guard(){const s=await getSession();if(!s){location.href="login.html";return false}const p=await getProfile(s.user.id);if(p.role!=="admin"){document.querySelector("#admin-content").innerHTML='<p class="status error">Acesso restrito aos administradores.</p>';return false}adminId=s.user.id;return true}
+async function load(){const [b,p,a]=await Promise.all([supabase.from("badges").select("*").order("name"),supabase.from("profiles").select("id,display_name,username").order("display_name"),supabase.from("player_badges").select("player_id,badge_id,awarded_at").order("awarded_at",{ascending:false})]);for(const r of [b,p,a])if(r.error)throw r.error;badges=b.data||[];players=p.data||[];awards=a.data||[];render()}
+function render(){badgeList.innerHTML=badges.map(b=>`<article class="badge-card"> <div class="badge-icon">${b.icon?`<img src="${e(b.icon)}" alt="">`:"✦"}</div><div><h3>${e(b.name)}</h3><p>${e(b.description||"")}</p><p>${e(b.category||"")} · ${e(b.rarity||"")}</p><div class="form-actions"><button class="button button-small" data-edit-badge="${e(b.id)}">Editar</button><button class="button button-small" data-delete-badge="${e(b.id)}">Excluir</button></div></div></article>`).join("")||"<p>Nenhum brasão cadastrado.</p>"; awardForm.player_id.innerHTML='<option value="">Selecione...</option>'+players.map(p=>`<option value="${e(p.id)}">${e(p.display_name||p.username)}</option>`).join("");awardForm.badge_id.innerHTML='<option value="">Selecione...</option>'+badges.map(b=>`<option value="${e(b.id)}">${e(b.name)}</option>`).join("");awardList.innerHTML=awards.map(a=>{const p=players.find(x=>x.id===a.player_id),b=badges.find(x=>x.id===a.badge_id);return `<article class="badge-card"><div class="badge-icon">${b?.icon?`<img src="${e(b.icon)}" alt="">`:"✦"}</div><div><h3>${e(b?.name||"Brasão")}</h3><p>${e(p?.display_name||p?.username||"Jogador")}</p><button class="button button-small" data-remove-award="${e(a.player_id)}|${e(a.badge_id)}">Remover atribuição</button></div></article>`}).join("")||"<p>Nenhum brasão atribuído.</p>"}
+function reset(){badgeForm.reset();badgeForm.id.value="";document.querySelector("#badge-form-title").textContent="Novo brasão";cancel.hidden=true}
+badgeForm.addEventListener("submit",async ev=>{ev.preventDefault();if(!await guard())return;const id=badgeForm.id.value,p={name:badgeForm.name.value.trim(),description:badgeForm.description.value.trim(),category:badgeForm.category.value.trim(),rarity:badgeForm.rarity.value.trim(),icon:badgeForm.icon.value.trim()||null};const r=id?await supabase.from("badges").update(p).eq("id",id):await supabase.from("badges").insert(p);if(r.error)return setStatus(status,r.error.message,"error");reset();await load();setStatus(status,"Brasão salvo.","success")});
+awardForm.addEventListener("submit",async ev=>{ev.preventDefault();if(!await guard())return;const r=await supabase.from("player_badges").upsert({player_id:awardForm.player_id.value,badge_id:awardForm.badge_id.value,awarded_by:adminId});if(r.error)return setStatus(status,r.error.message,"error");await load();setStatus(status,"Brasão atribuído.","success")});
+badgeList.addEventListener("click",async ev=>{const eb=ev.target.closest("[data-edit-badge]"),db=ev.target.closest("[data-delete-badge]");if(eb){const b=badges.find(x=>x.id===eb.dataset.editBadge);for(const k of ["id","name","description","category","rarity","icon"])badgeForm[k].value=b[k]||"";document.querySelector("#badge-form-title").textContent="Editar brasão";cancel.hidden=false;badgeForm.scrollIntoView({behavior:"smooth"})}if(db&&confirm("Excluir este brasão?")){const r=await supabase.from("badges").delete().eq("id",db.dataset.deleteBadge);if(r.error)setStatus(status,r.error.message,"error");else await load()}});
+awardList.addEventListener("click",async ev=>{const b=ev.target.closest("[data-remove-award]");if(!b)return;const [player_id,badge_id]=b.dataset.removeAward.split("|");const r=await supabase.from("player_badges").delete().eq("player_id",player_id).eq("badge_id",badge_id);if(r.error)setStatus(status,r.error.message,"error");else await load()});cancel.addEventListener("click",reset);(async()=>{try{if(await guard())await load()}catch(err){setStatus(status,err.message,"error")}})();
