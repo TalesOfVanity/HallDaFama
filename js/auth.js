@@ -50,7 +50,7 @@ export async function updateNavigation() {
 
   authArea.innerHTML = `
     <span class="user-chip">${profile?.display_name || session.user.email}</span>
-    ${profile?.role === "admin" ? '<a href="personagens.html">Registrar personagem</a><a href="admin.html">Brasões</a>' : ""}
+    ${profile?.role === "admin" ? '<a href="personagens.html">Registrar personagem</a><a href="registrar-party.html">Registrar Party</a><a href="admin.html">Brasões</a>' : ""}
     <button class="link-button" id="logout-button">Sair</button>
   `;
 

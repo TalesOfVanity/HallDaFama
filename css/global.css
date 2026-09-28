@@ -848,3 +848,10 @@ td a {
 .party-rank { min-width: 36px; font: 700 18px Cinzel,serif; color: var(--accent-light); }
 .party-members { margin-top: 9px !important; font-size: 12px; }
 @media (max-width: 760px) { .admin-badge-layout { grid-template-columns: 1fr; } }
+
+/* Etapa 2.1 — registro administrativo de Partys */
+#party-admin > .form-card { max-width: 820px; margin: 0 auto; }
+#party-admin .character-form-section { min-width: 0; margin: 0 0 22px; padding: 20px 22px 24px; background: rgba(255,255,255,.015); border: 1px solid rgba(216,181,109,.19); border-radius: 11px; }
+#party-admin .character-form-section legend { padding: 0 10px; color: #e4c783; font-family: Georgia,"Times New Roman",serif; font-weight: 600; }
+#party-admin .character-form-section input, #party-admin .character-form-section select, #party-admin .character-form-section textarea { width: 100%; }
+#party-admin-list small { color: var(--muted); font-size: .75em; }

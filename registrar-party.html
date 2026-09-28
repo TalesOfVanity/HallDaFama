@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar Party — Tales of Vanity</title>
+  <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a class="logo" href="index.html">Tales of Vanity</a>
+    <div class="nav-links">
+      <a href="jogadores.html">Jogadores</a>
+      <a href="personagens.html">Personagens</a>
+      <a href="ranking.html">Ranking</a>
+      <a href="clans.html">Partys</a>
+      <span data-auth-area></span>
+    </div>
+  </nav>
+</header>
+
+<main class="container section">
+  <div class="section-heading">
+    <span class="eyebrow">Administração</span>
+    <h1>Registro de Partys</h1>
+    <p>Cadastre as Partys oficiais antes de vinculá-las aos personagens.</p>
+  </div>
+
+  <section id="party-admin" hidden>
+    <form id="party-form" class="form-card">
+      <h2 id="party-form-title">Nova Party</h2>
+      <input type="hidden" name="id">
+
+      <fieldset class="character-form-section">
+        <legend>01 · Identificação</legend>
+        <label for="party-name">Nome da Party</label>
+        <input id="party-name" name="name" required placeholder="Ex.: Knights of Vanity">
+
+        <label for="party-acronym">Sigla</label>
+        <input id="party-acronym" name="acronym" maxlength="12" placeholder="Ex.: KoV">
+      </fieldset>
+
+      <fieldset class="character-form-section">
+        <legend>02 · Apresentação</legend>
+        <label for="party-emblem">URL do emblema</label>
+        <input id="party-emblem" name="emblem_url" type="url" placeholder="https://...">
+
+        <label for="party-description">Descrição</label>
+        <textarea id="party-description" name="description" rows="5" placeholder="Descrição breve da Party..."></textarea>
+      </fieldset>
+
+      <fieldset class="character-form-section">
+        <legend>03 · Controle</legend>
+        <label for="party-status">Status</label>
+        <select id="party-status" name="status">
+          <option value="active">Ativa</option>
+          <option value="inactive">Inativa</option>
+        </select>
+      </fieldset>
+
+      <div class="form-actions">
+        <button class="button" type="submit">Salvar Party</button>
+        <button class="button" type="button" id="cancel-party-edit" hidden>Cancelar edição</button>
+      </div>
+      <p id="party-message" class="status" aria-live="polite"></p>
+    </form>
+
+    <section class="section">
+      <div class="section-heading">
+        <span class="eyebrow">Gerenciamento</span>
+        <h2>Partys registradas</h2>
+      </div>
+      <div id="party-admin-list" class="grid player-grid"><p>Carregando Partys...</p></div>
+    </section>
+  </section>
+
+  <p id="party-access-message" class="status">Verificando permissões...</p>
+</main>
+
+<footer class="site-footer"><div class="container">Tales of Vanity · Hall da Fama</div></footer>
+<script type="module" src="js/auth.js?v=3"></script>
+<script type="module" src="js/partys-admin.js?v=1"></script>
+</body>
+</html>
