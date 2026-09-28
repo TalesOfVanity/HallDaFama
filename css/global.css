@@ -876,3 +876,35 @@ td a {
 .manage-player-card .form-actions { margin-top:12px; }
 
 .profile-type-section .choice-row{display:flex;align-items:center;gap:9px;margin:9px 0;cursor:pointer}.profile-type-section .choice-row input{width:auto!important;margin:0}.form-help{opacity:.72;margin:0 0 10px}
+
+/* Tags de função dos jogadores */
+
+.player-status-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+
+  border: 1px solid rgba(216, 181, 109, 0.35);
+  border-radius: 999px;
+
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+
+  color: #d8b56d;
+  background: rgba(216, 181, 109, 0.06);
+}
+
+.admin-tag {
+  border-color: rgba(190, 70, 70, 0.55);
+  color: #e58b8b;
+  background: rgba(150, 35, 35, 0.12);
+  text-transform: uppercase;
+}
