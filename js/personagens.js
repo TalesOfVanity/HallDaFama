@@ -33,12 +33,14 @@ function resetForm() {
 }
 
 async function loadProfiles() {
-  ownerSelect.innerHTML = "";
+  ownerSelect.replaceChildren();
 
   const loadingOption = document.createElement("option");
   loadingOption.value = "";
   loadingOption.textContent = "Carregando jogadores...";
   ownerSelect.appendChild(loadingOption);
+
+  console.log("[Personagens] Consultando perfis no Supabase...");
 
   const { data, error } = await supabase
     .from("profiles")
@@ -46,19 +48,19 @@ async function loadProfiles() {
     .order("display_name");
 
   if (error) {
-    ownerSelect.innerHTML = "";
+    profiles = [];
 
     const errorOption = document.createElement("option");
     errorOption.value = "";
-    errorOption.textContent = "Erro ao carregar jogadores";
-    ownerSelect.appendChild(errorOption);
+    errorOption.textContent = `Erro: ${error.message}`;
+    ownerSelect.replaceChildren(errorOption);
 
-    console.error("Erro ao carregar jogadores:", error);
-    throw new Error(`Erro ao carregar jogadores: ${error.message}`);
+    console.error("[Personagens] Erro ao carregar perfis:", error);
+    throw new Error(`Falha ao carregar jogadores: ${error.message}`);
   }
 
   profiles = data || [];
-  ownerSelect.innerHTML = "";
+  ownerSelect.replaceChildren();
 
   const defaultOption = document.createElement("option");
   defaultOption.value = "";
@@ -73,10 +75,14 @@ async function loadProfiles() {
     option.value = profile.id;
     option.textContent =
       profile.display_name || profile.username || "Jogador";
+
     ownerSelect.appendChild(option);
   }
 
-  console.log("Perfis carregados:", profiles.length, profiles);
+  console.log(
+    `[Personagens] Perfis carregados: ${profiles.length}`,
+    profiles
+  );
 }
 
 async function loadParties() {
@@ -88,7 +94,12 @@ async function loadParties() {
   if (error) throw error;
 
   parties = data || [];
-  partySelect.innerHTML = '<option value="">Sem party</option>';
+  partySelect.replaceChildren();
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "Sem party";
+  partySelect.appendChild(defaultOption);
 
   for (const party of parties) {
     const option = document.createElement("option");
@@ -121,7 +132,9 @@ function renderCharacters() {
     const party = parties.find(p => p.id === character.clan_id);
 
     const ownerName =
-      owner?.display_name || owner?.username || "Jogador não identificado";
+      owner?.display_name ||
+      owner?.username ||
+      "Jogador não identificado";
 
     const statusLabels = {
       pending: "Pendente",
@@ -136,6 +149,13 @@ function renderCharacters() {
            style="width:100%;max-height:240px;object-fit:cover;border-radius:8px;">`
       : "";
 
+    const fichaLink =
+      /^https?:\/\//i.test(character.ficha_url || "")
+        ? `<p><a href="${escape(character.ficha_url)}"
+             target="_blank"
+             rel="noopener noreferrer">Abrir ficha anexada no Facebook</a></p>`
+        : "";
+
     return `
       <article class="player-card">
         ${portrait}
@@ -145,10 +165,13 @@ function renderCharacters() {
           <p><strong>Jogador:</strong> ${escape(ownerName)}</p>
           <p><strong>Party:</strong> ${escape(party?.name || "Nenhuma")}</p>
           <p><strong>Nível:</strong> ${escape(character.level ?? 1)}</p>
+          <p><strong>Fama:</strong> ${escape(character.notoriety || "Não definida")}</p>
+          <p><strong>Reputação:</strong> ${escape(character.reputation || "Não definida")}</p>
           <p><strong>Status:</strong>
             ${escape(statusLabels[character.status] || character.status)}
           </p>
           <p>${escape(character.description || "")}</p>
+          ${fichaLink}
           <div class="form-actions">
             <button class="button" type="button"
               data-edit="${escape(character.id)}">
@@ -175,6 +198,7 @@ function editCharacter(id) {
   form.elements.owner_id.value = character.owner_id || "";
   form.elements.description.value = character.description || "";
   form.elements.portrait_url.value = character.portrait_url || "";
+  form.elements.ficha_url.value = character.ficha_url || "";
   form.elements.level.value = character.level ?? 1;
   form.elements.notoriety.value = character.notoriety ?? "";
   form.elements.reputation.value = character.reputation ?? "";
@@ -224,6 +248,7 @@ form.addEventListener("submit", async event => {
     owner_id: String(formData.get("owner_id") || ""),
     description: String(formData.get("description") || "").trim() || null,
     portrait_url: String(formData.get("portrait_url") || "").trim() || null,
+    ficha_url: String(formData.get("ficha_url") || "").trim() || null,
     level: Number(formData.get("level") || 1),
     notoriety: String(formData.get("notoriety") || "").trim() || null,
     reputation: String(formData.get("reputation") || "").trim() || null,
@@ -303,14 +328,21 @@ async function init() {
     adminArea.hidden = false;
     accessMessage.hidden = true;
 
-    await Promise.all([loadProfiles(), loadParties()]);
+    await Promise.all([
+      loadProfiles(),
+      loadParties()
+    ]);
+
     await loadCharacters();
   } catch (error) {
     accessMessage.hidden = false;
     accessMessage.textContent =
       `Não foi possível carregar a página: ${error.message}`;
 
-    console.error("Erro ao inicializar a página de personagens:", error);
+    console.error(
+      "[Personagens] Erro ao inicializar a página:",
+      error
+    );
   }
 }
 
