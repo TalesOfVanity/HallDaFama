@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Perfil — Tales of Vanity</title>
+  <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a class="logo" href="index.html">Tales of Vanity</a>
+    <div class="nav-links">
+      <a href="jogadores.html">Jogadores</a>
+      <a href="personagens.html">Personagens</a>
+      <a href="ranking.html">Ranking</a>
+      <a href="clans.html">Partys</a>
+      <span data-auth-area></span>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="section profile-edit-section">
+    <div class="section-heading">
+      <span class="eyebrow">Conta do jogador</span>
+      <h1>Meu Perfil</h1>
+      <p>Edite as informações públicas exibidas no seu cartão de Player.</p>
+    </div>
+
+    <div id="profile-preview" class="profile-edit-preview"></div>
+
+    <form id="profile-form" class="form-card profile-edit-form" hidden>
+      <div class="field">
+        <label for="profile-display-name">Nome de Player</label>
+        <input id="profile-display-name" name="display_name" maxlength="80" required>
+      </div>
+
+      <div class="field">
+        <label for="profile-avatar">Foto / PFP</label>
+        <input id="profile-avatar" name="avatar_url" type="url" placeholder="https://...">
+        <small>Use o endereço direto de uma imagem pública.</small>
+      </div>
+
+      <div class="field">
+        <label for="profile-country">Localidade</label>
+        <input id="profile-country" name="country" maxlength="100" placeholder="Cidade, país ou região">
+      </div>
+
+      <div class="field">
+        <label for="profile-bio">Bio</label>
+        <textarea id="profile-bio" name="bio" rows="5" maxlength="600" placeholder="Conte um pouco sobre você no Tales of Vanity..."></textarea>
+      </div>
+
+      <button class="button" type="submit">Salvar alterações</button>
+      <p id="profile-status" class="status" aria-live="polite"></p>
+    </form>
+  </section>
+</main>
+
+<footer class="site-footer"><div class="container">Tales of Vanity · Hall da Fama</div></footer>
+<script type="module" src="js/auth.js?v=4"></script>
+<script type="module" src="js/perfil.js?v=1"></script>
+</body>
+</html>

@@ -855,3 +855,12 @@ td a {
 #party-admin .character-form-section legend { padding: 0 10px; color: #e4c783; font-family: Georgia,"Times New Roman",serif; font-weight: 600; }
 #party-admin .character-form-section input, #party-admin .character-form-section select, #party-admin .character-form-section textarea { width: 100%; }
 #party-admin-list small { color: var(--muted); font-size: .75em; }
+
+/* Etapa 2.2 — edição do próprio perfil */
+.profile-edit-section { max-width: 900px; margin-inline: auto; }
+.profile-edit-preview { margin: 24px 0; }
+.profile-preview-card { max-width: 620px; cursor: default; }
+.profile-preview-avatar { width: 82px; height: 82px; flex-basis: 82px; }
+.profile-preview-bio { margin-top: 8px !important; white-space: pre-wrap; }
+.profile-edit-form { max-width: 720px; margin: 24px 0 0; }
+.profile-edit-form small { display: block; margin-top: 7px; color: var(--muted); }
