@@ -54,8 +54,7 @@ async function init() {
   form.elements.avatar_url.value = profile.avatar_url || "";
   form.elements.country.value = profile.country || "";
   form.elements.bio.value = profile.bio || "";
-  const participation = form.querySelector(`input[name="participation_type"][value="${profile.participation_type || "interpreter"}"]`);
-  if (participation) participation.checked = true;
+  form.elements.participation_type.value = profile.participation_type || "interpreter";
   form.hidden = false;
   renderPreview(profile);
 }

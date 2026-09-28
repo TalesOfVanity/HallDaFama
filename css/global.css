@@ -894,3 +894,9 @@ td a {
 .player-status-tags { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
 .status-tag { display:inline-flex; align-items:center; padding:4px 9px; border:1px solid rgba(216,181,109,.35); border-radius:999px; font-size:.72rem; font-weight:600; letter-spacing:.04em; color:#d8b56d; background:rgba(216,181,109,.06); }
 .admin-tag { border-color:rgba(190,70,70,.55); color:#e58b8b; background:rgba(150,35,35,.12); text-transform:uppercase; }
+
+/* Etapa 2.5 — participação visível e ações destrutivas */
+.participation-field select { width:100%; min-height:52px; padding:0 14px; border:1px solid var(--line); background:#0d0c0a; color:var(--text); font:inherit; }
+.participation-field select:focus { outline:none; border-color:rgba(216,181,109,.65); box-shadow:0 0 0 2px rgba(216,181,109,.08); }
+.button-danger { border-color:rgba(190,70,70,.55)!important; color:#e58b8b!important; background:rgba(150,35,35,.10)!important; }
+.button-danger:hover { background:rgba(150,35,35,.22)!important; color:#ffaaaa!important; }

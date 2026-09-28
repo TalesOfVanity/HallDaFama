@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meu Perfil — Tales of Vanity</title>
-  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/global.css?v=5">
 </head>
 <body>
 <header class="site-header">
@@ -42,22 +42,22 @@
         <small>Use o endereço direto de uma imagem pública.</small>
       </div>
 
+
+      <div class="field participation-field">
+        <label for="profile-participation">Participação no RPG</label>
+        <select id="profile-participation" name="participation_type" required>
+          <option value="interpreter">Intérprete</option>
+          <option value="narrator">Narrador</option>
+          <option value="both">Ambos</option>
+        </select>
+        <small>Define se você participa como intérprete, narrador ou nas duas funções. A função Admin é controlada separadamente.</small>
+      </div>
+
       <div class="field">
         <label for="profile-country">Localidade</label>
         <input id="profile-country" name="country" maxlength="100" placeholder="Cidade, país ou região">
       </div>
-
-
-      <fieldset class="character-form-section profile-type-section">
-        <legend>Participação no RPG</legend>
-        <p class="form-help">Escolha como você participa do Tales of Vanity.</p>
-        <label class="choice-row"><input type="radio" name="participation_type" value="interpreter" required> Intérprete</label>
-        <label class="choice-row"><input type="radio" name="participation_type" value="narrator"> Narrador</label>
-        <label class="choice-row"><input type="radio" name="participation_type" value="both"> Ambos</label>
-        <small>A função de Admin é definida somente pela administração do site e não pode ser alterada aqui.</small>
-      </fieldset>
-
-      <div class="field">
+<div class="field">
         <label for="profile-bio">Bio</label>
         <textarea id="profile-bio" name="bio" rows="5" maxlength="600" placeholder="Conte um pouco sobre você no Tales of Vanity..."></textarea>
       </div>
@@ -70,6 +70,6 @@
 
 <footer class="site-footer"><div class="container">Tales of Vanity · Hall da Fama</div></footer>
 <script type="module" src="js/auth.js?v=7"></script>
-<script type="module" src="js/perfil.js?v=4"></script>
+<script type="module" src="js/perfil.js?v=5"></script>
 </body>
 </html>

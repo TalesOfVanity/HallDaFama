@@ -32,7 +32,7 @@ function render() {
         ${p.description ? `<p>${esc(p.description)}</p>` : ""}
         <div class="character-card-actions">
           <button class="button button-small" type="button" data-edit="${esc(p.id)}">Editar</button>
-          <button class="button button-small" type="button" data-delete="${esc(p.id)}">Excluir</button>
+          <button class="button button-small button-danger" type="button" data-delete="${esc(p.id)}">Excluir Party</button>
         </div>
       </div>
     </article>`).join("");
