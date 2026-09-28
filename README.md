@@ -12,7 +12,7 @@ Perfis individuais com informações, histórico, conquistas e trajetória dentr
 **Personagens**  
 Registros dos personagens criados pelos jogadores, suas características, notoriedade, reputação e vínculos.
 
-**Clãs**  
+**Partys**  
 Organizações formadas pelos jogadores, com seus membros, líderes, símbolos e histórias.
 
 **Ranking**  
