@@ -1,5 +1,6 @@
 import { supabase } from "./supabase.js";
 import { escapeHTML } from "./utils.js";
+import { badgeExp } from "./badges.js";
 
 const status = document.querySelector("#ranking-status");
 const playerBody = document.querySelector("#players-ranking-body");
@@ -31,11 +32,11 @@ async function loadRanking() {
 
     supabase
       .from("badges")
-      .select("id, points"),
+      .select("id, name, icon, is_mvp, exp_multiplier"),
 
     supabase
       .from("player_badges")
-      .select("player_id, badge_id"),
+      .select("player_id, badge_id, rarity, progress_value"),
 
     supabase
       .from("characters")
@@ -70,12 +71,7 @@ async function loadRanking() {
     profiles.map(p => [p.id, p])
   );
 
-  const badgeMap = new Map(
-    badges.map(b => [
-      b.id,
-      Number(b.points || 0)
-    ])
-  );
+  const badgeMap = new Map(badges.map(b => [b.id, b]));
 
   const clanMap = new Map(
     clans.map(c => [c.id, c])
@@ -96,11 +92,11 @@ async function loadRanking() {
 
         badgeCount: ownAwards.length,
 
-        points: ownAwards.reduce(
-          (sum, a) =>
-            sum + (badgeMap.get(a.badge_id) || 0),
-          0
-        ),
+        points: ownAwards.reduce((sum, a) =>
+          sum + badgeExp(badgeMap.get(a.badge_id), a), 0),
+
+        isMvp: ownAwards.some(a => badgeMap.get(a.badge_id)?.is_mvp),
+        mvpBadge: ownAwards.map(a => badgeMap.get(a.badge_id)).find(b => b?.is_mvp),
 
         characterCount: characters.filter(
           c => c.owner_id === player.id
@@ -109,6 +105,7 @@ async function loadRanking() {
     })
     .sort(
       (a, b) =>
+        Number(b.isMvp) - Number(a.isMvp) ||
         b.points - a.points ||
         b.badgeCount - a.badgeCount ||
         (a.display_name || "").localeCompare(
@@ -125,9 +122,10 @@ async function loadRanking() {
         </td>
 
         <td>
-          <a href="jogador.html?id=${encodeURIComponent(p.id)}">
-            ${e(p.display_name || p.username || "Jogador")}
-          </a>
+          <div class="ranking-player-name">
+            <a href="jogador.html?id=${encodeURIComponent(p.id)}">${e(p.display_name || p.username || "Jogador")}</a>
+            ${p.isMvp ? `<span class="mvp-name-icon" title="MVP — Jogador de maior destaque do período atual">${p.mvpBadge?.icon ? `<img src="${e(p.mvpBadge.icon)}" alt="MVP">` : "◆"}</span>` : ""}
+          </div>
         </td>
 
         <td>
