@@ -1,16 +1,25 @@
+
 import { supabase } from "./supabase.js";
 import { escapeHTML } from "./utils.js";
 
 const featured = document.querySelector("#featured-players");
 
 async function loadFeatured() {
-  const { data } = await supabase
+  if (!featured) return;
+
+  const { data, error } = await supabase
     .from("profiles")
     .select("id, display_name, username, country")
     .limit(6);
 
+  if (error) {
+    featured.innerHTML = "<p>Não foi possível carregar os jogadores.</p>";
+    return;
+  }
+
   featured.innerHTML = (data || []).map(player => `
-    <a class="player-card compact" href="jogador.html?id=${encodeURIComponent(player.id)}">
+    <a class="player-card compact"
+       href="jogador.html?id=${encodeURIComponent(player.id)}">
       <div class="avatar">
         <span>✦</span>
       </div>
@@ -22,12 +31,8 @@ async function loadFeatured() {
   `).join("");
 }
 
-loadFeatured();
-  if (!featured) return;
-
 async function showAdminButton() {
   const button = document.querySelector("#admin-register-character");
-
   if (!button) return;
 
   const {
@@ -39,4 +44,5 @@ async function showAdminButton() {
   button.hidden = user?.id !== ADMIN_UID;
 }
 
+loadFeatured();
 showAdminButton();
