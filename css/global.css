@@ -787,3 +787,50 @@ td a {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* Blocos organizados do formulário de personagens */
+
+#character-admin .character-form-section {
+  min-width: 0;
+  margin: 0 0 22px;
+  padding: 20px 22px 24px;
+
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(216, 181, 109, 0.19);
+  border-radius: 11px;
+}
+
+#character-admin .character-form-section legend {
+  padding: 0 10px;
+
+  color: #e4c783;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.035em;
+}
+
+#character-admin .character-form-section label:first-of-type {
+  margin-top: 10px;
+}
+
+#character-admin .character-form-section label {
+  color: #d9d1c2;
+}
+
+#character-admin .character-form-section:focus-within {
+  border-color: rgba(216, 181, 109, 0.42);
+}
+
+#character-admin .character-form-section input,
+#character-admin .character-form-section select,
+#character-admin .character-form-section textarea {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  #character-admin .character-form-section {
+    padding: 16px 13px 19px;
+  }
+}
