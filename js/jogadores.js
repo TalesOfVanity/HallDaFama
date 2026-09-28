@@ -12,7 +12,8 @@ async function loadPlayers() {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, display_name, username, avatar_url, country, bio, created_at")
+    .select("id, display_name, username, avatar_url, country, bio, created_at, active")
+    .eq("active", true)
     .order("display_name", { ascending: true });
 
   if (error) {
