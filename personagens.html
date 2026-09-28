@@ -37,85 +37,105 @@
 
         <input type="hidden" name="id">
 
-        <label for="character-name">Nome do personagem</label>
-        <input
-          id="character-name"
-          name="name"
-          placeholder="Nome completo"
-          required
-        >
+        <fieldset class="character-form-section">
+          <legend>01 · Identificação</legend>
 
-        <label for="character-nickname">Alcunha ou título</label>
-        <input
-          id="character-nickname"
-          name="nickname"
-          placeholder="Ex.: O Cavaleiro Errante"
-        >
+          <label for="character-name">Nome do personagem</label>
+          <input
+            id="character-name"
+            name="name"
+            placeholder="Nome completo"
+            required
+          >
 
-        <label for="character-owner">Jogador responsável</label>
-        <select id="character-owner" name="owner_id" required>
-          <option value="">Carregando jogadores...</option>
-        </select>
+          <label for="character-nickname">Alcunha ou título</label>
+          <input
+            id="character-nickname"
+            name="nickname"
+            placeholder="Ex.: O Cavaleiro Errante"
+          >
+        </fieldset>
 
-        <label for="character-description">Descrição</label>
-        <textarea
-          id="character-description"
-          name="description"
-          rows="5"
-          placeholder="História, personalidade e características..."
-        ></textarea>
+        <fieldset class="character-form-section">
+          <legend>02 · Vínculos</legend>
 
-        <label for="character-portrait">URL do retrato</label>
-        <input
-          id="character-portrait"
-          name="portrait_url"
-          type="url"
-          placeholder="https://..."
-        >
+          <label for="character-owner">Jogador responsável</label>
+          <select id="character-owner" name="owner_id" required>
+            <option value="">Carregando jogadores...</option>
+          </select>
 
-        <label for="character-ficha">Ficha Anexada (Facebook)</label>
-        <input
-          id="character-ficha"
-          name="ficha_url"
-          type="url"
-          placeholder="https://www.facebook.com/..."
-        >
+          <label for="character-party">Party</label>
+          <select id="character-party" name="clan_id">
+            <option value="">Sem party</option>
+          </select>
+        </fieldset>
 
-        <label for="character-level">Nível</label>
-        <input
-          id="character-level"
-          name="level"
-          type="number"
-          min="1"
-          value="1"
-          required
-        >
+        <fieldset class="character-form-section">
+          <legend>03 · Aparência e ficha</legend>
 
-        <label for="character-notoriety">Fama</label>
-        <input
-          id="character-notoriety"
-          name="notoriety"
-          placeholder="Ex.: Regional, Nacional, Lendário"
-        >
+          <label for="character-portrait">URL do retrato</label>
+          <input
+            id="character-portrait"
+            name="portrait_url"
+            type="url"
+            placeholder="https://..."
+          >
 
-        <label for="character-reputation">Reputação</label>
-        <input
-          id="character-reputation"
-          name="reputation"
-          placeholder="Ex.: Honrado, Temido, Infame"
-        >
+          <label for="character-ficha">Ficha Anexada (Facebook)</label>
+          <input
+            id="character-ficha"
+            name="ficha_url"
+            type="url"
+            placeholder="https://www.facebook.com/..."
+          >
+        </fieldset>
 
-        <label for="character-party">Party</label>
-        <select id="character-party" name="clan_id">
-          <option value="">Sem party</option>
-        </select>
+        <fieldset class="character-form-section">
+          <legend>04 · Características</legend>
 
-        <label for="character-status">Status do registro</label>
-        <select id="character-status" name="status" required>
-          <option value="pending">Pendente</option>
-          <option value="approved">Aprovado</option>
-          <option value="rejected">Rejeitado</option>
-        </select>
+          <label for="character-description">Descrição</label>
+          <textarea
+            id="character-description"
+            name="description"
+            rows="5"
+            placeholder="História, personalidade e características..."
+          ></textarea>
+
+          <label for="character-level">Nível</label>
+          <input
+            id="character-level"
+            name="level"
+            type="number"
+            min="1"
+            value="1"
+            required
+          >
+
+          <label for="character-notoriety">Fama</label>
+          <input
+            id="character-notoriety"
+            name="notoriety"
+            placeholder="Ex.: Regional, Nacional, Lendário"
+          >
+
+          <label for="character-reputation">Reputação</label>
+          <input
+            id="character-reputation"
+            name="reputation"
+            placeholder="Ex.: Honrado, Temido, Infame"
+          >
+        </fieldset>
+
+        <fieldset class="character-form-section">
+          <legend>05 · Publicação e controle</legend>
+
+          <label for="character-status">Status do registro</label>
+          <select id="character-status" name="status" required>
+            <option value="pending">Pendente</option>
+            <option value="approved">Aprovado</option>
+            <option value="rejected">Rejeitado</option>
+          </select>
+        </fieldset>
 
         <div class="form-actions">
           <button
