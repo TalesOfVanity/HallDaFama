@@ -38,12 +38,19 @@
         <input type="hidden" name="id">
 
         <label for="character-name">Nome do personagem</label>
-        <input id="character-name" name="name"
-          placeholder="Nome completo" required>
+        <input
+          id="character-name"
+          name="name"
+          placeholder="Nome completo"
+          required
+        >
 
         <label for="character-nickname">Alcunha ou título</label>
-        <input id="character-nickname" name="nickname"
-          placeholder="Ex.: O Cavaleiro Errante">
+        <input
+          id="character-nickname"
+          name="nickname"
+          placeholder="Ex.: O Cavaleiro Errante"
+        >
 
         <label for="character-owner">Jogador responsável</label>
         <select id="character-owner" name="owner_id" required>
@@ -51,32 +58,52 @@
         </select>
 
         <label for="character-description">Descrição</label>
-        <textarea id="character-description" name="description"
-          rows="5" placeholder="História, personalidade e características..."></textarea>
+        <textarea
+          id="character-description"
+          name="description"
+          rows="5"
+          placeholder="História, personalidade e características..."
+        ></textarea>
 
         <label for="character-portrait">URL do retrato</label>
-        <input id="character-portrait" name="portrait_url"
-          type="url" placeholder="https://...">
+        <input
+          id="character-portrait"
+          name="portrait_url"
+          type="url"
+          placeholder="https://..."
+        >
 
         <label for="character-ficha">Ficha Anexada (Facebook)</label>
-<input
-  id="character-ficha"
-  name="ficha_url"
-  type="url"
-  placeholder="https://www.facebook.com/..."
->
-          
+        <input
+          id="character-ficha"
+          name="ficha_url"
+          type="url"
+          placeholder="https://www.facebook.com/..."
+        >
+
         <label for="character-level">Nível</label>
-        <input id="character-level" name="level"
-          type="number" min="1" value="1" required>
+        <input
+          id="character-level"
+          name="level"
+          type="number"
+          min="1"
+          value="1"
+          required
+        >
 
         <label for="character-notoriety">Fama</label>
-        <input id="character-notoriety" name="notoriety"
-          placeholder="Ex.: Regional, Nacional, Lendário">
+        <input
+          id="character-notoriety"
+          name="notoriety"
+          placeholder="Ex.: Regional, Nacional, Lendário"
+        >
 
         <label for="character-reputation">Reputação</label>
-        <input id="character-reputation" name="reputation"
-          placeholder="Ex.: Honrado, Temido, Infame">
+        <input
+          id="character-reputation"
+          name="reputation"
+          placeholder="Ex.: Honrado, Temido, Infame"
+        >
 
         <label for="character-party">Party</label>
         <select id="character-party" name="clan_id">
@@ -91,16 +118,29 @@
         </select>
 
         <div class="form-actions">
-          <button class="button" type="submit" id="save-character">
+          <button
+            class="button"
+            type="submit"
+            id="save-character"
+          >
             Salvar personagem
           </button>
-          <button class="button" type="button" id="cancel-edit" hidden>
+
+          <button
+            class="button"
+            type="button"
+            id="cancel-edit"
+            hidden
+          >
             Cancelar edição
           </button>
         </div>
 
-        <p id="character-status-message" class="status"
-          aria-live="polite"></p>
+        <p
+          id="character-status-message"
+          class="status"
+          aria-live="polite"
+        ></p>
       </form>
 
       <section class="section">
@@ -108,13 +148,18 @@
           <span class="eyebrow">Acervo oficial</span>
           <h2>Personagens registrados</h2>
         </div>
+
         <div id="character-list" class="grid player-grid">
           <p>Carregando personagens...</p>
         </div>
       </section>
     </section>
 
-    <p id="access-message" class="status" aria-live="polite">
+    <p
+      id="access-message"
+      class="status"
+      aria-live="polite"
+    >
       Verificando permissões...
     </p>
   </main>
@@ -124,6 +169,6 @@
   </footer>
 
   <script type="module" src="js/auth.js"></script>
-  <script type="module" src="js/personagens.js"></script>
+  <script type="module" src="js/personagens.js?v=3"></script>
 </body>
 </html>
