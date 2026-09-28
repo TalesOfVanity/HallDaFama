@@ -11,15 +11,12 @@ async function loadRanking() {
     .from("ranking")
     .select(`
       player_id,
+      display_name,
+      username,
       points,
       wins,
       losses,
-      draws,
-      profiles (
-        display_name,
-        username,
-        avatar_url
-      )
+      draws
     `)
     .order("points", { ascending: false })
     .order("wins", { ascending: false });
@@ -30,7 +27,7 @@ async function loadRanking() {
   }
 
   tbody.innerHTML = (data || []).map((row, index) => {
-    const name = row.profiles?.display_name || row.profiles?.username || "Jogador";
+    const name = row.display_name || row.username || "Jogador";
 
     return `
       <tr>
