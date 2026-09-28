@@ -11,6 +11,7 @@ form?.addEventListener("submit", async (event) => {
   const password = form.password.value;
   const displayName = form.display_name.value.trim();
   const country = form.country.value.trim();
+  const participationType = form.participation_type?.value || "interpreter";
 
   if (password.length < 6) {
     setStatus(status, "A senha precisa ter pelo menos 6 caracteres.", "error");
@@ -25,7 +26,8 @@ form?.addEventListener("submit", async (event) => {
     options: {
       data: {
         display_name: displayName,
-        country
+        country,
+        participation_type: participationType
       }
     }
   });

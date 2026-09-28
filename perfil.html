@@ -47,6 +47,16 @@
         <input id="profile-country" name="country" maxlength="100" placeholder="Cidade, país ou região">
       </div>
 
+
+      <fieldset class="character-form-section profile-type-section">
+        <legend>Participação no RPG</legend>
+        <p class="form-help">Escolha como você participa do Tales of Vanity.</p>
+        <label class="choice-row"><input type="radio" name="participation_type" value="interpreter" required> Intérprete</label>
+        <label class="choice-row"><input type="radio" name="participation_type" value="narrator"> Narrador</label>
+        <label class="choice-row"><input type="radio" name="participation_type" value="both"> Ambos</label>
+        <small>A função de Admin é definida somente pela administração do site e não pode ser alterada aqui.</small>
+      </fieldset>
+
       <div class="field">
         <label for="profile-bio">Bio</label>
         <textarea id="profile-bio" name="bio" rows="5" maxlength="600" placeholder="Conte um pouco sobre você no Tales of Vanity..."></textarea>
@@ -60,6 +70,6 @@
 
 <footer class="site-footer"><div class="container">Tales of Vanity · Hall da Fama</div></footer>
 <script type="module" src="js/auth.js?v=7"></script>
-<script type="module" src="js/perfil.js?v=3"></script>
+<script type="module" src="js/perfil.js?v=4"></script>
 </body>
 </html>
