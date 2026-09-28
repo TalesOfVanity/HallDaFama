@@ -33,15 +33,40 @@ function resetForm() {
 }
 
 async function loadProfiles() {
+  ownerSelect.innerHTML = "";
+
+  const loadingOption = document.createElement("option");
+  loadingOption.value = "";
+  loadingOption.textContent = "Carregando jogadores...";
+  ownerSelect.appendChild(loadingOption);
+
   const { data, error } = await supabase
     .from("profiles")
     .select("id, display_name, username")
     .order("display_name");
 
-  if (error) throw error;
+  if (error) {
+    ownerSelect.innerHTML = "";
+
+    const errorOption = document.createElement("option");
+    errorOption.value = "";
+    errorOption.textContent = "Erro ao carregar jogadores";
+    ownerSelect.appendChild(errorOption);
+
+    console.error("Erro ao carregar jogadores:", error);
+    throw new Error(`Erro ao carregar jogadores: ${error.message}`);
+  }
 
   profiles = data || [];
-  ownerSelect.innerHTML = '<option value="">Selecione um jogador</option>';
+  ownerSelect.innerHTML = "";
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = profiles.length
+    ? "Selecione um jogador"
+    : "Nenhum perfil encontrado";
+
+  ownerSelect.appendChild(defaultOption);
 
   for (const profile of profiles) {
     const option = document.createElement("option");
@@ -50,6 +75,8 @@ async function loadProfiles() {
       profile.display_name || profile.username || "Jogador";
     ownerSelect.appendChild(option);
   }
+
+  console.log("Perfis carregados:", profiles.length, profiles);
 }
 
 async function loadParties() {
@@ -204,6 +231,11 @@ form.addEventListener("submit", async event => {
     status: String(formData.get("status") || "pending")
   };
 
+  if (!character.name) {
+    setStatus(message, "Informe o nome do personagem.", "error");
+    return;
+  }
+
   if (!character.owner_id) {
     setStatus(message, "Selecione o jogador responsável.", "error");
     return;
@@ -216,18 +248,26 @@ form.addEventListener("submit", async event => {
 
   setStatus(message, "Salvando personagem...");
 
-  const result = id
-    ? await supabase.from("characters").update(character).eq("id", id)
-    : await supabase.from("characters").insert(character);
+  try {
+    const result = id
+      ? await supabase.from("characters").update(character).eq("id", id)
+      : await supabase.from("characters").insert(character);
 
-  if (result.error) {
-    setStatus(message, `Não foi possível salvar: ${result.error.message}`, "error");
-    return;
+    if (result.error) {
+      setStatus(
+        message,
+        `Não foi possível salvar: ${result.error.message}`,
+        "error"
+      );
+      return;
+    }
+
+    setStatus(message, "Personagem salvo com sucesso.", "success");
+    resetForm();
+    await loadCharacters();
+  } catch (error) {
+    setStatus(message, `Erro inesperado: ${error.message}`, "error");
   }
-
-  setStatus(message, "Personagem salvo com sucesso.", "success");
-  resetForm();
-  await loadCharacters();
 });
 
 cancelButton.addEventListener("click", resetForm);
@@ -242,10 +282,16 @@ characterList.addEventListener("click", async event => {
 
 async function init() {
   try {
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+      error
+    } = await supabase.auth.getUser();
+
+    if (error) throw error;
 
     if (!user) {
-      accessMessage.textContent = "Entre na sua conta de administrador para continuar.";
+      accessMessage.textContent =
+        "Entre na sua conta de administrador para continuar.";
       return;
     }
 
@@ -263,6 +309,8 @@ async function init() {
     accessMessage.hidden = false;
     accessMessage.textContent =
       `Não foi possível carregar a página: ${error.message}`;
+
+    console.error("Erro ao inicializar a página de personagens:", error);
   }
 }
 
