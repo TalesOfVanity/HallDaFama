@@ -18,11 +18,8 @@ Organizações formadas pelos jogadores, com seus membros, líderes, símbolos e
 **Ranking**  
 Um registro competitivo baseado nos resultados e feitos realizados dentro do RPG.
 
-**Insígnias**  
+**Conquistas**  
 Condecorações concedidas por participação, conquistas e feitos relevantes. Cada insígnia representa uma marca na trajetória do jogador.
-
-**Confrontos**  
-Registro dos duelos e disputas realizados, formando parte do histórico competitivo do RPG.
 
 ## O propósito
 
