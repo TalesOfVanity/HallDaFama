@@ -54,6 +54,7 @@ function editParty(id) {
   form.elements.name.value = p.name || "";
   form.elements.acronym.value = p.acronym || "";
   form.elements.emblem_url.value = p.emblem_url || "";
+  form.elements.official_url.value = p.official_url || "";
   form.elements.description.value = p.description || "";
   form.elements.status.value = p.status || "active";
   title.textContent = "Editar Party";
@@ -78,6 +79,7 @@ form?.addEventListener("submit", async event => {
     name: String(fd.get("name") || "").trim(),
     acronym: String(fd.get("acronym") || "").trim() || null,
     emblem_url: String(fd.get("emblem_url") || "").trim() || null,
+    official_url: String(fd.get("official_url") || "").trim() || null,
     description: String(fd.get("description") || "").trim() || null,
     status: String(fd.get("status") || "active")
   };
