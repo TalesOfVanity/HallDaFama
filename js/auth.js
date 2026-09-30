@@ -2,20 +2,16 @@ import { supabase } from "./supabase.js";
 
 export async function getSession() {
   const { data, error } = await supabase.auth.getSession();
-
   if (error) throw error;
-
   return data.session;
 }
 
 export async function requireAuth() {
   const session = await getSession();
-
   if (!session) {
     window.location.href = "login.html";
     return null;
   }
-
   return session;
 }
 
@@ -25,9 +21,7 @@ export async function getProfile(userId) {
     .select("*")
     .eq("id", userId)
     .single();
-
   if (error) throw error;
-
   return data;
 }
 
@@ -37,24 +31,51 @@ export async function logout() {
 }
 
 export async function updateNavigation() {
-  const session = await getSession();
   const authArea = document.querySelector("[data-auth-area]");
-
   if (!authArea) return;
 
-  // =========================
-  // USUÁRIO NÃO LOGADO
-  // =========================
+  let session = null;
+  try {
+    session = await getSession();
+  } catch (error) {
+    console.error("Erro ao carregar sessão:", error);
+  }
 
   if (!session) {
-    const publicProfileUrl = profile?.username
-    ? `jogador.html?u=${encodeURIComponent(profile.username)}`
+    authArea.innerHTML = `<a class="button button-small" href="login.html">Entrar</a>`;
+    return;
+  }
+
+  let profile = null;
+  try {
+    profile = await getProfile(session.user.id);
+  } catch (error) {
+    console.error("Erro ao carregar perfil:", error);
+  }
+
+  const isAdmin = profile?.role === "admin";
+  let unreadMentions = 0;
+  try {
+    const { count, error } = await supabase
+      .from("mention_notifications")
+      .select("id", { count: "exact", head: true })
+      .eq("mentioned_user_id", session.user.id)
+      .is("read_at", null);
+    if (!error) unreadMentions = count || 0;
+  } catch (error) {
+    console.warn("Não foi possível carregar menções:", error);
+  }
+
+  const username = profile?.username?.trim();
+  const publicProfileUrl = username
+    ? `jogador.html?u=${encodeURIComponent(username)}`
     : `jogador.html?id=${encodeURIComponent(session.user.id)}`;
+  const displayName = profile?.display_name || username || session.user.email || "Meu Perfil";
 
   authArea.innerHTML = `
     <div class="user-menu">
       <button type="button" class="user-menu-toggle" aria-expanded="false" aria-haspopup="true">
-        ${profile?.display_name || profile?.username || "Meu Perfil"}
+        ${escapeHtml(displayName)}
         ${unreadMentions ? `<span class="mentions-count">${unreadMentions > 99 ? "99+" : unreadMentions}</span>` : ""}
         <span class="admin-menu-arrow">▾</span>
       </button>
@@ -69,7 +90,9 @@ export async function updateNavigation() {
     </div>
     ${isAdmin ? `
       <div class="admin-menu">
-        <button type="button" class="admin-menu-toggle" aria-expanded="false" aria-haspopup="true">Administração <span class="admin-menu-arrow">▾</span></button>
+        <button type="button" class="admin-menu-toggle" aria-expanded="false" aria-haspopup="true">
+          Administração <span class="admin-menu-arrow">▾</span>
+        </button>
         <div class="admin-menu-dropdown">
           <a href="personagens.html">Registrar personagem</a>
           <a href="registrar-party.html">Registrar Party</a>
@@ -79,33 +102,52 @@ export async function updateNavigation() {
       </div>` : ""}
   `;
 
-  // =========================
-  // LOGOUT
-  // =========================
+  authArea.querySelector("#logout-button")?.addEventListener("click", logout);
 
-  document
-    .querySelector("#logout-button")
-    ?.addEventListener("click", logout);
-
-  // Menus de usuário e administração
   const menus = authArea.querySelectorAll(".user-menu, .admin-menu");
   menus.forEach(menu => {
     const toggle = menu.querySelector(".user-menu-toggle, .admin-menu-toggle");
     if (!toggle) return;
     toggle.addEventListener("click", event => {
       event.stopPropagation();
-      menus.forEach(other => { if (other !== menu) other.classList.remove("open"); });
+      menus.forEach(other => {
+        if (other !== menu) {
+          other.classList.remove("open");
+          other.querySelector(".user-menu-toggle, .admin-menu-toggle")?.setAttribute("aria-expanded", "false");
+        }
+      });
       const open = menu.classList.toggle("open");
       toggle.setAttribute("aria-expanded", String(open));
     });
   });
+
   document.addEventListener("click", event => {
-    menus.forEach(menu => { if (!menu.contains(event.target)) menu.classList.remove("open"); });
-  });
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape") menus.forEach(menu => menu.classList.remove("open"));
+    menus.forEach(menu => {
+      if (!menu.contains(event.target)) {
+        menu.classList.remove("open");
+        menu.querySelector(".user-menu-toggle, .admin-menu-toggle")?.setAttribute("aria-expanded", "false");
+      }
+    });
   });
 
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      menus.forEach(menu => {
+        menu.classList.remove("open");
+        menu.querySelector(".user-menu-toggle, .admin-menu-toggle")?.setAttribute("aria-expanded", "false");
+      });
+    }
+  });
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>'"]/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "'": "&#39;",
+    '"': "&quot;"
+  })[char]);
 }
 
 updateNavigation();
