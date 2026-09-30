@@ -69,6 +69,11 @@ export async function updateNavigation() {
   }
 
   const isAdmin = profile?.role === "admin";
+  let unreadMentions = 0;
+  try {
+    const { count } = await supabase.from("mention_notifications").select("id", { count:"exact", head:true }).eq("mentioned_user_id", session.user.id).is("read_at", null);
+    unreadMentions = count || 0;
+  } catch (_) {}
 
   // =========================
   // NAVEGAÇÃO
@@ -81,6 +86,10 @@ export async function updateNavigation() {
 
     <a href="conquistas.html">
       Conquistas
+    </a>
+
+    <a class="mentions-nav-link" href="notificacoes.html">
+      Menções${unreadMentions ? ` <span class="mentions-count">${unreadMentions > 99 ? "99+" : unreadMentions}</span>` : ""}
     </a>
 
     <a href="perfil.html">

@@ -1,184 +1,31 @@
 import { supabase } from "./supabase.js";
 import { escapeHTML, formatDate, getQueryParam, avatarHTML, setStatus } from "./utils.js";
 import { badgeFrame, badgeExp, rarityInfo } from "./badges.js";
-
-const root = document.querySelector("#player-profile");
-const requestedId = getQueryParam("id");
-const requestedUsername = (getQueryParam("u") || "").replace(/^@/, "").toLowerCase();
-let viewer = null;
-let player = null;
-let isAdmin = false;
-let characters = [];
-let posts = [];
-let activeTab = "personal";
-
-const participationLabel = value => ({ interpreter:"Intérprete", narrator:"Narrador", both:"Intérprete & Narrador" }[value] || "Intérprete");
-
-function safeExternalUrl(value="") {
-  try {
-    const url = new URL(value);
-    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
-  } catch { return ""; }
-}
-
-function linkifyMentions(text="") {
-  const escaped = escapeHTML(text);
-  return escaped.replace(/(^|[^\w])@([a-z0-9._-]{3,30})/gi, (full, before, username) =>
-    `${before}<a class="mention-link" href="jogador.html?u=${encodeURIComponent(username.toLowerCase())}">@${escapeHTML(username)}</a>`
-  ).replace(/\n/g, "<br>");
-}
-
-async function resolvePlayer() {
-  let query = supabase.from("profiles").select("*");
-  if (requestedUsername) query = query.ilike("username", requestedUsername);
-  else if (requestedId) query = query.eq("id", requestedId);
-  else return null;
-  const { data, error } = await query.single();
-  if (error) return null;
-  return data;
-}
-
-async function loadViewer() {
-  const { data:{ user } } = await supabase.auth.getUser();
-  viewer = user || null;
-  if (!viewer) return;
-  const { data } = await supabase.from("profiles").select("role, active").eq("id", viewer.id).maybeSingle();
-  isAdmin = data?.role === "admin";
-}
-
-async function loadRelated() {
-  const [badgeResult, characterResult, postResult] = await Promise.all([
-    supabase.from("player_badges").select(`awarded_at, rarity, progress_value, badges ( id, name, description, icon, rarity, category, is_mvp, exp_multiplier, progression_mode, progression_steps )`).eq("player_id", player.id).order("awarded_at", { ascending:false }),
-    supabase.from("characters").select("id,name,nickname,portrait_url,ficha_url,level,status").eq("owner_id", player.id).eq("status", "approved").order("name"),
-    supabase.from("profile_posts").select(`id, author_id, profile_id, post_type, content, created_at, updated_at, author:profiles!profile_posts_author_id_fkey(id, display_name, username, avatar_url), images:profile_post_images(id, storage_path, public_url, position)`).eq("profile_id", player.id).order("created_at", { ascending:false })
-  ]);
-  characters = characterResult.data || [];
-  posts = postResult.data || [];
-  return badgeResult.data || [];
-}
-
-function characterCard(c) {
-  const name = c.name || "Personagem";
-  const link = safeExternalUrl(c.ficha_url);
-  return `<article class="profile-character-card">
-    <div class="avatar profile-character-avatar">${avatarHTML(name, c.portrait_url, `Retrato de ${name}`)}</div>
-    <div class="profile-character-info"><h3>${escapeHTML(name)}</h3>${c.nickname?`<p>${escapeHTML(c.nickname)}</p>`:""}<span>Nível ${Number(c.level||1)}</span></div>
-    ${link ? `<a class="button button-small" href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer">Abrir ficha ↗</a>` : `<span class="profile-no-sheet">Sem ficha vinculada</span>`}
-  </article>`;
-}
-
-function postCard(post) {
-  const author = post.author || {};
-  const authorName = author.display_name || author.username || "Jogador";
-  const canDelete = !!viewer && (viewer.id === post.author_id || viewer.id === player.id || isAdmin);
-  const imgs = [...(post.images || [])].sort((a,b)=>(a.position||0)-(b.position||0));
-  return `<article class="profile-post" data-post-id="${post.id}">
-    <header class="profile-post-head">
-      <a class="profile-post-author" href="jogador.html?u=${encodeURIComponent(author.username || "")}">
-        <span class="avatar profile-post-avatar">${avatarHTML(authorName, author.avatar_url, `Foto de ${authorName}`)}</span>
-        <span><strong>${escapeHTML(authorName)}</strong>${author.username?`<small>@${escapeHTML(author.username)}</small>`:""}</span>
-      </a>
-      <div class="profile-post-actions"><time>${formatDate(post.created_at)}</time>${canDelete?`<button class="post-delete" type="button" data-delete-post="${post.id}" title="Apagar publicação">Apagar</button>`:""}</div>
-    </header>
-    ${post.content ? `<div class="profile-post-content">${linkifyMentions(post.content)}</div>` : ""}
-    ${imgs.length ? `<div class="profile-post-gallery gallery-${Math.min(imgs.length,4)}">${imgs.map(img=>`<a href="${escapeHTML(img.public_url)}" target="_blank" rel="noopener"><img src="${escapeHTML(img.public_url)}" alt="Imagem da publicação" loading="lazy"></a>`).join("")}</div>` : ""}
-  </article>`;
-}
-
-function composer(type) {
-  if (!viewer) return `<div class="profile-feed-note">Entre na sua conta para publicar.</div>`;
-  if (type === "personal" && viewer.id !== player.id) return "";
-  return `<form class="profile-composer" data-composer="${type}">
-    <textarea name="content" rows="5" maxlength="10000" placeholder="${type === "personal" ? "Registre uma descrição, skill, item, cena, conquista ou qualquer parte da sua jornada..." : `Escreva algo no mural de ${escapeHTML(player.display_name || player.username || "jogador")}...`}"></textarea>
-    <div class="profile-composer-row"><label class="image-picker">Adicionar fotos <input name="images" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple></label><span>Até 4 imagens · 5 MB cada</span><button class="button" type="submit">Publicar</button></div>
-    <p class="status" data-post-status></p>
-  </form>`;
-}
-
-function renderFeed() {
-  const panel = document.querySelector("#profile-feed-panel");
-  if (!panel) return;
-  const filtered = posts.filter(p => p.post_type === activeTab);
-  panel.innerHTML = `${composer(activeTab)}<div class="profile-post-list">${filtered.map(postCard).join("") || `<div class="profile-feed-empty">${activeTab === "personal" ? "Nenhuma publicação ainda." : "O mural ainda está vazio."}</div>`}</div>`;
-  bindFeedEvents();
-}
-
-function bindFeedEvents() {
-  document.querySelectorAll("[data-composer]").forEach(form => form.addEventListener("submit", submitPost));
-  document.querySelectorAll("[data-delete-post]").forEach(btn => btn.addEventListener("click", deletePost));
-}
-
-async function submitPost(event) {
-  event.preventDefault();
-  const form = event.currentTarget;
-  const status = form.querySelector("[data-post-status]");
-  const type = form.dataset.composer;
-  const content = form.content.value.trim();
-  const files = [...form.images.files].slice(0,4);
-  if (!content && !files.length) return setStatus(status, "Escreva algo ou adicione uma imagem.", "error");
-  if ([...form.images.files].length > 4) return setStatus(status, "Você pode adicionar no máximo 4 imagens.", "error");
-  if (files.some(f => f.size > 5 * 1024 * 1024)) return setStatus(status, "Cada imagem pode ter no máximo 5 MB.", "error");
-  setStatus(status, "Publicando...");
-
-  const { data:post, error } = await supabase.from("profile_posts").insert({ author_id:viewer.id, profile_id:player.id, post_type:type, content:content || null }).select("id").single();
-  if (error) return setStatus(status, error.message, "error");
-
-  const imageRows = [];
-  for (let i=0;i<files.length;i++) {
-    const file = files[i];
-    const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
-    const path = `${viewer.id}/${post.id}/${crypto.randomUUID()}.${ext}`;
-    const upload = await supabase.storage.from("profile-posts").upload(path, file, { upsert:false, contentType:file.type });
-    if (upload.error) { setStatus(status, `Publicação criada, mas uma imagem falhou: ${upload.error.message}`, "error"); continue; }
-    const { data:urlData } = supabase.storage.from("profile-posts").getPublicUrl(path);
-    imageRows.push({ post_id:post.id, storage_path:path, public_url:urlData.publicUrl, position:i });
-  }
-  if (imageRows.length) await supabase.from("profile_post_images").insert(imageRows);
-  form.reset();
-  await refreshPosts();
-}
-
-async function deletePost(event) {
-  const id = event.currentTarget.dataset.deletePost;
-  if (!confirm("Apagar esta publicação?")) return;
-  const post = posts.find(p => String(p.id) === String(id));
-  const { error } = await supabase.from("profile_posts").delete().eq("id", id);
-  if (error) return alert(error.message);
-  // O autor consegue remover os próprios arquivos; quando dono do mural/admin apaga post alheio,
-  // a referência some imediatamente e uma limpeza de Storage pode ser feita depois.
-  if (post?.author_id === viewer?.id && post.images?.length) {
-    await supabase.storage.from("profile-posts").remove(post.images.map(x=>x.storage_path));
-  }
-  await refreshPosts();
-}
-
-async function refreshPosts() {
-  const { data } = await supabase.from("profile_posts").select(`id, author_id, profile_id, post_type, content, created_at, updated_at, author:profiles!profile_posts_author_id_fkey(id, display_name, username, avatar_url), images:profile_post_images(id, storage_path, public_url, position)`).eq("profile_id", player.id).order("created_at", { ascending:false });
-  posts = data || [];
-  renderFeed();
-}
-
-async function loadPlayer() {
-  await loadViewer();
-  player = await resolvePlayer();
-  if (!player || player.active === false) { root.innerHTML='<p class="status error">Jogador não encontrado.</p>'; return; }
-  const items = await loadRelated();
-  const name = player.display_name || player.username || "Jogador";
-  const mvp = items.find(x=>x.badges?.is_mvp);
-  const totalExp = items.reduce((s,x)=>s+badgeExp(x.badges,x),0);
-  const canonical = player.username ? `jogador.html?u=${encodeURIComponent(player.username)}` : `jogador.html?id=${encodeURIComponent(player.id)}`;
-  if (player.username && !requestedUsername) history.replaceState(null,"",canonical);
-
-  root.innerHTML=`
-  <section class="profile-hero profile-hero-social"><div class="avatar avatar-large">${avatarHTML(name, player.avatar_url, `Foto de ${name}`)}</div><div class="profile-hero-main"><span class="eyebrow">Perfil de jogador</span><h1 class="profile-name-with-mvp">${escapeHTML(name)} ${mvp?`<span class="mvp-name-icon mvp-name-icon-large" title="MVP">${mvp.badges.icon?`<img src="${escapeHTML(mvp.badges.icon)}" alt="MVP">`:"◆"}</span>`:""}</h1>${player.username?`<a class="profile-username" href="${canonical}">@${escapeHTML(player.username)}</a>`:""}<p>${escapeHTML(player.bio||"Nenhuma biografia registrada.")}</p><div class="player-status-tags"><span class="status-tag">${participationLabel(player.participation_type)}</span>${player.role==="admin"?'<span class="status-tag admin-tag">Admin</span>':""}</div><div class="meta"><span>${escapeHTML(player.country||"—")}</span><span>Desde ${formatDate(player.created_at)}</span><span>${totalExp} EXP</span><span>${items.length} Brasões</span><span>${characters.length} Personagens</span></div></div></section>
-
-  <section class="section"><div class="section-heading"><span class="eyebrow">Arquivo pessoal</span><h2>Personagens</h2></div><div class="profile-character-grid">${characters.map(characterCard).join("") || '<p class="profile-feed-empty">Nenhum personagem registrado.</p>'}</div></section>
-
-  <section class="section"><div class="section-heading"><span class="eyebrow">Insígnias</span><h2>Brasões conquistados</h2></div><div class="badge-grid">${items.map(item=>{const b=item.badges,r=rarityInfo(item.rarity);return `<article class="badge-card badge-card-tier">${badgeFrame(b,item)}<div><h3>${escapeHTML(b?.name||"Insígnia")}</h3><p>${escapeHTML(b?.description||"")}</p><div class="badge-meta">${b?.is_mvp?'<span class="status-tag mvp-tag">MVP</span>':`<span class="status-tag">${escapeHTML(r.label)}</span><strong>${badgeExp(b,item)} EXP</strong>`}</div></div></article>`}).join("")||'<p>Nenhuma insígnia conquistada.</p>'}</div></section>
-
-  <section class="section profile-social-section"><div class="section-heading"><span class="eyebrow">Crônicas do perfil</span><h2>Publicações & Mural</h2></div><div class="profile-feed-tabs"><button class="profile-feed-tab active" data-feed-tab="personal" type="button">Publicações <span>${posts.filter(p=>p.post_type==='personal').length}</span></button><button class="profile-feed-tab" data-feed-tab="wall" type="button">Mural <span>${posts.filter(p=>p.post_type==='wall').length}</span></button></div><div id="profile-feed-panel"></div></section>`;
-
-  document.querySelectorAll("[data-feed-tab]").forEach(btn=>btn.addEventListener("click",()=>{activeTab=btn.dataset.feedTab;document.querySelectorAll("[data-feed-tab]").forEach(x=>x.classList.toggle("active",x===btn));renderFeed();}));
-  renderFeed();
-}
+const root=document.querySelector("#player-profile"),requestedId=getQueryParam("id"),requestedUsername=(getQueryParam("u")||"").replace(/^@/,"").toLowerCase();
+let viewer=null,player=null,isAdmin=false,characters=[],posts=[],activeTab="personal",validUsernames=new Set();
+const participationLabel=v=>({interpreter:"Intérprete",narrator:"Narrador",both:"Intérprete & Narrador"}[v]||"Intérprete");
+function safeExternalUrl(v=""){try{const u=new URL(v);return ["http:","https:"].includes(u.protocol)?u.href:""}catch{return""}}
+function linkifyMentions(text=""){const e=escapeHTML(text);return e.replace(/(^|[^\w])@([a-z0-9._-]{3,30})/gi,(f,b,u)=>validUsernames.has(u.toLowerCase())?`${b}<a class="mention-link mention-valid" href="jogador.html?u=${encodeURIComponent(u.toLowerCase())}">@${escapeHTML(u)}</a>`:`${b}<span class="mention-invalid" title="Username não encontrado">@${escapeHTML(u)}</span>`).replace(/\n/g,"<br>")}
+async function resolvePlayer(){let q=supabase.from("profiles").select("*");if(requestedUsername)q=q.ilike("username",requestedUsername);else if(requestedId)q=q.eq("id",requestedId);else return null;const{data,error}=await q.single();return error?null:data}
+async function loadViewer(){const{data:{user}}=await supabase.auth.getUser();viewer=user||null;if(!viewer)return;const{data}=await supabase.from("profiles").select("role,active").eq("id",viewer.id).maybeSingle();isAdmin=data?.role==="admin"}
+async function loadMentionUsers(){const text=posts.map(p=>[p.title,p.content].filter(Boolean).join("\n")).join("\n"),names=[...new Set([...text.matchAll(/@([a-z0-9._-]{3,30})/gi)].map(x=>x[1].toLowerCase()))];if(!names.length){validUsernames=new Set();return}const{data}=await supabase.from("profiles").select("username").in("username",names).eq("active",true);validUsernames=new Set((data||[]).map(x=>x.username.toLowerCase()))}
+async function loadRelated(){const[b,c,p]=await Promise.all([supabase.from("player_badges").select(`awarded_at,rarity,progress_value,badges(id,name,description,icon,rarity,category,is_mvp,exp_multiplier,progression_mode,progression_steps)`).eq("player_id",player.id).order("awarded_at",{ascending:false}),supabase.from("characters").select("id,name,nickname,portrait_url,ficha_url,level,status").eq("owner_id",player.id).eq("status","approved").order("name"),supabase.from("profile_posts").select(`id,author_id,profile_id,post_type,title,is_structured,content,created_at,updated_at,author:profiles!profile_posts_author_id_fkey(id,display_name,username,avatar_url),images:profile_post_images(id,storage_path,public_url,position),sections:profile_post_sections(id,parent_id,title,content,position)`).eq("profile_id",player.id).order("created_at",{ascending:false})]);characters=c.data||[];posts=p.data||[];await loadMentionUsers();return b.data||[]}
+function characterCard(c){const n=c.name||"Personagem",link=safeExternalUrl(c.ficha_url);return `<article class="profile-character-card"><div class="avatar profile-character-avatar">${avatarHTML(n,c.portrait_url,`Retrato de ${n}`)}</div><div class="profile-character-info"><h3>${escapeHTML(n)}</h3>${c.nickname?`<p>${escapeHTML(c.nickname)}</p>`:""}<span>Nível ${Number(c.level||1)}</span></div>${link?`<a class="button button-small" href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer">Abrir ficha ↗</a>`:`<span class="profile-no-sheet">Sem ficha vinculada</span>`}</article>`}
+function postCard(post){const a=post.author||{},n=a.display_name||a.username||"Jogador",canDelete=!!viewer&&(viewer.id===post.author_id||viewer.id===player.id||isAdmin),imgs=[...(post.images||[])].sort((x,y)=>(x.position||0)-(y.position||0)),sectionCount=(post.sections||[]).filter(s=>!s.parent_id).length,subCount=(post.sections||[]).filter(s=>s.parent_id).length;return `<article class="profile-post ${post.is_structured?'structured-post-card':''}" data-post-id="${post.id}"><header class="profile-post-head"><a class="profile-post-author" href="jogador.html?u=${encodeURIComponent(a.username||"")}"><span class="avatar profile-post-avatar">${avatarHTML(n,a.avatar_url,`Foto de ${n}`)}</span><span><strong>${escapeHTML(n)}</strong>${a.username?`<small>@${escapeHTML(a.username)}</small>`:""}</span></a><div class="profile-post-actions"><time>${formatDate(post.created_at)}</time>${canDelete?`<button class="post-delete" type="button" data-delete-post="${post.id}">Apagar</button>`:""}</div></header>${post.title?`<h3 class="profile-post-title">${escapeHTML(post.title)}</h3>`:""}${post.content?`<div class="profile-post-content ${post.is_structured?'post-preview-text':''}">${linkifyMentions(post.content)}</div>`:""}${post.is_structured?`<div class="structured-post-meta">${sectionCount} tópico${sectionCount===1?'':'s'} · ${subCount} subtópico${subCount===1?'':'s'}</div><a class="button button-small structured-open" href="publicacao.html?id=${encodeURIComponent(post.id)}">Abrir publicação →</a>`:""}${imgs.length?`<div class="profile-post-gallery organic-gallery">${imgs.map(img=>`<a href="${escapeHTML(img.public_url)}" target="_blank" rel="noopener"><img src="${escapeHTML(img.public_url)}" alt="Imagem da publicação" loading="lazy"></a>`).join("")}</div>`:""}</article>`}
+function simpleComposer(type){return `<div class="mention-field-wrap"><textarea name="content" rows="5" maxlength="${type==='personal'?100000:5000}" data-mention-input placeholder="${type==='personal'?"Registre uma descrição, skill, item, cena, conquista ou qualquer parte da sua jornada...":`Escreva algo no mural de ${escapeHTML(player.display_name||player.username||"jogador")}...`}"></textarea><div class="mention-suggestions" hidden></div><div class="mention-validation" aria-live="polite"></div></div>`}
+function structuredEditor(){return `<div class="structured-editor"><div class="field"><label>Título da publicação</label><input name="title" maxlength="160" placeholder="Ex.: Build — Aurelion Ascanius Löwenhertz"></div><div class="field"><label>Introdução</label><div class="mention-field-wrap"><textarea name="content" rows="4" maxlength="100000" data-mention-input placeholder="Apresente esta publicação..."></textarea><div class="mention-suggestions" hidden></div><div class="mention-validation"></div></div></div><div class="structured-sections" data-sections></div><button class="button button-secondary" type="button" data-add-section>+ Adicionar tópico</button></div>`}
+function composer(type){if(!viewer)return `<div class="profile-feed-note">Entre na sua conta para publicar.</div>`;if(type==="personal"&&viewer.id!==player.id)return"";return `<form class="profile-composer" data-composer="${type}">${type==='personal'?`<div class="composer-mode"><button type="button" class="composer-mode-btn active" data-mode="simple">Publicação simples</button><button type="button" class="composer-mode-btn" data-mode="structured">Publicação estruturada</button></div><input type="hidden" name="is_structured" value="false"><div data-simple-editor>${simpleComposer(type)}</div><div data-structured-editor hidden>${structuredEditor()}</div>`:simpleComposer(type)}<div class="profile-composer-row"><label class="image-picker">Adicionar fotos <input name="images" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple></label><span>Até 4 imagens · 5 MB cada · proporção original preservada</span><button class="button" type="submit">Publicar</button></div><div class="selected-image-preview" data-image-preview></div><p class="status" data-post-status></p></form>`}
+function renderFeed(){const panel=document.querySelector("#profile-feed-panel");if(!panel)return;const filtered=posts.filter(p=>p.post_type===activeTab);panel.innerHTML=`${composer(activeTab)}<div class="profile-post-list">${filtered.map(postCard).join("")||`<div class="profile-feed-empty">${activeTab==="personal"?"Nenhuma publicação ainda.":"O mural ainda está vazio."}</div>`}</div>`;bindFeedEvents()}
+function addSection(container){const el=document.createElement('div');el.className='structured-section-editor';el.innerHTML=`<div class="structured-editor-head"><strong>Tópico</strong><button type="button" class="post-delete" data-remove-section>Remover</button></div><input data-section-title maxlength="160" placeholder="Título do tópico"><div class="mention-field-wrap"><textarea data-section-content rows="5" maxlength="100000" data-mention-input placeholder="Conteúdo do tópico..."></textarea><div class="mention-suggestions" hidden></div><div class="mention-validation"></div></div><div data-subsections></div><button type="button" class="subtopic-add" data-add-subsection>+ Adicionar subtópico</button>`;container.appendChild(el);el.querySelector('[data-remove-section]').onclick=()=>el.remove();el.querySelector('[data-add-subsection]').onclick=()=>addSubsection(el.querySelector('[data-subsections]'));bindMentionFields(el)}
+function addSubsection(container){const el=document.createElement('div');el.className='structured-subsection-editor';el.innerHTML=`<div class="structured-editor-head"><strong>Subtópico</strong><button type="button" class="post-delete" data-remove-sub>Remover</button></div><input data-sub-title maxlength="160" placeholder="Nome do subtópico"><div class="mention-field-wrap"><textarea data-sub-content rows="4" maxlength="100000" data-mention-input placeholder="Descrição do subtópico..."></textarea><div class="mention-suggestions" hidden></div><div class="mention-validation"></div></div>`;container.appendChild(el);el.querySelector('[data-remove-sub]').onclick=()=>el.remove();bindMentionFields(el)}
+function bindFeedEvents(){document.querySelectorAll("[data-composer]").forEach(form=>{form.addEventListener("submit",submitPost);form.querySelector('[name=images]')?.addEventListener('change',previewImages);form.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{form.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));const structured=b.dataset.mode==='structured';form.is_structured.value=String(structured);form.querySelector('[data-simple-editor]').hidden=structured;form.querySelector('[data-structured-editor]').hidden=!structured;if(structured&&!form.querySelector('[data-section-title]'))addSection(form.querySelector('[data-sections]'))}));form.querySelector('[data-add-section]')?.addEventListener('click',()=>addSection(form.querySelector('[data-sections]')));bindMentionFields(form)});document.querySelectorAll("[data-delete-post]").forEach(b=>b.addEventListener("click",deletePost))}
+function previewImages(e){const box=e.currentTarget.form.querySelector('[data-image-preview]');box.innerHTML='';[...e.currentTarget.files].slice(0,4).forEach(f=>{const img=document.createElement('img');img.src=URL.createObjectURL(f);img.onload=()=>URL.revokeObjectURL(img.src);box.appendChild(img)})}
+function mentionContext(input){const pos=input.selectionStart??input.value.length,before=input.value.slice(0,pos),m=before.match(/(?:^|\s)@([a-z0-9._-]{0,30})$/i);return m?m[1].toLowerCase():null}
+async function showMentionSuggestions(input){const wrap=input.closest('.mention-field-wrap'),box=wrap?.querySelector('.mention-suggestions');if(!box)return;const q=mentionContext(input);if(q===null){box.hidden=true;return}let query=supabase.from('profiles').select('username,display_name,avatar_url').eq('active',true).not('username','is',null).order('username').limit(6);if(q)query=query.ilike('username',`${q}%`);const{data}=await query;box.innerHTML=(data||[]).map(p=>`<button type="button" data-mention-choice="${escapeHTML(p.username)}"><strong>@${escapeHTML(p.username)}</strong><span>${escapeHTML(p.display_name||'')}</span></button>`).join('');box.hidden=!data?.length;box.querySelectorAll('[data-mention-choice]').forEach(b=>b.onclick=()=>{const pos=input.selectionStart,before=input.value.slice(0,pos),after=input.value.slice(pos),start=before.lastIndexOf('@');input.value=before.slice(0,start)+`@${b.dataset.mentionChoice} `+after;box.hidden=true;input.focus();validateMentions(input)})}
+async function validateMentions(input){const box=input.closest('.mention-field-wrap')?.querySelector('.mention-validation');if(!box)return;const names=[...new Set([...input.value.matchAll(/@([a-z0-9._-]{3,30})/gi)].map(x=>x[1].toLowerCase()))];if(!names.length){box.innerHTML='';return}const{data}=await supabase.from('profiles').select('username').in('username',names).eq('active',true),valid=new Set((data||[]).map(x=>x.username.toLowerCase()));box.innerHTML=names.map(n=>valid.has(n)?`<span class="mention-token valid">@${escapeHTML(n)} ✓</span>`:`<span class="mention-token invalid">@${escapeHTML(n)} ?</span>`).join('')}
+function bindMentionFields(scope=document){scope.querySelectorAll('[data-mention-input]').forEach(input=>{let t;input.addEventListener('input',()=>{clearTimeout(t);t=setTimeout(()=>{showMentionSuggestions(input);validateMentions(input)},180)});input.addEventListener('keydown',e=>{if(e.key==='Escape'){const b=input.closest('.mention-field-wrap')?.querySelector('.mention-suggestions');if(b)b.hidden=true}})})}
+async function submitPost(e){e.preventDefault();const form=e.currentTarget,status=form.querySelector('[data-post-status]'),type=form.dataset.composer,structured=type==='personal'&&form.is_structured?.value==='true',content=(structured?form.querySelector('[data-structured-editor] [name=content]'):(form.querySelector('[data-simple-editor] [name=content]') || form.querySelector('textarea[name=content]')))?.value.trim()||'',title=structured?(form.title?.value||'').trim():null,files=[...form.images.files].slice(0,4);const sectionEls=structured?[...form.querySelectorAll('.structured-section-editor')]:[];if(structured&&(!title||!sectionEls.length))return setStatus(status,'Informe um título e pelo menos um tópico.','error');if(!structured&&!content&&!files.length)return setStatus(status,'Escreva algo ou adicione uma imagem.','error');if([...form.images.files].length>4)return setStatus(status,'Você pode adicionar no máximo 4 imagens.','error');if(files.some(f=>f.size>5*1024*1024))return setStatus(status,'Cada imagem pode ter no máximo 5 MB.','error');setStatus(status,'Publicando...');const{data:post,error}=await supabase.from('profile_posts').insert({author_id:viewer.id,profile_id:player.id,post_type:type,title:title||null,is_structured:structured,content:content||null}).select('id').single();if(error)return setStatus(status,error.message,'error');if(structured){let pos=0;for(const secEl of sectionEls){const st=secEl.querySelector('[data-section-title]').value.trim(),sc=secEl.querySelector('[data-section-content]').value.trim();if(!st)continue;const{data:sec,error:se}=await supabase.from('profile_post_sections').insert({post_id:post.id,title:st,content:sc||null,position:pos++}).select('id').single();if(se)continue;let subpos=0;for(const sub of secEl.querySelectorAll('.structured-subsection-editor')){const t=sub.querySelector('[data-sub-title]').value.trim(),c=sub.querySelector('[data-sub-content]').value.trim();if(t)await supabase.from('profile_post_sections').insert({post_id:post.id,parent_id:sec.id,title:t,content:c||null,position:subpos++})}}}const rows=[];for(let i=0;i<files.length;i++){const f=files[i],ext=(f.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg',path=`${viewer.id}/${post.id}/${crypto.randomUUID()}.${ext}`,up=await supabase.storage.from('profile-posts').upload(path,f,{upsert:false,contentType:f.type});if(up.error)continue;const{data:u}=supabase.storage.from('profile-posts').getPublicUrl(path);rows.push({post_id:post.id,storage_path:path,public_url:u.publicUrl,position:i})}if(rows.length)await supabase.from('profile_post_images').insert(rows);form.reset();await refreshPosts()}
+async function deletePost(e){const id=e.currentTarget.dataset.deletePost;if(!confirm('Apagar esta publicação?'))return;const post=posts.find(p=>String(p.id)===String(id)),{error}=await supabase.from('profile_posts').delete().eq('id',id);if(error)return alert(error.message);if(post?.author_id===viewer?.id&&post.images?.length)await supabase.storage.from('profile-posts').remove(post.images.map(x=>x.storage_path));await refreshPosts()}
+async function refreshPosts(){const{data}=await supabase.from('profile_posts').select(`id,author_id,profile_id,post_type,title,is_structured,content,created_at,updated_at,author:profiles!profile_posts_author_id_fkey(id,display_name,username,avatar_url),images:profile_post_images(id,storage_path,public_url,position),sections:profile_post_sections(id,parent_id,title,content,position)`).eq('profile_id',player.id).order('created_at',{ascending:false});posts=data||[];await loadMentionUsers();renderFeed()}
+async function loadPlayer(){await loadViewer();player=await resolvePlayer();if(!player||player.active===false){root.innerHTML='<p class="status error">Jogador não encontrado.</p>';return}const items=await loadRelated(),name=player.display_name||player.username||'Jogador',mvp=items.find(x=>x.badges?.is_mvp),totalExp=items.reduce((s,x)=>s+badgeExp(x.badges,x),0),canonical=player.username?`jogador.html?u=${encodeURIComponent(player.username)}`:`jogador.html?id=${encodeURIComponent(player.id)}`;if(player.username&&!requestedUsername)history.replaceState(null,'',canonical);root.innerHTML=`<section class="profile-hero profile-hero-social"><div class="avatar avatar-large">${avatarHTML(name,player.avatar_url,`Foto de ${name}`)}</div><div class="profile-hero-main"><span class="eyebrow">Perfil de jogador</span><h1 class="profile-name-with-mvp">${escapeHTML(name)} ${mvp?`<span class="mvp-name-icon mvp-name-icon-large" title="MVP">${mvp.badges.icon?`<img src="${escapeHTML(mvp.badges.icon)}" alt="MVP">`:'◆'}</span>`:''}</h1>${player.username?`<a class="profile-username" href="${canonical}">@${escapeHTML(player.username)}</a>`:''}<p>${escapeHTML(player.bio||'Nenhuma biografia registrada.')}</p><div class="player-status-tags"><span class="status-tag">${participationLabel(player.participation_type)}</span>${player.role==='admin'?'<span class="status-tag admin-tag">Admin</span>':''}</div><div class="meta"><span>${escapeHTML(player.country||'—')}</span><span>Desde ${formatDate(player.created_at)}</span><span>${totalExp} EXP</span><span>${items.length} Brasões</span><span>${characters.length} Personagens</span></div></div></section><section class="section"><div class="section-heading"><span class="eyebrow">Arquivo pessoal</span><h2>Personagens</h2></div><div class="profile-character-grid">${characters.map(characterCard).join('')||'<p class="profile-feed-empty">Nenhum personagem registrado.</p>'}</div></section><section class="section"><div class="section-heading"><span class="eyebrow">Insígnias</span><h2>Brasões conquistados</h2></div><div class="badge-grid">${items.map(item=>{const b=item.badges,r=rarityInfo(item.rarity);return `<article class="badge-card badge-card-tier">${badgeFrame(b,item)}<div><h3>${escapeHTML(b?.name||'Insígnia')}</h3><p>${escapeHTML(b?.description||'')}</p><div class="badge-meta">${b?.is_mvp?'<span class="status-tag mvp-tag">MVP</span>':`<span class="status-tag">${escapeHTML(r.label)}</span><strong>${badgeExp(b,item)} EXP</strong>`}</div></div></article>`}).join('')||'<p>Nenhuma insígnia conquistada.</p>'}</div></section><section class="section profile-social-section"><div class="section-heading"><span class="eyebrow">Crônicas do perfil</span><h2>Publicações & Mural</h2></div><div class="profile-feed-tabs"><button class="profile-feed-tab active" data-feed-tab="personal" type="button">Publicações <span>${posts.filter(p=>p.post_type==='personal').length}</span></button><button class="profile-feed-tab" data-feed-tab="wall" type="button">Mural <span>${posts.filter(p=>p.post_type==='wall').length}</span></button></div><div id="profile-feed-panel"></div></section>`;document.querySelectorAll('[data-feed-tab]').forEach(btn=>btn.addEventListener('click',()=>{activeTab=btn.dataset.feedTab;document.querySelectorAll('[data-feed-tab]').forEach(x=>x.classList.toggle('active',x===btn));renderFeed()}));renderFeed()}
 loadPlayer();
