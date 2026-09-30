@@ -44,7 +44,7 @@ function renderCharacters() {
     const ownerName = owner?.display_name || owner?.username || "Jogador não identificado";
     const avatar = avatarHTML(c.name, c.portrait_url, `Retrato de ${c.name}`);
     const adminActions = isAdmin ? `<div class="character-card-actions"><button class="button button-small" type="button" data-edit="${esc(c.id)}">Editar</button><button class="button button-small" type="button" data-delete="${esc(c.id)}">Excluir</button></div>` : "";
-    return `<article class="player-card character-mini-card"><div class="avatar">${avatar}</div><div class="character-mini-info"><h3>${esc(c.name)}</h3><p>Player: ${esc(ownerName)}</p>${party ? `<p>Party: ${esc(party.name)}</p>` : ""}${Number(c.points || 0) ? `<p>${Number(c.points)} pts</p>` : ""}${adminActions}</div></article>`;
+    return `<article class="player-card character-mini-card"><a class="character-card-main" href="personagem.html?id=${encodeURIComponent(c.id)}"><div class="avatar">${avatar}</div><div class="character-mini-info"><h3>${esc(c.name)}</h3><p>Player: ${esc(ownerName)}</p>${party ? `<p>Party: ${esc(party.name)}</p>` : ""}${Number(c.points || 0) ? `<p>${Number(c.points)} pts</p>` : ""}</div></a>${adminActions}</article>`;
   }).join("");
 }
 
