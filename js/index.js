@@ -1,6 +1,6 @@
 
 import { supabase } from "./supabase.js";
-import { escapeHTML } from "./utils.js";
+import { escapeHTML, avatarHTML } from "./utils.js";
 
 const featured = document.querySelector("#featured-players");
 
@@ -9,7 +9,9 @@ async function loadFeatured() {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, display_name, username, country")
+    .select("id, display_name, username, avatar_url, country, active")
+    .eq("active", true)
+    .order("display_name", { ascending: true })
     .limit(6);
 
   if (error) {
@@ -21,7 +23,11 @@ async function loadFeatured() {
     <a class="player-card compact"
        href="jogador.html?id=${encodeURIComponent(player.id)}">
       <div class="avatar">
-        <span>✦</span>
+        ${avatarHTML(
+          player.display_name || player.username || "Jogador",
+          player.avatar_url,
+          `Foto de ${player.display_name || player.username || "Jogador"}`
+        )}
       </div>
       <div>
         <h3>${escapeHTML(player.display_name || player.username || "Jogador")}</h3>
