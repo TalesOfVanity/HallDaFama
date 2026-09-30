@@ -1,5 +1,5 @@
 import { supabase } from "./supabase.js";
-import { escapeHTML, initials } from "./utils.js";
+import { escapeHTML, avatarHTML } from "./utils.js";
 
 const grid = document.querySelector("#players-grid");
 const participationLabel = v => ({interpreter:"Intérprete", narrator:"Narrador", both:"Intérprete & Narrador"}[v] || "Intérprete");
@@ -47,9 +47,7 @@ function renderPlayers() {
     return `
       <a class="player-card" href="jogador.html?id=${encodeURIComponent(player.id)}">
         <div class="avatar">
-          ${player.avatar_url
-            ? `<img src="${escapeHTML(player.avatar_url)}" alt="">`
-            : `<span>${escapeHTML(initials(name))}</span>`}
+          ${avatarHTML(name, player.avatar_url, `Foto de ${name}`)}
         </div>
         <div>
           <h3>${escapeHTML(name)}</h3>

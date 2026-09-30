@@ -220,6 +220,7 @@ h2 {
 }
 
 .avatar {
+  position: relative;
   width: 54px;
   height: 54px;
   flex: 0 0 54px;
@@ -239,7 +240,15 @@ h2 {
   font-size: 40px;
 }
 
+.avatar .avatar-fallback {
+  position: relative;
+  z-index: 0;
+}
+
 .avatar img {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   width: 100%;
   height: 100%;
   object-fit: cover;

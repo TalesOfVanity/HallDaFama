@@ -45,7 +45,8 @@ Deno.serve(async (req) => {
     const email = String(body.email || "").trim();
     const password = String(body.password || "");
     const browserId = String(body.browser_id || "").trim();
-    if (!email || password.length < 6 || !browserId) return json({ error: "Dados de cadastro inválidos." }, 400);
+    const username = String(body.username || "").trim().toLowerCase();
+    if (!email || password.length < 6 || !browserId || !/^[a-z0-9._-]{3,30}$/.test(username)) return json({ error: "Dados de cadastro inválidos." }, 400);
 
     const url = Deno.env.get("SUPABASE_URL")!;
     const anon = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -59,6 +60,7 @@ Deno.serve(async (req) => {
       password,
       options: { data: {
         display_name: String(body.display_name || "").trim(),
+        username,
         country: String(body.country || "").trim(),
         participation_type: String(body.participation_type || "interpreter")
       }}

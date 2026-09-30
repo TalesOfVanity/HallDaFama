@@ -1,5 +1,5 @@
 import { supabase } from "./supabase.js";
-import { escapeHTML, initials, setStatus } from "./utils.js";
+import { escapeHTML, avatarHTML, setStatus } from "./utils.js";
 
 const form = document.querySelector("#profile-form");
 const status = document.querySelector("#profile-status");
@@ -17,9 +17,7 @@ function renderPreview(profile) {
   preview.innerHTML = `
     <div class="player-card profile-preview-card">
       <div class="avatar profile-preview-avatar">
-        ${profile.avatar_url
-          ? `<img src="${escapeHTML(profile.avatar_url)}" alt="Foto de ${escapeHTML(name)}">`
-          : `<span>${escapeHTML(initials(name))}</span>`}
+        ${avatarHTML(name, profile.avatar_url, `Foto de ${name}`)}
       </div>
       <div>
         <span class="eyebrow">Prévia pública</span>
@@ -41,7 +39,7 @@ async function init() {
   userId = session.user.id;
   const { data: profile, error } = await supabase
     .from("profiles")
-    .select("id, display_name, avatar_url, country, bio, participation_type, role")
+    .select("id, display_name, username, avatar_url, country, bio, participation_type, role")
     .eq("id", userId)
     .single();
 
@@ -51,6 +49,7 @@ async function init() {
   }
 
   form.elements.display_name.value = profile.display_name || "";
+  form.elements.username.value = profile.username || "";
   form.elements.avatar_url.value = profile.avatar_url || "";
   form.elements.country.value = profile.country || "";
   form.elements.bio.value = profile.bio || "";
@@ -63,7 +62,11 @@ form?.addEventListener("submit", async event => {
   event.preventDefault();
   if (!userId) return;
 
+  const username = form.elements.username.value.trim().toLowerCase();
+  if (username && !/^[a-z0-9._-]{3,30}$/.test(username)) { setStatus(status, "O @username deve ter 3 a 30 caracteres e usar apenas letras, números, ponto, hífen ou _.", "error"); return; }
+
   const updates = {
+    username: username || null,
     display_name: form.elements.display_name.value.trim(),
     avatar_url: form.elements.avatar_url.value.trim() || null,
     country: form.elements.country.value.trim() || null,
@@ -78,7 +81,7 @@ form?.addEventListener("submit", async event => {
     .from("profiles")
     .update(updates)
     .eq("id", userId)
-    .select("id, display_name, avatar_url, country, bio, participation_type, role")
+    .select("id, display_name, username, avatar_url, country, bio, participation_type, role")
     .single();
 
   if (error) { setStatus(status, error.message, "error"); return; }

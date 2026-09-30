@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro</title>
-  <link rel="stylesheet" href="css/global.css?v=6">
+  <link rel="stylesheet" href="css/global.css?v=7">
 </head>
 <body>
 <header class="site-header">
@@ -21,6 +21,12 @@
     <div class="field">
       <label for="display_name">Nome no Facebook</label>
       <input id="display_name" name="display_name" required>
+    </div>
+
+    <div class="field">
+      <label for="username">@Username</label>
+      <input id="username" name="username" minlength="3" maxlength="30" pattern="[a-z0-9._-]{3,30}" placeholder="ex.: aurelion" autocomplete="username" required>
+      <small>Único no site. Use letras minúsculas, números, ponto, hífen ou _.</small>
     </div>
 
     <div class="field">
@@ -51,6 +57,6 @@
   </form>
 </main>
 
-<script type="module" src="js/cadastro.js?v=2"></script>
+<script type="module" src="js/cadastro.js?v=3"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 import { supabase } from "./supabase.js";
 import { getSession, getProfile } from "./auth.js";
-import { escapeHTML, initials, setStatus } from "./utils.js";
+import { escapeHTML, avatarHTML, setStatus } from "./utils.js";
 
 const list = document.querySelector("#manage-players-list");
 const status = document.querySelector("#manage-players-status");
@@ -69,10 +69,10 @@ async function load() {
     const isSelf = p.id === currentSession.user.id;
     const mod = p.moderation_status || "clear";
     return `<article class="player-card manage-player-card">
-      <div class="avatar">${p.avatar_url ? `<img src="${e(p.avatar_url)}" alt="">` : `<span>${e(initials(name))}</span>`}</div>
+      <div class="avatar">${avatarHTML(name, p.avatar_url, `Foto de ${name}`)}</div>
       <div class="manage-player-info">
         <h3>${e(name)}</h3>
-        <p>${e(p.username ? "@" + p.username : "Sem username")} · ${count} personagem(ns)</p>
+        ${p.username ? `<p>@${e(p.username)} · ${count} personagem(ns)</p>` : `<p>${count} personagem(ns)</p>`}
         <p>${e(p.country || "Localidade não informada")} · ${e(p.role || "player")}</p>
         <p><strong>${p.active === false ? "Removido do Hall da Fama" : "Ativo"}</strong></p>
         <div class="moderation-row"><label>Moderação <select data-moderation="${e(p.id)}" ${isSelf ? "disabled" : ""}><option value="clear" ${mod === "clear" ? "selected" : ""}>Sem marcação</option><option value="watch" ${mod === "watch" ? "selected" : ""}>Observar</option><option value="banned" ${mod === "banned" ? "selected" : ""}>Banido</option></select></label></div>

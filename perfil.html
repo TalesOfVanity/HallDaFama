@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meu Perfil — Tales of Vanity</title>
-  <link rel="stylesheet" href="css/global.css?v=6">
+  <link rel="stylesheet" href="css/global.css?v=7">
 </head>
 <body>
 <header class="site-header">
@@ -34,6 +34,12 @@
       <div class="field">
         <label for="profile-display-name">Nome de Player</label>
         <input id="profile-display-name" name="display_name" maxlength="80" required>
+      </div>
+
+      <div class="field">
+        <label for="profile-username">@Username</label>
+        <input id="profile-username" name="username" maxlength="30" placeholder="ex.: aurelion" autocomplete="username">
+        <small>3 a 30 caracteres. Use letras minúsculas, números, ponto, hífen ou _.</small>
       </div>
 
       <div class="field">
@@ -70,6 +76,6 @@
 
 <footer class="site-footer"><div class="container">Tales of Vanity · Hall da Fama</div></footer>
 <script type="module" src="js/auth.js?v=8"></script>
-<script type="module" src="js/perfil.js?v=5"></script>
+<script type="module" src="js/perfil.js?v=6"></script>
 </body>
 </html>

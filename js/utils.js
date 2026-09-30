@@ -33,3 +33,16 @@ export function setStatus(element, message, type = "") {
   element.textContent = message;
   element.className = `status ${type}`.trim();
 }
+
+
+export function avatarHTML(name = "Jogador", avatarUrl = "", alt = "") {
+  const fallback = `<span class="avatar-fallback">${escapeHTML(initials(name))}</span>`;
+  if (!avatarUrl) return fallback;
+  return `${fallback}<img src="${escapeHTML(avatarUrl)}" alt="${escapeHTML(alt)}" loading="eager" decoding="async">`;
+}
+
+// Mantém as iniciais visíveis se uma imagem remota falhar ou demorar a carregar.
+document.addEventListener("error", event => {
+  const img = event.target;
+  if (img instanceof HTMLImageElement && img.closest(".avatar")) img.remove();
+}, true);

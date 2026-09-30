@@ -1,5 +1,5 @@
 import { supabase } from "./supabase.js";
-import { escapeHTML, setStatus, initials } from "./utils.js";
+import { escapeHTML, setStatus, initials, avatarHTML } from "./utils.js";
 
 const ADMIN_UID = "632c1241-d71f-42b0-85a0-cbf739e2625b";
 const adminArea = document.querySelector("#character-admin");
@@ -42,7 +42,7 @@ function renderCharacters() {
     const owner = profiles.find(p => p.id === c.owner_id);
     const party = parties.find(p => p.id === c.clan_id);
     const ownerName = owner?.display_name || owner?.username || "Jogador não identificado";
-    const avatar = c.portrait_url ? `<img src="${esc(c.portrait_url)}" alt="">` : `<span>${esc(initials(c.name))}</span>`;
+    const avatar = avatarHTML(c.name, c.portrait_url, `Retrato de ${c.name}`);
     const adminActions = isAdmin ? `<div class="character-card-actions"><button class="button button-small" type="button" data-edit="${esc(c.id)}">Editar</button><button class="button button-small" type="button" data-delete="${esc(c.id)}">Excluir</button></div>` : "";
     return `<article class="player-card character-mini-card"><div class="avatar">${avatar}</div><div class="character-mini-info"><h3>${esc(c.name)}</h3><p>Player: ${esc(ownerName)}</p>${party ? `<p>Party: ${esc(party.name)}</p>` : ""}${Number(c.points || 0) ? `<p>${Number(c.points)} pts</p>` : ""}${adminActions}</div></article>`;
   }).join("");

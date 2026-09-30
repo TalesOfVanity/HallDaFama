@@ -21,8 +21,14 @@ form?.addEventListener("submit", async (event) => {
   const email = form.email.value.trim();
   const password = form.password.value;
   const displayName = form.display_name.value.trim();
+  const username = form.username.value.trim().toLowerCase();
   const country = form.country.value.trim();
   const participationType = form.participation_type?.value || "interpreter";
+
+  if (!/^[a-z0-9._-]{3,30}$/.test(username)) {
+    setStatus(status, "O @username deve ter 3 a 30 caracteres e usar apenas letras, números, ponto, hífen ou _.", "error");
+    return;
+  }
 
   if (password.length < 6) {
     setStatus(status, "A senha precisa ter pelo menos 6 caracteres.", "error");
@@ -43,6 +49,7 @@ form?.addEventListener("submit", async (event) => {
         email,
         password,
         display_name: displayName,
+        username,
         country,
         participation_type: participationType,
         browser_id: getBrowserId()
