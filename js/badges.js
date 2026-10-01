@@ -11,7 +11,7 @@ const rarityMap = new Map(RARITIES.map(([key,label,exp]) => [key,{key,label,exp}
 const normalize = value => String(value || "leather").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 const aliases = { couro:"leather", cobre:"copper", ferro:"iron", bronze:"bronze", prata:"silver", ouro:"gold", platina:"platinum", esmeralda:"emerald", diamante:"diamond", obsidiana:"obsidian" };
 export function rarityInfo(value){ const n=normalize(value); return rarityMap.get(aliases[n] || n) || rarityMap.get("leather"); }
-export function badgeExp(badge, award){ if (badge?.is_mvp) return 0; const base=rarityInfo(award?.rarity || badge?.rarity).exp; return Math.round(base * Number(badge?.exp_multiplier || 1)); }
+export function badgeExp(badge, award){ if (badge?.is_mvp) return 0; const base=rarityInfo(award?.rarity || badge?.rarity).exp; return Math.round(base * Number(badge?.exp_multiplier ?? 1)); }
 export function badgeFrame(badge, award, size=""){
   const e=v=>escapeHTML(String(v??""));
   if (badge?.is_mvp) return `<div class="badge-frame badge-mvp ${size}">${badge.icon?`<img src="${e(badge.icon)}" alt="">`:"◆"}</div>`;

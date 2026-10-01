@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personagens — Tales of Vanity</title>
-  <link rel="stylesheet" href="css/global.css?v=22">
+  <link rel="stylesheet" href="css/global.css?v=23">
 </head>
 <body>
   <header class="site-header">
@@ -42,162 +42,45 @@
 
 
     <section id="character-player-create" hidden>
-      <form id="player-character-form" class="form-card character-request-form">
-        <span class="eyebrow">Novo personagem</span><h2>Criar personagem</h2>
-        <p class="form-help">Preencha os dados que deseja publicar. A solicitação será revisada pela administração antes de o personagem entrar no acervo oficial.</p>
-        <div class="field"><label>Nome do personagem</label><input name="name" required maxlength="120" placeholder="Nome pelo qual o personagem será identificado"></div>
-        <div class="field"><label>Alcunha ou título</label><input name="nickname" maxlength="160" placeholder="Ex.: O Cavaleiro Errante"><small>Opcional. Use para epítetos, títulos ou nomes pelos quais o personagem também é conhecido.</small></div>
-        <div class="field"><label>Party</label><select name="clan_id" id="player-character-party"><option value="">Sem Party</option></select></div>
-        <div class="field"><label>Retrato do personagem</label><input name="portrait_url" type="url" placeholder="https://site.com/retrato.png"><small>Cole o link direto de uma imagem pública.</small></div>
-        <div class="field"><label>Ficha externa</label><input name="ficha_url" type="url" placeholder="https://..."><small>Opcional. Pode ser o link da ficha no Facebook, Google Docs, Notion ou outro endereço público.</small></div>
-        <div class="field"><label>Descrição</label><textarea name="description" rows="6" placeholder="Apresente o personagem: conceito, personalidade, aparência, história ou outras informações relevantes."></textarea></div>
-        <div class="request-form-grid"><div class="field"><label>Nível</label><input name="level" type="number" min="1" value="1"><small>Nível atual do personagem.</small></div><div class="field"><label>Fama</label><input name="notoriety" placeholder="Ex.: Região"><small>Use a classificação de Fama adotada pelo RPG. Se ainda não houver uma, deixe em branco.</small></div><div class="field"><label>Reputação</label><input name="reputation" placeholder="Ex.: 250"><small>Informe o valor atual. Se ainda não estiver definido, deixe em branco.</small></div></div>
-        <div class="form-actions"><button class="button" type="submit">Enviar para aprovação</button><button class="button button-small" type="button" id="save-character-draft">Salvar rascunho</button></div><p class="status" id="player-character-status"></p>
+      <form id="player-character-form" class="form-card character-request-form character-form-horizontal">
+        <div class="character-form-heading"><div><span class="eyebrow">Novo personagem</span><h2>Criar personagem</h2></div><p class="form-help">Preencha os dados da ficha. A administração revisará a solicitação antes de o personagem entrar no acervo oficial.</p></div>
+        <div class="character-form-grid">
+          <div class="field span-2"><label>Nome do personagem</label><input name="name" required maxlength="120" placeholder="Nome pelo qual o personagem será identificado"></div>
+          <div class="field"><label>Alcunha ou título</label><input name="nickname" maxlength="160" placeholder="Ex.: O Cavaleiro Errante"></div>
+          <div class="field"><label>Player</label><div id="player-character-owner" class="locked-field">Sua conta</div><small>Vinculado automaticamente à conta que está cadastrando.</small></div>
+          <div class="field"><label>Party</label><select name="clan_id" id="player-character-party"><option value="">Sem Party</option></select></div>
+          <div class="field"><label>Nível</label><input name="level" type="number" min="1" value="1"></div>
+          <div class="field"><label>Fama</label><input name="notoriety" placeholder="Ex.: Região"><small>Use a classificação adotada pelo RPG.</small></div>
+          <div class="field"><label>Reputação</label><input name="reputation" placeholder="Ex.: 250"></div>
+          <div class="field span-2"><label>Retrato do personagem</label><input name="portrait_url" type="url" placeholder="https://site.com/retrato.png"><small>Cole o link direto de uma imagem pública.</small></div>
+          <div class="field span-2"><label>Ficha externa</label><input name="ficha_url" type="url" placeholder="https://..."><small>Facebook, Google Docs, Notion ou outro endereço público.</small></div>
+          <div class="field span-full"><label>Descrição</label><textarea name="description" rows="5" placeholder="Apresente o personagem: conceito, personalidade, aparência, história ou outras informações relevantes."></textarea></div>
+        </div>
+        <div class="form-actions character-form-actions"><button class="button" type="submit">Enviar para aprovação</button><button class="button button-small" type="button" id="save-character-draft">Salvar rascunho</button></div><p class="status" id="player-character-status"></p>
       </form>
     </section>
 
     <section id="character-admin" hidden>
-      <form id="character-form" class="form-card">
-        <h2 id="form-title">Novo personagem</h2>
-
+      <form id="character-form" class="form-card character-form-horizontal">
+        <div class="character-form-heading"><div><span class="eyebrow">Administração</span><h2 id="form-title">Novo personagem (admin)</h2></div><p class="form-help">Cadastre ou edite diretamente um personagem oficial.</p></div>
         <input type="hidden" name="id">
-
-        <fieldset class="character-form-section">
-          <legend>01 · Identificação</legend>
-
-          <label for="character-name">Nome do personagem</label>
-          <input
-            id="character-name"
-            name="name"
-            placeholder="Nome completo"
-            required
-          >
-
-          <label for="character-nickname">Alcunha ou título</label>
-          <input
-            id="character-nickname"
-            name="nickname"
-            placeholder="Ex.: O Cavaleiro Errante"
-          >
-        </fieldset>
-
-        <fieldset class="character-form-section">
-          <legend>02 · Vínculos</legend>
-
-          <label for="character-owner">Jogador responsável</label>
-          <select id="character-owner" name="owner_id" required>
-            <option value="">Carregando jogadores...</option>
-          </select>
-
-          <label for="character-party">Party</label>
-          <select id="character-party" name="clan_id">
-            <option value="">Sem party</option>
-          </select>
-        </fieldset>
-
-        <fieldset class="character-form-section">
-          <legend>03 · Aparência e ficha</legend>
-
-          <label for="character-portrait">URL do retrato</label>
-          <input
-            id="character-portrait"
-            name="portrait_url"
-            type="url"
-            placeholder="https://..."
-          >
-
-          <label for="character-ficha">Ficha externa</label>
-          <input
-            id="character-ficha"
-            name="ficha_url"
-            type="url"
-            placeholder="https://..."
-          >
-        </fieldset>
-
-        <fieldset class="character-form-section">
-          <legend>04 · Características</legend>
-
-          <label for="character-description">Descrição</label>
-          <textarea
-            id="character-description"
-            name="description"
-            rows="5"
-            placeholder="Conceito, personalidade, aparência, história e outras informações relevantes."
-          ></textarea>
-
-          <label for="character-level">Nível</label>
-          <input
-            id="character-level"
-            name="level"
-            type="number"
-            min="1"
-            value="1"
-            required
-          >
-
-          <label for="character-notoriety">Fama</label>
-          <input
-            id="character-notoriety"
-            name="notoriety"
-            placeholder="Ex.: Região"
-          >
-
-          <label for="character-reputation">Reputação</label>
-          <input
-            id="character-reputation"
-            name="reputation"
-            placeholder="Ex.: 250"
-          >
-
-          <label for="character-points">Pontos de ranking</label>
-          <input
-            id="character-points"
-            name="points"
-            type="number"
-            min="0"
-            value="0"
-            placeholder="0"
-          >
-        </fieldset>
-
-        <fieldset class="character-form-section">
-          <legend>05 · Publicação e controle</legend>
-
-          <label for="character-status">Status do registro</label>
-          <select id="character-status" name="status" required>
-            <option value="pending">Pendente</option>
-            <option value="approved">Aprovado</option>
-            <option value="rejected">Rejeitado</option>
-          </select>
-        </fieldset>
-
-        <div class="form-actions">
-          <button
-            class="button"
-            type="submit"
-            id="save-character"
-          >
-            Salvar personagem
-          </button>
-
-          <button
-            class="button"
-            type="button"
-            id="cancel-edit"
-            hidden
-          >
-            Cancelar edição
-          </button>
+        <div class="character-form-grid">
+          <div class="field span-2"><label for="character-name">Nome do personagem</label><input id="character-name" name="name" placeholder="Nome completo" required></div>
+          <div class="field"><label for="character-nickname">Alcunha ou título</label><input id="character-nickname" name="nickname" placeholder="Ex.: O Cavaleiro Errante"></div>
+          <div class="field"><label for="character-owner">Player</label><select id="character-owner" name="owner_id" required><option value="">Carregando jogadores...</option></select></div>
+          <div class="field"><label for="character-party">Party</label><select id="character-party" name="clan_id"><option value="">Sem Party</option></select></div>
+          <div class="field"><label for="character-level">Nível</label><input id="character-level" name="level" type="number" min="1" value="1" required></div>
+          <div class="field"><label for="character-notoriety">Fama</label><input id="character-notoriety" name="notoriety" placeholder="Ex.: Região"></div>
+          <div class="field"><label for="character-reputation">Reputação</label><input id="character-reputation" name="reputation" placeholder="Ex.: 250"></div>
+          <div class="field"><label for="character-points">Pontos de ranking</label><input id="character-points" name="points" type="number" min="0" value="0"></div>
+          <div class="field"><label for="character-status">Status</label><select id="character-status" name="status" required><option value="pending">Pendente</option><option value="approved">Aprovado</option><option value="rejected">Rejeitado</option></select></div>
+          <div class="field span-2"><label for="character-portrait">URL do retrato</label><input id="character-portrait" name="portrait_url" type="url" placeholder="https://..."></div>
+          <div class="field span-2"><label for="character-ficha">Ficha externa</label><input id="character-ficha" name="ficha_url" type="url" placeholder="https://..."></div>
+          <div class="field span-full"><label for="character-description">Descrição</label><textarea id="character-description" name="description" rows="5" placeholder="Conceito, personalidade, aparência, história e outras informações relevantes."></textarea></div>
         </div>
-
-        <p
-          id="character-status-message"
-          class="status"
-          aria-live="polite"
-        ></p>
+        <div class="form-actions character-form-actions"><button class="button" type="submit" id="save-character">Salvar personagem</button><button class="button" type="button" id="cancel-edit" hidden>Cancelar edição</button></div>
+        <p id="character-status-message" class="status" aria-live="polite"></p>
       </form>
-
     </section>
 
     <section class="section">
@@ -225,6 +108,6 @@
   </footer>
 
   <script type="module" src="js/auth.js?v=22"></script>
-  <script type="module" src="js/personagens.js?v=7"></script>
+  <script type="module" src="js/personagens.js?v=8"></script>
 </body>
 </html>
