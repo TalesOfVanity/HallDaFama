@@ -25,7 +25,7 @@
     <div class="section-heading">
       <span class="eyebrow">Conta do jogador</span>
       <h1>Meu Perfil</h1>
-      <p>Edite as informações públicas exibidas no seu cartão de Player.</p>
+      <p>Estas informações aparecem no seu perfil público e nos demais espaços do Hall da Fama.</p>
     </div>
 
     <div id="profile-preview" class="profile-edit-preview"></div>
@@ -38,14 +38,14 @@
 
       <div class="field">
         <label for="profile-username">@Username</label>
-        <input id="profile-username" name="username" maxlength="30" placeholder="ex.: aurelion" autocomplete="username">
-        <small>3 a 30 caracteres. Use letras minúsculas, números, ponto, hífen ou _.</small>
+        <input id="profile-username" name="username" maxlength="30" placeholder="seu_username" autocomplete="username">
+        <small>Seu identificador único no site. Use de 3 a 30 caracteres: letras minúsculas, números, ponto, hífen ou _.</small>
       </div>
 
       <div class="field">
         <label for="profile-avatar">Foto / PFP</label>
-        <input id="profile-avatar" name="avatar_url" type="url" placeholder="https://...">
-        <small>Use o endereço direto de uma imagem pública.</small>
+        <input id="profile-avatar" name="avatar_url" type="url" placeholder="https://site.com/sua-imagem.png">
+        <small>Cole o link direto de uma imagem pública. PNG, JPG, WebP e GIF funcionam melhor.</small>
       </div>
 
 
@@ -56,16 +56,16 @@
           <option value="narrator">Narrador</option>
           <option value="both">Ambos</option>
         </select>
-        <small>Define se você participa como intérprete, narrador ou nas duas funções. A função Admin é controlada separadamente.</small>
+        <small>Escolha a função que melhor representa sua participação atual no RPG.</small>
       </div>
 
       <div class="field">
         <label for="profile-country">Localidade</label>
-        <input id="profile-country" name="country" maxlength="100" placeholder="Cidade, país ou região">
+        <input id="profile-country" name="country" maxlength="100" placeholder="Ex.: Reino Doce, Ooo, São Paulo...">
       </div>
 <div class="field">
         <label for="profile-bio">Bio</label>
-        <textarea id="profile-bio" name="bio" rows="5" maxlength="600" placeholder="Conte um pouco sobre você no Tales of Vanity..."></textarea>
+        <textarea id="profile-bio" name="bio" rows="5" maxlength="600" placeholder="Apresente-se para os outros jogadores: interesses, estilo de jogo, personagens ou o que quiser destacar."></textarea>
       </div>
 
       <button class="button" type="submit">Salvar alterações</button>
@@ -76,6 +76,6 @@
 
 <footer class="site-footer"><div class="container">Tales of Vanity · Hall da Fama</div></footer>
 <script type="module" src="js/auth.js?v=13"></script>
-<script type="module" src="js/perfil.js?v=7"></script>
+<script type="module" src="js/perfil.js?v=8"></script>
 </body>
 </html>

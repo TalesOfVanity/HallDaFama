@@ -19,24 +19,24 @@
     <h1>Criar conta</h1>
 
     <div class="field">
-      <label for="display_name">Nome no Facebook</label>
-      <input id="display_name" name="display_name" required>
+      <label for="display_name">Nome de Player</label>
+      <input id="display_name" name="display_name" maxlength="80" placeholder="Nome que será exibido no site" required>
     </div>
 
     <div class="field">
       <label for="username">@Username</label>
-      <input id="username" name="username" minlength="3" maxlength="30" pattern="[a-z0-9._-]{3,30}" placeholder="ex.: aurelion" autocomplete="username" required>
-      <small>Único no site. Use letras minúsculas, números, ponto, hífen ou _.</small>
+      <input id="username" name="username" minlength="3" maxlength="30" pattern="[a-z0-9._-]{3,30}" placeholder="seu_username" autocomplete="username" required>
+      <small>Será seu @ no Hall da Fama. Use de 3 a 30 caracteres: letras minúsculas, números, ponto, hífen ou _.</small>
     </div>
 
     <div class="field">
       <label for="country">Localidade</label>
-      <input id="country" name="country" placeholder="Cidade, país ou região do RPG">
+      <input id="country" name="country" placeholder="Ex.: Reino Doce, Ooo, São Paulo...">
     </div>
 
     <fieldset class="character-form-section profile-type-section">
       <legend>Participação no RPG</legend>
-      <p class="form-help">Como você participa do Tales of Vanity?</p>
+      <p class="form-help">Selecione como você participa atualmente. Isso poderá ser alterado depois no seu perfil.</p>
       <label class="choice-row"><input type="radio" name="participation_type" value="interpreter" checked> Intérprete</label>
       <label class="choice-row"><input type="radio" name="participation_type" value="narrator"> Narrador</label>
       <label class="choice-row"><input type="radio" name="participation_type" value="both"> Ambos</label>
@@ -52,11 +52,11 @@
       <input id="password" name="password" type="password" minlength="6" required>
     </div>
 
-    <button class="button" type="submit">Criar conta.</button>
+    <button class="button" type="submit">Criar conta</button>
     <p id="register-status" class="status"></p>
   </form>
 </main>
 
-<script type="module" src="js/cadastro.js?v=3"></script>
+<script type="module" src="js/cadastro.js?v=4"></script>
 </body>
 </html>

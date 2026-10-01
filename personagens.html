@@ -35,14 +35,14 @@
     <section id="character-player-create" hidden>
       <form id="player-character-form" class="form-card character-request-form">
         <span class="eyebrow">Novo personagem</span><h2>Criar personagem</h2>
-        <p class="form-help">Você preenche a proposta agora. O personagem entra no acervo somente depois da aprovação da administração.</p>
-        <div class="field"><label>Nome</label><input name="name" required maxlength="120" placeholder="Nome do personagem"></div>
-        <div class="field"><label>Alcunha ou título</label><input name="nickname" maxlength="160" placeholder="Opcional"></div>
+        <p class="form-help">Preencha os dados que deseja publicar. A solicitação será revisada pela administração antes de o personagem entrar no acervo oficial.</p>
+        <div class="field"><label>Nome do personagem</label><input name="name" required maxlength="120" placeholder="Nome pelo qual o personagem será identificado"></div>
+        <div class="field"><label>Alcunha ou título</label><input name="nickname" maxlength="160" placeholder="Ex.: O Cavaleiro Errante"><small>Opcional. Use para epítetos, títulos ou nomes pelos quais o personagem também é conhecido.</small></div>
         <div class="field"><label>Party</label><select name="clan_id" id="player-character-party"><option value="">Sem Party</option></select></div>
-        <div class="field"><label>URL do retrato</label><input name="portrait_url" type="url" placeholder="https://..."></div>
-        <div class="field"><label>Ficha externa</label><input name="ficha_url" type="url" placeholder="Google Docs, Facebook, Notion..."></div>
-        <div class="field"><label>Descrição</label><textarea name="description" rows="6" placeholder="História, personalidade e características..."></textarea></div>
-        <div class="request-form-grid"><div class="field"><label>Nível</label><input name="level" type="number" min="1" value="1"></div><div class="field"><label>Fama</label><input name="notoriety" placeholder="Não definida"></div><div class="field"><label>Reputação</label><input name="reputation" placeholder="Não definida"></div></div>
+        <div class="field"><label>Retrato do personagem</label><input name="portrait_url" type="url" placeholder="https://site.com/retrato.png"><small>Cole o link direto de uma imagem pública.</small></div>
+        <div class="field"><label>Ficha externa</label><input name="ficha_url" type="url" placeholder="https://..."><small>Opcional. Pode ser o link da ficha no Facebook, Google Docs, Notion ou outro endereço público.</small></div>
+        <div class="field"><label>Descrição</label><textarea name="description" rows="6" placeholder="Apresente o personagem: conceito, personalidade, aparência, história ou outras informações relevantes."></textarea></div>
+        <div class="request-form-grid"><div class="field"><label>Nível</label><input name="level" type="number" min="1" value="1"><small>Nível atual do personagem.</small></div><div class="field"><label>Fama</label><input name="notoriety" placeholder="Ex.: Região"><small>Use a classificação de Fama adotada pelo RPG. Se ainda não houver uma, deixe em branco.</small></div><div class="field"><label>Reputação</label><input name="reputation" placeholder="Ex.: 250"><small>Informe o valor atual. Se ainda não estiver definido, deixe em branco.</small></div></div>
         <button class="button" type="submit">Enviar para aprovação</button><p class="status" id="player-character-status"></p>
       </form>
     </section>
@@ -97,12 +97,12 @@
             placeholder="https://..."
           >
 
-          <label for="character-ficha">Ficha Anexada (Facebook)</label>
+          <label for="character-ficha">Ficha externa</label>
           <input
             id="character-ficha"
             name="ficha_url"
             type="url"
-            placeholder="https://www.facebook.com/..."
+            placeholder="https://..."
           >
         </fieldset>
 
@@ -114,7 +114,7 @@
             id="character-description"
             name="description"
             rows="5"
-            placeholder="História, personalidade e características..."
+            placeholder="Conceito, personalidade, aparência, história e outras informações relevantes."
           ></textarea>
 
           <label for="character-level">Nível</label>
@@ -131,14 +131,14 @@
           <input
             id="character-notoriety"
             name="notoriety"
-            placeholder="Ex.: Casa, Vizinhança, Região, Entre Reinados, Terras Distantes, Entre Mundos, Cósmico ou Multiversal."
+            placeholder="Ex.: Região"
           >
 
           <label for="character-reputation">Reputação</label>
           <input
             id="character-reputation"
             name="reputation"
-            placeholder="Ex.: -2000 a 2000"
+            placeholder="Ex.: 250"
           >
 
           <label for="character-points">Pontos de ranking</label>
@@ -216,6 +216,6 @@
   </footer>
 
   <script type="module" src="js/auth.js?v=13"></script>
-  <script type="module" src="js/personagens.js?v=6"></script>
+  <script type="module" src="js/personagens.js?v=7"></script>
 </body>
 </html>
