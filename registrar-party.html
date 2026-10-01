@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registrar Party — Tales of Vanity</title>
-  <link rel="stylesheet" href="css/global.css?v=22">
+  <link rel="stylesheet" href="css/global.css?v=23">
 </head>
 <body>
 <header class="site-header">
@@ -37,11 +37,12 @@
   </div>
 
   <section id="party-admin" hidden>
-    <form id="party-form" class="form-card">
-      <h2 id="party-form-title">Nova Party</h2>
+    <form id="party-form" class="form-card registration-form-wide party-form-wide">
+      <div class="registration-form-heading"><div><span class="eyebrow">Cadastro oficial</span><h2 id="party-form-title">Nova Party</h2></div><p>Organize as informações da Party e salve o registro oficial.</p></div>
       <input type="hidden" name="id">
 
-      <fieldset class="character-form-section">
+      <div class="party-form-grid">
+      <fieldset class="character-form-section party-identification">
         <legend>01 · Identificação</legend>
         <label for="party-name">Nome da Party</label>
         <input id="party-name" name="name" required placeholder="Ex.: Knights of Vanity">
@@ -50,7 +51,7 @@
         <input id="party-acronym" name="acronym" maxlength="12" placeholder="Ex.: KoV">
       </fieldset>
 
-      <fieldset class="character-form-section">
+      <fieldset class="character-form-section party-presentation">
         <legend>02 · Apresentação</legend>
         <label for="party-emblem">URL do emblema</label>
         <input id="party-emblem" name="emblem_url" type="url" placeholder="https://site.com/emblema.png">
@@ -62,7 +63,7 @@
         <textarea id="party-description" name="description" rows="5" placeholder="Apresente a Party: proposta, identidade, objetivos ou informações importantes."></textarea>
       </fieldset>
 
-      <fieldset class="character-form-section">
+      <fieldset class="character-form-section party-control">
         <legend>03 · Controle</legend>
         <label for="party-status">Status</label>
         <select id="party-status" name="status">
@@ -70,8 +71,9 @@
           <option value="inactive">Inativa</option>
         </select>
       </fieldset>
+      </div>
 
-      <div class="form-actions">
+      <div class="form-actions registration-form-actions">
         <button class="button" type="submit">Salvar Party</button>
         <button class="button" type="button" id="cancel-party-edit" hidden>Cancelar edição</button>
       </div>

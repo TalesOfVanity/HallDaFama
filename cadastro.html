@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro</title>
-  <link rel="stylesheet" href="css/global.css?v=22">
+  <link rel="stylesheet" href="css/global.css?v=23">
 </head>
 <body>
 <header class="site-header">
@@ -13,10 +13,10 @@
   </nav>
 </header>
 
-<main class="container">
-  <form id="register-form" class="form-card">
-    <span class="eyebrow">Novo registro</span>
-    <h1>Criar conta</h1>
+<main class="container registration-page">
+  <form id="register-form" class="form-card registration-form-wide account-register-form">
+    <div class="registration-form-heading"><div><span class="eyebrow">Novo registro</span><h1>Criar conta</h1></div><p>Crie sua identidade no Hall da Fama. Você poderá ajustar seu perfil depois.</p></div>
+    <div class="account-register-grid">
 
     <div class="field">
       <label for="display_name">Nome de Player</label>
@@ -34,7 +34,7 @@
       <input id="country" name="country" placeholder="Ex.: Reino Doce, Ooo, São Paulo...">
     </div>
 
-    <fieldset class="character-form-section profile-type-section">
+    <fieldset class="character-form-section profile-type-section span-2">
       <legend>Participação no RPG</legend>
       <p class="form-help">Selecione como você participa atualmente. Isso poderá ser alterado depois no seu perfil.</p>
       <label class="choice-row"><input type="radio" name="participation_type" value="interpreter" checked> Intérprete</label>
@@ -52,7 +52,8 @@
       <input id="password" name="password" type="password" minlength="6" required>
     </div>
 
-    <button class="button" type="submit">Criar conta</button>
+    </div>
+    <div class="form-actions registration-form-actions"><button class="button" type="submit">Criar conta</button></div>
     <p id="register-status" class="status"></p>
   </form>
 </main>

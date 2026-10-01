@@ -1015,3 +1015,54 @@ td a {
 .character-edit-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.character-edit-grid .field{margin:0}.character-edit-grid .span-2{grid-column:span 2}.character-edit-grid .span-full{grid-column:1/-1}
 @media(max-width:900px){.character-form-grid,.character-edit-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.badge-manager-grid{grid-template-columns:1fr 1fr}.badge-manager-grid .button{grid-column:1/-1}.badge-manager-current{grid-template-columns:1fr}}
 @media(max-width:620px){.character-form-horizontal{padding:18px!important}.character-form-heading{display:block}.character-form-heading .form-help{text-align:left;margin-top:10px}.character-form-grid,.character-edit-grid,.badge-manager-grid{grid-template-columns:1fr}.character-form-grid .span-2,.character-edit-grid .span-2{grid-column:auto}.character-form-grid .span-full,.character-edit-grid .span-full{grid-column:auto}.character-form-actions{justify-content:stretch}.character-form-actions .button{width:100%}}
+
+/* Etapa 5.4 — cadastros amplos, responsivos e contraste de interface */
+.button-secondary{background:transparent!important;color:var(--accent-light)!important;border-color:var(--accent)!important}
+.button-secondary:hover{background:rgba(216,181,109,.09)!important;color:#f0d995!important}
+.field small,.form-help,.character-form-grid small,.registration-form-wide small{display:block;margin-top:6px;color:#aaa092;font-size:.72rem;line-height:1.5}
+.field input::placeholder,.field textarea::placeholder,.registration-form-wide input::placeholder,.registration-form-wide textarea::placeholder{color:#81786d;opacity:1}
+select option{background:#11100e;color:var(--text)}
+
+/* O formulário de personagem deve ocupar a largura útil do acervo. */
+#character-player-create .character-request-form,#character-admin>.character-form-horizontal{width:100%;max-width:none!important;margin:24px 0 38px!important}
+#character-player-create .character-form-grid{grid-template-columns:minmax(220px,1.6fr) minmax(170px,.8fr) minmax(170px,.8fr) minmax(190px,.9fr)}
+#character-player-create .locked-field{min-height:46px}
+
+/* Linguagem visual compartilhada por telas de cadastro. */
+.registration-page{padding:46px 0 70px}
+.registration-form-wide{width:100%!important;max-width:none!important;margin:0!important;padding:28px!important}
+.registration-form-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(216,181,109,.16)}
+.registration-form-heading h1,.registration-form-heading h2{margin:5px 0 0}
+.registration-form-heading h1{font-size:clamp(2rem,4vw,3.4rem)}
+.registration-form-heading>p{max-width:520px;margin:0;color:var(--muted);font-size:.82rem;text-align:right;line-height:1.65}
+.registration-form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(216,181,109,.13)}
+
+/* Cadastro de conta: três colunas no desktop, sem a coluna estreita antiga. */
+.account-register-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 20px;align-items:start}
+.account-register-grid>.field{margin:0}.account-register-grid>.span-2{grid-column:span 2}
+.account-register-grid .profile-type-section{height:100%;margin:0;padding:17px 19px;background:rgba(255,255,255,.012)}
+.account-register-grid .profile-type-section .form-help{margin:2px 0 10px}
+
+/* Registro de Party: blocos lado a lado aproveitando a borda externa. */
+#party-admin>.party-form-wide{width:100%;max-width:none;margin:0 0 42px;padding:28px}
+.party-form-grid{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(360px,1.55fr) minmax(190px,.65fr);gap:18px;align-items:stretch}
+#party-admin .party-form-grid .character-form-section{margin:0;padding:20px;height:100%}
+#party-admin .party-form-grid label{display:block;margin:10px 0 6px;color:#cfc6b9;font-size:.76rem}
+#party-admin .party-form-grid input,#party-admin .party-form-grid select,#party-admin .party-form-grid textarea{padding:11px 12px;background:#0d0c0a;color:var(--text);border:1px solid var(--border);font:inherit}
+#party-admin .party-form-grid textarea{min-height:118px;resize:vertical}
+#party-admin .party-form-grid small{color:#aaa092}
+
+@media(max-width:950px){
+  #character-player-create .character-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .account-register-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .party-form-grid{grid-template-columns:1fr 1fr}.party-control{grid-column:1/-1}
+}
+@media(max-width:650px){
+  .registration-page{padding:24px 0 50px}.registration-form-wide{padding:18px!important}
+  .registration-form-heading{display:block}.registration-form-heading>p{margin-top:10px;text-align:left}
+  #character-player-create .character-form-grid,.account-register-grid,.party-form-grid{grid-template-columns:1fr}
+  .account-register-grid>.span-2,.party-control{grid-column:auto}
+  #character-player-create .character-form-grid .span-2,#character-player-create .character-form-grid .span-full{grid-column:auto}
+  .registration-form-actions{align-items:stretch;flex-direction:column}.registration-form-actions .button{width:100%}
+  #party-admin>.party-form-wide{padding:18px}
+}
