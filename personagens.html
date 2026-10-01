@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personagens — Tales of Vanity</title>
-  <link rel="stylesheet" href="css/global.css?v=11">
+  <link rel="stylesheet" href="css/global.css?v=12">
 </head>
 <body>
   <header class="site-header">
@@ -23,13 +23,29 @@
 
   <main class="container section">
     <div class="section-heading">
-      <span class="eyebrow">Administração</span>
-      <h1>Registro de personagens</h1>
+      <span class="eyebrow">Acervo oficial</span>
+      <h1>Personagens</h1>
       <p>
         Acervo dos personagens oficiais de Tales of Vanity,
         seus responsáveis e seus respectivos status.
       </p>
     </div>
+
+
+    <section id="character-player-create" hidden>
+      <form id="player-character-form" class="form-card character-request-form">
+        <span class="eyebrow">Novo personagem</span><h2>Criar personagem</h2>
+        <p class="form-help">Você preenche a proposta agora. O personagem entra no acervo somente depois da aprovação da administração.</p>
+        <div class="field"><label>Nome</label><input name="name" required maxlength="120" placeholder="Nome do personagem"></div>
+        <div class="field"><label>Alcunha ou título</label><input name="nickname" maxlength="160" placeholder="Opcional"></div>
+        <div class="field"><label>Party</label><select name="clan_id" id="player-character-party"><option value="">Sem Party</option></select></div>
+        <div class="field"><label>URL do retrato</label><input name="portrait_url" type="url" placeholder="https://..."></div>
+        <div class="field"><label>Ficha externa</label><input name="ficha_url" type="url" placeholder="Google Docs, Facebook, Notion..."></div>
+        <div class="field"><label>Descrição</label><textarea name="description" rows="6" placeholder="História, personalidade e características..."></textarea></div>
+        <div class="request-form-grid"><div class="field"><label>Nível</label><input name="level" type="number" min="1" value="1"></div><div class="field"><label>Fama</label><input name="notoriety" placeholder="Não definida"></div><div class="field"><label>Reputação</label><input name="reputation" placeholder="Não definida"></div></div>
+        <button class="button" type="submit">Enviar para aprovação</button><p class="status" id="player-character-status"></p>
+      </form>
+    </section>
 
     <section id="character-admin" hidden>
       <form id="character-form" class="form-card">
@@ -199,7 +215,7 @@
     <div class="container">Tales of Vanity · Hall da Fama</div>
   </footer>
 
-  <script type="module" src="js/auth.js?v=12"></script>
-  <script type="module" src="js/personagens.js?v=5"></script>
+  <script type="module" src="js/auth.js?v=13"></script>
+  <script type="module" src="js/personagens.js?v=6"></script>
 </body>
 </html>
