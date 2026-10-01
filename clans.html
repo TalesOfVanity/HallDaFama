@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Partys — Tales of Vanity</title>
-  <link rel="stylesheet" href="css/global.css?v=20">
+  <link rel="stylesheet" href="css/global.css?v=22">
 </head>
 <body>
 <header class="site-header">
@@ -14,7 +14,16 @@
       <a href="jogadores.html">Jogadores</a>
       <a href="personagens.html">Personagens</a>
       <a href="ranking.html">Ranking</a>
-      <a href="clans.html">Partys</a><a href="cronicas.html">Crônicas</a><a href="explorar.html">Explorar</a><a href="regras.html">Regulamento</a>
+      <a href="clans.html">Partys</a>
+        <details class="nav-more">
+          <summary>Acervo <span aria-hidden="true">▾</span></summary>
+          <div class="nav-more-menu">
+            <a href="explorar.html">Explorar</a>
+            <a href="cronicas.html">Crônicas</a>
+            <a href="wiki.html">Arquivo do Mundo</a>
+            <a href="regras.html">Regulamento</a>
+          </div>
+        </details>
       <span data-auth-area></span>
     </div>
   </nav>
@@ -33,7 +42,7 @@
   </section>
 </main>
 
-<script type="module" src="js/auth.js?v=20"></script>
+<script type="module" src="js/auth.js?v=22"></script>
 <script type="module" src="js/clans.js?v=3"></script>
 </body>
 </html>

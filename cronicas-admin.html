@@ -1,1 +1,88 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gerenciar Crônicas — Tales of Vanity</title><link rel="stylesheet" href="css/global.css?v=20"></head><body><header class="site-header"><nav class="nav"><a class="logo" href="index.html">Tales of Vanity</a><div class="nav-links"><a href="cronicas.html">Ver Crônicas</a><span data-auth-area></span></div></nav></header><main class="container section"><div class="section-heading"><span class="eyebrow">Administração</span><h1>Temporadas & Eventos</h1><p>Registre patches, temporadas e acontecimentos que farão parte da linha do tempo oficial.</p></div><section class="admin-split"><form id="season-form" class="panel form-stack"><h2>Nova temporada / patch</h2><input name="name" required maxlength="100" placeholder="Ex.: Temporada 1 — O Primeiro Reino"><textarea name="description" rows="4" placeholder="Contextualize esta fase do RPG."></textarea><div class="request-form-grid"><label>Início<input type="date" name="starts_at"></label><label>Fim<input type="date" name="ends_at"></label><label><input type="checkbox" name="is_current"> Temporada atual</label></div><button class="button">Criar temporada</button><p class="status"></p></form><form id="event-form" class="panel form-stack"><h2>Novo evento canônico</h2><select name="season_id"><option value="">Sem temporada</option></select><input name="title" required maxlength="160" placeholder="Ex.: Fundação da Ordem do Leão"><select name="event_type"><option value="arc">Arco</option><option value="war">Guerra</option><option value="death">Morte</option><option value="party">Party</option><option value="world">Evento mundial</option><option value="other">Outro</option></select><input name="banner_url" placeholder="URL do banner (opcional)"><div class="request-form-grid"><label>Início<input type="date" name="starts_at"></label><label>Fim<input type="date" name="ends_at"></label></div><label>Personagens relacionados<select name="characters" multiple size="6"></select></label><label>Jogadores relacionados<select name="players" multiple size="6"></select></label><label>Brasões relacionados<select name="badges" multiple size="5"></select></label><textarea name="summary" rows="3" placeholder="Resumo curto que aparecerá na linha do tempo."></textarea><textarea name="content" rows="8" placeholder="Relate o acontecimento com os detalhes que devem permanecer no arquivo histórico."></textarea><button class="button">Publicar evento</button><p class="status"></p></form></section><div id="admin-events" class="request-list"></div></main><script type="module" src="js/auth.js?v=20"></script><script type="module" src="js/cronicas-admin.js?v=1"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gerenciar Crônicas — Tales of Vanity</title>
+  <link rel="stylesheet" href="css/global.css?v=22">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a class="logo" href="index.html">Tales of Vanity</a>
+    <div class="nav-links"><span data-auth-area></span></div>
+  </nav>
+</header>
+<main class="container section chronicles-admin-page">
+  <div class="section-heading chronicles-admin-heading">
+    <span class="eyebrow">Administração</span>
+    <h1>Temporadas & Eventos</h1>
+    <p>Organize as fases do RPG e registre acontecimentos que passam a integrar a linha do tempo oficial.</p>
+    <a class="text-link" href="cronicas.html">Ver Crônicas públicas →</a>
+  </div>
+
+  <form id="season-form" class="chronicle-admin-card season-admin-card">
+    <div class="chronicle-card-title">
+      <span class="chronicle-card-index">01</span>
+      <div><span class="eyebrow">Período</span><h2>Nova temporada / patch</h2><p>Crie o período que agrupará eventos, conquistas e registros históricos.</p></div>
+    </div>
+    <div class="season-fields">
+      <label class="field-wide"><span>Nome</span><input name="name" required maxlength="100" placeholder="Ex.: Temporada 1 — O Primeiro Reino"></label>
+      <label><span>Início</span><input type="date" name="starts_at"></label>
+      <label><span>Fim</span><input type="date" name="ends_at"></label>
+      <label class="current-season-toggle"><input type="checkbox" name="is_current"><span>Marcar como temporada atual</span></label>
+      <label class="field-description"><span>Descrição</span><textarea name="description" rows="3" placeholder="Descreva brevemente o contexto desta fase do RPG."></textarea></label>
+      <div class="card-action"><button class="button">Criar temporada</button><p class="status"></p></div>
+    </div>
+  </form>
+
+  <form id="event-form" class="chronicle-admin-card event-admin-card">
+    <div class="chronicle-card-title">
+      <span class="chronicle-card-index">02</span>
+      <div><span class="eyebrow">Linha do tempo</span><h2>Novo evento canônico</h2><p>Registre um acontecimento e conecte-o às pessoas, personagens e Brasões envolvidos.</p></div>
+    </div>
+
+    <div class="event-editor-grid">
+      <section class="event-form-card">
+        <span class="event-form-kicker">Identidade</span>
+        <label><span>Título do evento</span><input name="title" required maxlength="160" placeholder="Ex.: Fundação da Ordem do Leão"></label>
+        <div class="event-inline-fields">
+          <label><span>Temporada</span><select name="season_id"><option value="">Sem temporada</option></select></label>
+          <label><span>Tipo</span><select name="event_type"><option value="arc">Arco</option><option value="war">Guerra</option><option value="death">Morte</option><option value="party">Party</option><option value="world">Evento mundial</option><option value="other">Outro</option></select></label>
+        </div>
+        <label><span>Banner</span><input name="banner_url" placeholder="Cole a URL de uma imagem (opcional)"></label>
+        <div class="event-inline-fields">
+          <label><span>Início</span><input type="date" name="starts_at"></label>
+          <label><span>Fim</span><input type="date" name="ends_at"></label>
+        </div>
+      </section>
+
+      <section class="event-form-card">
+        <span class="event-form-kicker">Participantes</span>
+        <label><span>Personagens relacionados</span><select name="characters" multiple size="5"></select><small>Use Ctrl para selecionar mais de um.</small></label>
+        <label><span>Jogadores relacionados</span><select name="players" multiple size="5"></select><small>Inclua quem participou diretamente do acontecimento.</small></label>
+      </section>
+
+      <section class="event-form-card">
+        <span class="event-form-kicker">Registro</span>
+        <label><span>Resumo da linha do tempo</span><textarea name="summary" rows="4" placeholder="Resuma o que aconteceu em poucas linhas."></textarea></label>
+        <label><span>Brasões relacionados</span><select name="badges" multiple size="5"></select></label>
+      </section>
+    </div>
+
+    <section class="event-narrative-card">
+      <div><span class="event-form-kicker">Arquivo histórico</span><h3>Relato do acontecimento</h3><p>Este texto ficará preservado na página pública do evento.</p></div>
+      <textarea name="content" rows="9" placeholder="Conte o acontecimento com os detalhes que devem permanecer no arquivo histórico do RPG."></textarea>
+    </section>
+
+    <div class="event-submit-row"><p class="status"></p><button class="button">Publicar evento</button></div>
+  </form>
+
+  <section class="chronicles-existing">
+    <div class="section-heading compact-heading"><span class="eyebrow">Arquivo</span><h2>Eventos registrados</h2></div>
+    <div id="admin-events" class="request-list"></div>
+  </section>
+</main>
+<script type="module" src="js/auth.js?v=22"></script>
+<script type="module" src="js/cronicas-admin.js?v=2"></script>
+</body></html>

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tales of Vanity — Hall da Fama</title>
-  <link rel="stylesheet" href="css/global.css?v=20">
+  <link rel="stylesheet" href="css/global.css?v=22">
 </head>
 <body>
   <header class="site-header">
@@ -16,31 +16,66 @@
         <a href="jogadores.html">Jogadores</a>
       <a href="personagens.html">Personagens</a>
         <a href="ranking.html">Ranking</a>
-        <a href="clans.html">Partys</a><a href="cronicas.html">Crônicas</a><a href="explorar.html">Explorar</a><a href="regras.html">Regulamento</a>
+        <a href="clans.html">Partys</a>
+        <details class="nav-more">
+          <summary>Acervo <span aria-hidden="true">▾</span></summary>
+          <div class="nav-more-menu">
+            <a href="explorar.html">Explorar</a>
+            <a href="cronicas.html">Crônicas</a>
+            <a href="wiki.html">Arquivo do Mundo</a>
+            <a href="regras.html">Regulamento</a>
+          </div>
+        </details>
           <span data-auth-area></span>
       </div>
     </nav>
   </header>
 
   <main>
-    <section class="hero container">
-      <span class="eyebrow">Tales of Vanity — Mural</span>
-      <h1>Nosso Hall da Fama</h1>
-
-      <p>
-        Um portal para registrar personagens, partys, feitos,
-        insígnias e classificações de Tales of Vanity.
-      </p>
-
+    <section class="home-hero">
+      <div class="container home-hero-grid">
+        <div>
+          <span class="eyebrow">Arquivo oficial da comunidade</span>
+          <h1>Tales of Vanity</h1>
+          <p class="home-lead">O ponto de encontro do RPG: personagens, Partys, conquistas e os acontecimentos que constroem nossa história.</p>
+          <div class="home-actions">
+            <a class="button" href="explorar.html">Explorar o acervo</a>
+            <a class="button button-secondary" href="cronicas.html">Ver as Crônicas</a>
+          </div>
+        </div>
+        <aside class="home-manifesto">
+          <span class="eyebrow">Hall da Fama</span>
+          <p>Mais do que um ranking, este espaço preserva os personagens, histórias e feitos que deixam sua marca em Tales of Vanity.</p>
+          <a href="regras.html">Conheça o projeto e o regulamento →</a>
+        </aside>
+      </div>
     </section>
 
     <section class="section container">
-      <div class="section-heading">
-        <span class="eyebrow">Registros</span>
-        <h2>Jogadores</h2>
+      <div class="home-portals">
+        <a class="home-portal-card" href="personagens.html"><span>01</span><h2>Personagens</h2><p>Conheça os protagonistas, antagonistas e figuras que habitam o RPG.</p></a>
+        <a class="home-portal-card" href="clans.html"><span>02</span><h2>Partys</h2><p>Explore grupos, alianças e companhias formadas durante as aventuras.</p></a>
+        <a class="home-portal-card" href="cronicas.html"><span>03</span><h2>Crônicas</h2><p>Acompanhe temporadas, patches e acontecimentos canônicos em ordem histórica.</p></a>
+        <a class="home-portal-card" href="ranking.html"><span>04</span><h2>Ranking</h2><p>Veja a classificação atual de jogadores, personagens e Partys.</p></a>
       </div>
+    </section>
 
-      <div id="featured-players" class="grid player-grid"></div>
+    <section class="section container home-dashboard">
+      <div>
+        <div class="section-heading home-heading-row"><div><span class="eyebrow">Comunidade</span><h2>Jogadores em destaque</h2></div><a href="jogadores.html">Ver todos →</a></div>
+        <div id="featured-players" class="grid player-grid"></div>
+      </div>
+      <aside>
+        <div class="section-heading"><span class="eyebrow">História viva</span><h2>Últimos acontecimentos</h2></div>
+        <div id="home-events" class="home-events"><p class="muted">Carregando as Crônicas...</p></div>
+      </aside>
+    </section>
+
+    <section class="section container home-discover">
+      <span class="eyebrow">Descubra algo novo</span>
+      <h2>Há sempre outra história no acervo.</h2>
+      <p>Explore a comunidade ou deixe o acaso escolher um personagem para você conhecer.</p>
+      <div class="home-actions"><a class="button" href="explorar.html">Pesquisar no acervo</a><button class="button button-secondary" id="random-character" type="button">Personagem aleatório</button></div>
     </section>
   </main>
 
@@ -50,7 +85,7 @@
     </div>
   </footer>
 
-  <script type="module" src="js/auth.js?v=20"></script>
-  <script type="module" src="js/index.js?v=2"></script>
+  <script type="module" src="js/auth.js?v=22"></script>
+  <script type="module" src="js/index.js?v=3"></script>
 </body>
 </html>

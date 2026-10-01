@@ -31,6 +31,28 @@ export async function logout() {
 }
 
 export async function updateNavigation() {
+  // A topbar é reconstruída pelo mesmo código em todas as páginas.
+  // Isso evita páginas antigas/cacheadas manterem conjuntos diferentes de links.
+  const navLinks = document.querySelector(".nav-links");
+  if (navLinks) {
+    navLinks.innerHTML = `
+      <a href="jogadores.html">Jogadores</a>
+      <a href="personagens.html">Personagens</a>
+      <a href="ranking.html">Ranking</a>
+      <a href="clans.html">Partys</a>
+      <a href="cronicas.html">Crônicas</a>
+      <a href="explorar.html">Explorar</a>
+      <a href="regras.html">Regulamento</a>
+      <details class="nav-more nav-archive">
+        <summary>Arquivo <span aria-hidden="true">▾</span></summary>
+        <div class="nav-more-menu">
+          <a href="wiki.html">Arquivo do Mundo</a>
+          <a href="favoritos.html">Favoritos</a>
+        </div>
+      </details>
+      <span data-auth-area></span>`;
+  }
+
   const authArea = document.querySelector("[data-auth-area]");
   if (!authArea) return;
 
