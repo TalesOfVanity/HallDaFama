@@ -55,6 +55,7 @@ export async function updateNavigation() {
 
   const isAdmin = profile?.role === "admin";
   let unreadMentions = 0;
+  let unreadGeneral = 0;
   let pendingRequests = 0;
   try {
     const { count, error } = await supabase
@@ -66,6 +67,11 @@ export async function updateNavigation() {
   } catch (error) {
     console.warn("Não foi possível carregar menções:", error);
   }
+
+  try {
+    const { count, error } = await supabase.from("site_notifications").select("id", { count: "exact", head: true }).eq("user_id", session.user.id).is("read_at", null);
+    if (!error) unreadGeneral = count || 0;
+  } catch (error) { console.warn("Não foi possível carregar notificações gerais:", error); }
 
   if (isAdmin) {
     try {
@@ -90,7 +96,8 @@ export async function updateNavigation() {
       <div class="user-menu-dropdown">
         <a href="${publicProfileUrl}">Meu Perfil</a>
         <a href="perfil.html">Editar Perfil</a>
-        <a href="notificacoes.html">Menções${unreadMentions ? ` (${unreadMentions})` : ""}</a>
+        <a href="notificacoes.html">Notificações${(unreadMentions+unreadGeneral) ? ` (${unreadMentions+unreadGeneral})` : ""}</a>
+        <a href="favoritos.html">Favoritos</a>
         <a href="minhas-solicitacoes.html">Minhas Solicitações</a>
         <a href="conquistas.html">Conquistas</a>
         <div class="menu-separator"></div>
@@ -104,6 +111,7 @@ export async function updateNavigation() {
         </button>
         <div class="admin-menu-dropdown">
           <a href="solicitacoes.html">Solicitações${pendingRequests ? ` (${pendingRequests})` : ""}</a>
+          <a href="cronicas-admin.html">Temporadas & Eventos</a>
           <a href="personagens.html">Registrar personagem</a>
           <a href="registrar-party.html">Registrar Party</a>
           <a href="admin.html">Brasões</a>

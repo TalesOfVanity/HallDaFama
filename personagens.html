@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personagens — Tales of Vanity</title>
-  <link rel="stylesheet" href="css/global.css?v=12">
+  <link rel="stylesheet" href="css/global.css?v=20">
 </head>
 <body>
   <header class="site-header">
@@ -15,7 +15,7 @@
         <a href="jogadores.html">Jogadores</a>
       <a href="personagens.html">Personagens</a>
         <a href="ranking.html">Ranking</a>
-        <a href="clans.html">Partys</a>
+        <a href="clans.html">Partys</a><a href="cronicas.html">Crônicas</a><a href="explorar.html">Explorar</a><a href="regras.html">Regulamento</a>
           <span data-auth-area></span>
       </div>
     </nav>
@@ -43,7 +43,7 @@
         <div class="field"><label>Ficha externa</label><input name="ficha_url" type="url" placeholder="https://..."><small>Opcional. Pode ser o link da ficha no Facebook, Google Docs, Notion ou outro endereço público.</small></div>
         <div class="field"><label>Descrição</label><textarea name="description" rows="6" placeholder="Apresente o personagem: conceito, personalidade, aparência, história ou outras informações relevantes."></textarea></div>
         <div class="request-form-grid"><div class="field"><label>Nível</label><input name="level" type="number" min="1" value="1"><small>Nível atual do personagem.</small></div><div class="field"><label>Fama</label><input name="notoriety" placeholder="Ex.: Região"><small>Use a classificação de Fama adotada pelo RPG. Se ainda não houver uma, deixe em branco.</small></div><div class="field"><label>Reputação</label><input name="reputation" placeholder="Ex.: 250"><small>Informe o valor atual. Se ainda não estiver definido, deixe em branco.</small></div></div>
-        <button class="button" type="submit">Enviar para aprovação</button><p class="status" id="player-character-status"></p>
+        <div class="form-actions"><button class="button" type="submit">Enviar para aprovação</button><button class="button button-small" type="button" id="save-character-draft">Salvar rascunho</button></div><p class="status" id="player-character-status"></p>
       </form>
     </section>
 
@@ -215,7 +215,7 @@
     <div class="container">Tales of Vanity · Hall da Fama</div>
   </footer>
 
-  <script type="module" src="js/auth.js?v=13"></script>
+  <script type="module" src="js/auth.js?v=20"></script>
   <script type="module" src="js/personagens.js?v=7"></script>
 </body>
 </html>
