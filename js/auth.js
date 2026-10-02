@@ -81,20 +81,9 @@ export async function updateNavigation() {
   let unreadGeneral = 0;
   let pendingRequests = 0;
   try {
-    const { count, error } = await supabase
-      .from("mention_notifications")
-      .select("id", { count: "exact", head: true })
-      .eq("mentioned_user_id", session.user.id)
-      .is("read_at", null);
-    if (!error) unreadMentions = count || 0;
-  } catch (error) {
-    console.warn("Não foi possível carregar menções:", error);
-  }
-
-  try {
-    const { count, error } = await supabase.from("site_notifications").select("id", { count: "exact", head: true }).eq("user_id", session.user.id).is("read_at", null);
-    if (!error) unreadGeneral = count || 0;
-  } catch (error) { console.warn("Não foi possível carregar notificações gerais:", error); }
+    const { data, error } = await supabase.rpc("get_unread_notification_count");
+    if (!error) unreadGeneral = Number(data || 0);
+  } catch (error) { console.warn("Não foi possível carregar notificações:", error); }
 
   if (isAdmin) {
     try {
@@ -133,6 +122,7 @@ export async function updateNavigation() {
           ${icon("shieldCheck","Administração")} ${icon("chevronDown","","nav-chevron")}
         </button>
         <div class="admin-menu-dropdown">
+          <a href="administracao.html">${icon("shieldCheck","Painel Administrativo")}</a>
           <a href="solicitacoes.html">${icon("inbox",`Solicitações${pendingRequests ? ` (${pendingRequests})` : ""}`)}</a>
           <a href="cronicas-admin.html">${icon("calendar","Temporadas & Eventos")}</a>
           <a href="personagens.html">${icon("plus","Registrar personagem")}</a>

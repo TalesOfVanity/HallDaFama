@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Gerenciar Crônicas — Tales of Vanity</title>
-  <link rel="stylesheet" href="css/global.css?v=70">
+  <link rel="stylesheet" href="css/global.css?v=71">
 </head>
 <body>
 <header class="site-header">
@@ -42,6 +42,7 @@
       <div><span class="eyebrow">Linha do tempo</span><h2>Novo Evento Canônico</h2><p>Registre um acontecimento e conecte-o às pessoas, personagens e Brasões envolvidos.</p></div>
     </div>
 
+    <input type="hidden" name="id">
     <div class="event-editor-grid">
       <section class="event-form-card">
         <span class="event-form-kicker">Identidade</span>
@@ -75,7 +76,7 @@
       <textarea name="content" rows="9" placeholder="Conte o acontecimento com os detalhes que devem permanecer no arquivo histórico do RPG."></textarea>
     </section>
 
-    <div class="event-submit-row"><p class="status"></p><button class="button">Publicar evento</button></div>
+    <div class="event-submit-row"><p class="status"></p><div class="form-actions"><button id="cancel-event-edit" class="button button-secondary" type="button" hidden>Cancelar Edição</button><button id="event-submit" class="button">Publicar Evento</button></div></div>
   </form>
 
   <section class="chronicles-existing">
@@ -83,6 +84,6 @@
     <div id="admin-events" class="request-list"></div>
   </section>
 </main>
-<script type="module" src="js/auth.js?v=70"></script>
-<script type="module" src="js/cronicas-admin.js?v=2"></script>
-<script type="module" src="js/ux.js?v=70"></script></body></html>
+<script type="module" src="js/auth.js?v=71"></script>
+<script type="module" src="js/cronicas-admin.js?v=71"></script>
+<script type="module" src="js/ux.js?v=71"></script></body></html>
