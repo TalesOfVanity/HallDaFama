@@ -45,9 +45,9 @@ export async function updateNavigation() {
       <a href="explorar.html">${icon("compass","Explorar")}</a>
       <a href="regras.html">${icon("scroll","Regulamento")}</a>
       <details class="nav-more nav-archive">
-        <summary>${icon("archive","Arquivo")} ${icon("chevronDown","","nav-chevron")}</summary>
+        <summary>${icon("archive","Memória")} ${icon("chevronDown","","nav-chevron")}</summary>
         <div class="nav-more-menu">
-          <a href="wiki.html">${icon("archive","Arquivo do Mundo")}</a>
+          <a href="legado.html">${icon("archive","Legado")}</a>
           <a href="favoritos.html">${icon("bookmark","Favoritos")}</a>
         </div>
       </details>

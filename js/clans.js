@@ -80,11 +80,11 @@ async function load() {
             </div>
           </div>
 
-          ${party.description ? `<p class="party-archive-description">${e(party.description)}</p>` : ""}
+          ${party.motto ? `<blockquote class="party-motto">“${e(party.motto)}”</blockquote>` : ""}${party.description ? `<p class="party-archive-description">${e(party.description)}</p>` : ""}
 
           <div class="party-archive-stats">
             <div><span>Membros</span><strong>${party.members.length}</strong></div>
-            <div><span>Pontos</span><strong>${party.points}</strong></div>
+            <div><span>Pontos</span><strong>${party.points}</strong></div>${party.founded_at?`<div><span>Fundação</span><strong>${new Date(party.founded_at+'T12:00:00').toLocaleDateString('pt-BR')}</strong></div>`:''}
           </div>
 
           <div class="party-member-list">

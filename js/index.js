@@ -1,36 +1,6 @@
-import { supabase } from "./supabase.js";
-import { escapeHTML, avatarHTML } from "./utils.js";
-
-const featured = document.querySelector("#featured-players");
-const eventsRoot = document.querySelector("#home-events");
-const randomButton = document.querySelector("#random-character");
-
-async function loadFeatured() {
-  if (!featured) return;
-  const { data, error } = await supabase.from("profiles").select("id, display_name, username, avatar_url, country, active").eq("active", true).order("display_name", { ascending: true }).limit(6);
-  if (error) { featured.innerHTML = "<p>Não foi possível carregar os jogadores.</p>"; return; }
-  featured.innerHTML = (data || []).map(player => `<a class="player-card compact" href="jogador.html?${player.username ? `u=${encodeURIComponent(player.username)}` : `id=${encodeURIComponent(player.id)}`}"><div class="avatar">${avatarHTML(player.display_name || player.username || "Jogador", player.avatar_url, `Foto de ${player.display_name || player.username || "Jogador"}`)}</div><div><h3>${escapeHTML(player.display_name || player.username || "Jogador")}</h3><p>${escapeHTML(player.country || "Localidade não informada")}</p></div></a>`).join("");
-}
-
-async function loadEvents() {
-  if (!eventsRoot) return;
-  const { data, error } = await supabase.from("timeline_events").select("id,title,summary,event_type,starts_at").order("starts_at", { ascending: false }).limit(4);
-  if (error) { eventsRoot.innerHTML = '<p class="muted">As Crônicas ainda não possuem acontecimentos publicados.</p>'; return; }
-  if (!data?.length) { eventsRoot.innerHTML = '<p class="muted">A história ainda está esperando seu primeiro registro.</p>'; return; }
-  eventsRoot.innerHTML = data.map(event => `<a class="home-event" href="evento.html?id=${encodeURIComponent(event.id)}"><small>${event.starts_at ? new Date(event.starts_at).toLocaleDateString("pt-BR") : escapeHTML(event.event_type || "Evento")}</small><strong>${escapeHTML(event.title)}</strong>${event.summary ? `<p>${escapeHTML(event.summary)}</p>` : ""}</a>`).join("");
-}
-
-randomButton?.addEventListener("click", async () => {
-  randomButton.disabled = true;
-  randomButton.textContent = "Procurando...";
-  const { data } = await supabase.from("characters").select("id").eq("status", "approved").limit(200);
-  if (data?.length) {
-    const chosen = data[Math.floor(Math.random() * data.length)];
-    window.location.href = `personagem.html?id=${encodeURIComponent(chosen.id)}`;
-    return;
-  }
-  randomButton.disabled = false;
-  randomButton.textContent = "Nenhum personagem disponível";
-});
-
-Promise.allSettled([loadFeatured(), loadEvents()]);
+import{ supabase }from'./supabase.js';import{escapeHTML,avatarHTML,formatDate}from'./utils.js';const e=v=>escapeHTML(String(v??''));
+async function featuredPlayers(){const{data}=await supabase.from('profiles').select('id,username,display_name,avatar_url,country,participation_type').eq('active',true).limit(3);document.querySelector('#featured-players').innerHTML=(data||[]).map(p=>`<a class="player-card" href="jogador.html?u=${encodeURIComponent(p.username||'')}"><div class="avatar">${avatarHTML(p.display_name||p.username,p.avatar_url,'')}</div><div><strong>${e(p.display_name||p.username)}</strong><span>${p.username?'@'+e(p.username):''}</span></div></a>`).join('')||'<p class="profile-feed-empty">Nenhum jogador em destaque.</p>'}
+async function events(){const{data}=await supabase.from('chronicle_events').select('id,title,summary,event_date,season_id').order('event_date',{ascending:false}).limit(4);document.querySelector('#home-events').innerHTML=(data||[]).map(x=>`<a class="home-event" href="evento.html?id=${x.id}"><time>${x.event_date?new Date(x.event_date+'T12:00:00').toLocaleDateString('pt-BR'):''}</time><strong>${e(x.title)}</strong><span>${e(x.summary||'')}</span></a>`).join('')||'<p class="profile-feed-empty">Nenhum acontecimento publicado.</p>'}
+async function activity(){const root=document.querySelector('#recent-activity');const [posts,chars,events]=await Promise.all([supabase.from('profile_posts').select('id,content,created_at,author:profiles!profile_posts_author_id_fkey(display_name,username)').eq('post_type','personal').order('created_at',{ascending:false}).limit(4),supabase.from('characters').select('id,name,created_at,owner:profiles!characters_owner_id_fkey(display_name,username)').eq('status','approved').order('created_at',{ascending:false}).limit(3),supabase.from('chronicle_events').select('id,title,event_date,created_at').order('created_at',{ascending:false}).limit(3)]);let rows=[];(posts.data||[]).forEach(x=>rows.push({date:x.created_at,icon:'✦',html:`<strong>${e(x.author?.display_name||x.author?.username||'Jogador')}</strong> publicou: ${e((x.content||'').slice(0,100))}`}));(chars.data||[]).forEach(x=>rows.push({date:x.created_at,icon:'♙',html:`<strong>${e(x.name)}</strong> entrou para o Acervo de Personagens.`,href:`personagem.html?id=${x.id}`}));(events.data||[]).forEach(x=>rows.push({date:x.created_at,icon:'◇',html:`Novo acontecimento canônico: <strong>${e(x.title)}</strong>.`,href:`evento.html?id=${x.id}`}));rows.sort((a,b)=>new Date(b.date)-new Date(a.date));root.innerHTML=rows.slice(0,7).map(x=>`<${x.href?'a':'div'} class="activity-item" ${x.href?`href="${x.href}"`:''}><span class="activity-mark">${x.icon}</span><div>${x.html}<small>${formatDate(x.date)}</small></div></${x.href?'a':'div'}>`).join('')||'<p class="profile-feed-empty">A história está esperando o próximo capítulo.</p>'}
+async function highlights(){const root=document.querySelector('#portal-highlights');const{data,error}=await supabase.from('featured_content').select('*').eq('active',true).order('position').limit(6);if(error){root.innerHTML='<p class="profile-feed-empty">Os destaques ainda não foram configurados.</p>';return}root.innerHTML=(data||[]).map(x=>`<a class="highlight-card" href="${e(x.target_url||'#')}">${x.image_url?`<img src="${e(x.image_url)}" alt="">`:''}<span class="eyebrow">${e(({character:'Personagem',party:'Party',chronicle:'Crônica',player:'Jogador'}[x.content_type])||'Destaque')}</span><h3>${e(x.title)}</h3><p>${e(x.subtitle||'')}</p></a>`).join('')||'<p class="profile-feed-empty">Nenhum destaque editorial no momento.</p>'}
+document.querySelector('#random-character')?.addEventListener('click',async()=>{const{data}=await supabase.from('characters').select('id').eq('status','approved').limit(500);if(data?.length)location.href=`personagem.html?id=${data[Math.floor(Math.random()*data.length)].id}`});Promise.allSettled([featuredPlayers(),events(),activity(),highlights()]);
