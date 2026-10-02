@@ -1069,3 +1069,21 @@ select option{background:#11100e;color:var(--text)}
 
 /* Etapa 5.5 — solicitações de progresso */
 .badge-progress-request-form{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,.45fr);gap:16px;align-items:end}.badge-progress-request-form .span-full{grid-column:1/-1}.badge-current-value{margin:0;color:var(--muted,#b9ad91)}.request-progress-number{font-size:clamp(1.5rem,3vw,2.35rem);color:var(--gold,#d7b56d)}@media(max-width:720px){.badge-progress-request-form{grid-template-columns:1fr}}
+
+/* Etapa 5.6 — Iconografia e UX */
+.ui-icon{width:1.08em;height:1.08em;display:inline-block;flex:0 0 auto;vertical-align:-.14em;color:currentColor}
+.nav-links>a,.nav-more>summary,.user-menu-dropdown a,.admin-menu-dropdown a,.dropdown-logout,.user-menu-toggle,.admin-menu-toggle{display:inline-flex;align-items:center;gap:7px}
+.nav-links>a .ui-icon,.nav-more>summary .ui-icon{width:15px;height:15px;opacity:.72;transition:opacity .18s,color .18s}
+.nav-links>a:hover .ui-icon,.nav-more>summary:hover .ui-icon{opacity:1;color:var(--accent-light)}
+.nav-more>summary .nav-chevron,.user-menu-toggle .nav-chevron,.admin-menu-toggle .nav-chevron{width:12px;height:12px;margin-left:1px;opacity:.65}
+.user-menu-dropdown a,.admin-menu-dropdown a,.dropdown-logout{width:100%}
+.user-menu-dropdown .ui-icon,.admin-menu-dropdown .ui-icon,.dropdown-logout .ui-icon{width:16px;height:16px;color:#a99570}
+.post-social{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:15px;padding-top:12px;border-top:1px solid rgba(216,181,109,.12)}
+.post-reactions{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.reaction-button{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:42px;height:32px;padding:0 9px;border:1px solid transparent;border-radius:3px;background:transparent;color:#91897e;font:inherit;font-size:.72rem;cursor:pointer;transition:background .16s,border-color .16s,color .16s,transform .16s}
+.reaction-button .ui-icon{width:17px;height:17px}.reaction-button:hover:not(:disabled){color:var(--accent-light);border-color:rgba(216,181,109,.24);background:rgba(216,181,109,.055);transform:translateY(-1px)}
+.reaction-button.active{color:var(--accent-light);border-color:rgba(216,181,109,.32);background:rgba(216,181,109,.09)}
+.reaction-button.active .ui-icon{filter:drop-shadow(0 0 4px rgba(216,181,109,.22))}.reaction-button:disabled{opacity:.42;cursor:not-allowed}
+.post-comments-details{margin-left:auto}.post-comments-details>summary{display:inline-flex;align-items:center;gap:7px;padding:6px 8px;color:#a79d90;font-size:.72rem;cursor:pointer;list-style:none;border-radius:3px;transition:color .16s,background .16s}.post-comments-details>summary::-webkit-details-marker{display:none}.post-comments-details>summary:hover{color:var(--accent-light);background:rgba(216,181,109,.05)}.post-comments-details>summary .ui-icon{width:17px;height:17px}.post-comments-details[open]{width:100%;margin-top:10px}.post-comments-details[open]>summary{margin-left:auto}.post-comments{margin-top:10px;padding-top:12px;border-top:1px solid rgba(216,181,109,.1)}
+.post-icon-action{display:inline-grid;place-items:center;width:30px;height:30px;padding:0;border:1px solid transparent;border-radius:3px;background:transparent;color:#938a7e;cursor:pointer;transition:color .16s,background .16s,border-color .16s}.post-icon-action .ui-icon{width:15px;height:15px}.post-icon-action:hover{color:var(--accent-light);background:rgba(216,181,109,.055);border-color:rgba(216,181,109,.16)}.post-icon-action.danger:hover{color:#d98d86;border-color:rgba(217,141,134,.18);background:rgba(217,141,134,.055)}
+@media(max-width:800px){.nav-links>a .ui-icon{display:none}.nav-more>summary .ui-icon:not(.nav-chevron){display:none}.post-social{align-items:flex-start;flex-wrap:wrap}.post-comments-details{margin-left:0}.reaction-button{min-width:40px;padding:0 8px}.user-menu-dropdown .ui-icon,.admin-menu-dropdown .ui-icon,.dropdown-logout .ui-icon{display:inline-block}}

@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { icon } from "./icons.js";
 
 export async function getSession() {
   const { data, error } = await supabase.auth.getSession();
@@ -36,18 +37,18 @@ export async function updateNavigation() {
   const navLinks = document.querySelector(".nav-links");
   if (navLinks) {
     navLinks.innerHTML = `
-      <a href="jogadores.html">Jogadores</a>
-      <a href="personagens.html">Personagens</a>
-      <a href="ranking.html">Ranking</a>
-      <a href="clans.html">Partys</a>
-      <a href="cronicas.html">Crônicas</a>
-      <a href="explorar.html">Explorar</a>
-      <a href="regras.html">Regulamento</a>
+      <a href="jogadores.html">${icon("users","Jogadores")}</a>
+      <a href="personagens.html">${icon("user","Personagens")}</a>
+      <a href="ranking.html">${icon("trophy","Ranking")}</a>
+      <a href="clans.html">${icon("shield","Partys")}</a>
+      <a href="cronicas.html">${icon("book","Crônicas")}</a>
+      <a href="explorar.html">${icon("compass","Explorar")}</a>
+      <a href="regras.html">${icon("scroll","Regulamento")}</a>
       <details class="nav-more nav-archive">
-        <summary>Arquivo <span aria-hidden="true">▾</span></summary>
+        <summary>${icon("archive","Arquivo")} ${icon("chevronDown","","nav-chevron")}</summary>
         <div class="nav-more-menu">
-          <a href="wiki.html">Arquivo do Mundo</a>
-          <a href="favoritos.html">Favoritos</a>
+          <a href="wiki.html">${icon("archive","Arquivo do Mundo")}</a>
+          <a href="favoritos.html">${icon("bookmark","Favoritos")}</a>
         </div>
       </details>
       <span data-auth-area></span>`;
@@ -116,28 +117,28 @@ export async function updateNavigation() {
         <span class="admin-menu-arrow">▾</span>
       </button>
       <div class="user-menu-dropdown">
-        <a href="${publicProfileUrl}">Meu Perfil</a>
-        <a href="perfil.html">Editar Perfil</a>
-        <a href="notificacoes.html">Notificações${(unreadMentions+unreadGeneral) ? ` (${unreadMentions+unreadGeneral})` : ""}</a>
-        <a href="favoritos.html">Favoritos</a>
-        <a href="minhas-solicitacoes.html">Minhas Solicitações</a>
-        <a href="conquistas.html">Conquistas</a>
+        <a href="${publicProfileUrl}">${icon("user","Meu Perfil")}</a>
+        <a href="perfil.html">${icon("settings","Editar Perfil")}</a>
+        <a href="notificacoes.html">${icon("bell",`Notificações${(unreadMentions+unreadGeneral) ? ` (${unreadMentions+unreadGeneral})` : ""}`)}</a>
+        <a href="favoritos.html">${icon("bookmark","Favoritos")}</a>
+        <a href="minhas-solicitacoes.html">${icon("inbox","Minhas Solicitações")}</a>
+        <a href="conquistas.html">${icon("award","Conquistas")}</a>
         <div class="menu-separator"></div>
-        <button class="dropdown-logout" id="logout-button" type="button">Sair</button>
+        <button class="dropdown-logout" id="logout-button" type="button">${icon("logout","Sair")}</button>
       </div>
     </div>
     ${isAdmin ? `
       <div class="admin-menu">
         <button type="button" class="admin-menu-toggle" aria-expanded="false" aria-haspopup="true">
-          Administração <span class="admin-menu-arrow">▾</span>
+          ${icon("shieldCheck","Administração")} ${icon("chevronDown","","nav-chevron")}
         </button>
         <div class="admin-menu-dropdown">
-          <a href="solicitacoes.html">Solicitações${pendingRequests ? ` (${pendingRequests})` : ""}</a>
-          <a href="cronicas-admin.html">Temporadas & Eventos</a>
-          <a href="personagens.html">Registrar personagem</a>
-          <a href="registrar-party.html">Registrar Party</a>
-          <a href="admin.html">Brasões</a>
-          <a href="gerenciar-jogadores.html">Gerenciar jogadores</a>
+          <a href="solicitacoes.html">${icon("inbox",`Solicitações${pendingRequests ? ` (${pendingRequests})` : ""}`)}</a>
+          <a href="cronicas-admin.html">${icon("calendar","Temporadas & Eventos")}</a>
+          <a href="personagens.html">${icon("plus","Registrar personagem")}</a>
+          <a href="registrar-party.html">${icon("plus","Registrar Party")}</a>
+          <a href="admin.html">${icon("award","Brasões")}</a>
+          <a href="gerenciar-jogadores.html">${icon("userCog","Gerenciar jogadores")}</a>
         </div>
       </div>` : ""}
   `;
