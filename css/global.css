@@ -1066,3 +1066,6 @@ select option{background:#11100e;color:var(--text)}
   .registration-form-actions{align-items:stretch;flex-direction:column}.registration-form-actions .button{width:100%}
   #party-admin>.party-form-wide{padding:18px}
 }
+
+/* Etapa 5.5 — solicitações de progresso */
+.badge-progress-request-form{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,.45fr);gap:16px;align-items:end}.badge-progress-request-form .span-full{grid-column:1/-1}.badge-current-value{margin:0;color:var(--muted,#b9ad91)}.request-progress-number{font-size:clamp(1.5rem,3vw,2.35rem);color:var(--gold,#d7b56d)}@media(max-width:720px){.badge-progress-request-form{grid-template-columns:1fr}}
