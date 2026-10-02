@@ -138,7 +138,7 @@ export async function updateNavigation() {
           <a href="personagens.html">${icon("plus","Registrar personagem")}</a>
           <a href="registrar-party.html">${icon("plus","Registrar Party")}</a>
           <a href="admin.html">${icon("award","Brasões")}</a>
-          <a href="gerenciar-jogadores.html">${icon("userCog","Gerenciar jogadores")}</a>
+          <a href="gerenciar-jogadores.html">${icon("userCog","Gerenciar Jogadores")}</a>
         </div>
       </div>` : ""}
   `;

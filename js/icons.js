@@ -27,6 +27,16 @@ const P={
  chevronDown:'<path d="m6 9 6 6 6-6"/>',
  shieldCheck:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/>',
  userCog:'<circle cx="9" cy="7" r="4"/><path d="M2 21a7 7 0 0 1 10-6.3M18 16v2M18 22v-1M15.4 17.5l1.7 1M20.6 20.5l-1.7-1M15.4 20.5l1.7-1M20.6 17.5l-1.7 1"/>',
- ellipsis:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>'
+ ellipsis:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+ search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+ filter:'<path d="M4 5h16M7 12h10M10 19h4"/>',
+ save:'<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/>',
+ check:'<path d="m5 12 4 4L19 6"/>',
+ x:'<path d="M18 6 6 18M6 6l12 12"/>',
+ xCircle:'<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/>',
+ externalLink:'<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+ arrowLeft:'<path d="m15 18-6-6 6-6M9 12h12"/>',
+ send:'<path d="m22 2-7 20-4-9-9-4zM22 2 11 13"/>',
+ menu:'<path d="M4 6h16M4 12h16M4 18h16"/>'
 };
 export function icon(name,label="",cls="") {return `<svg class="ui-icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[name]||P.sparkles}</svg>${label?`<span>${label}</span>`:""}`}
