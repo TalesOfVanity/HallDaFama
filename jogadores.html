@@ -1,51 +1,48 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jogadores</title>
-  <link rel="stylesheet" href="css/global.css?v=80">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jogadores</title>
+<link href="css/global.css?v=80" rel="stylesheet"/>
 </head>
 <body>
 <header class="site-header">
-  <nav class="nav">
-    <a class="logo" href="index.html">Tales of Vanity</a>
-    <div class="nav-links">
-      <a href="jogadores.html">Jogadores</a>
-      <a href="personagens.html">Personagens</a>
-      <a href="ranking.html">Ranking</a>
-      <a href="clans.html">Partys</a>
-        <details class="nav-more">
-          <summary>Acervo <span aria-hidden="true">▾</span></summary>
-          <div class="nav-more-menu">
-            <a href="explorar.html">Explorar</a>
-            <a href="cronicas.html">Crônicas</a>
-            <a href="legado.html">Legado</a>
-            <a href="regras.html">Regulamento</a>
-          </div>
-        </details>
-      <span data-auth-area></span>
-    </div>
-  </nav>
+<nav class="nav">
+<a class="logo" href="index.html">Tales of Vanity</a>
+<div class="nav-links">
+<a href="jogadores.html">Jogadores</a>
+<a href="personagens.html">Personagens</a>
+<a href="ranking.html">Ranking</a>
+<a href="clans.html">Partys</a>
+<details class="nav-more">
+<summary>Acervo <span aria-hidden="true">▾</span></summary>
+<div class="nav-more-menu">
+<a href="explorar.html">Explorar</a>
+<a href="cronicas.html">Temporadas</a>
+<a href="legado.html">Hall da Fama</a>
+<a href="regras.html">Regulamento</a>
+</div>
+</details>
+<span data-auth-area=""></span>
+</div>
+</nav>
 </header>
-
 <main class="container">
-  <section class="section">
-    <div class="section-heading">
-      <span class="eyebrow">Registros</span>
-      <h1>Jogadores</h1>
-    </div>
-
-    <div class="search">
-      <input id="player-search" type="search" placeholder="Pesquisar jogador...">
-    </div>
-
-    <p id="players-status" class="status"></p>
-    <div id="players-grid" class="grid player-grid"></div>
-  </section>
+<section class="section">
+<div class="section-heading">
+<span class="eyebrow">Registros</span>
+<h1>Jogadores</h1>
+</div>
+<div class="search">
+<input id="player-search" placeholder="Pesquisar jogador..." type="search"/>
+</div>
+<p class="status" id="players-status"></p>
+<div class="grid player-grid" id="players-grid"></div>
+</section>
 </main>
-
-<script type="module" src="js/auth.js?v=80"></script>
-<script type="module" src="js/jogadores.js?v=2"></script>
-<script type="module" src="js/ux.js?v=80"></script></body>
+<script src="js/auth.js?v=80" type="module"></script>
+<script src="js/jogadores.js?v=2" type="module"></script>
+<script src="js/ux.js?v=80" type="module"></script></body>
 </html>

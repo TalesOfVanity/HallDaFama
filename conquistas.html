@@ -1,51 +1,49 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conquistas — Tales of Vanity</title>
-  <link rel="stylesheet" href="css/global.css?v=80">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Conquistas — Tales of Vanity</title>
+<link href="css/global.css?v=80" rel="stylesheet"/>
 </head>
 <body>
 <header class="site-header">
-  <nav class="nav">
-    <a class="logo" href="index.html">Tales of Vanity</a>
-    <div class="nav-links">
-      <a href="jogadores.html">Jogadores</a>
-      <a href="personagens.html">Personagens</a>
-      <a href="ranking.html">Ranking</a>
-      <a href="clans.html">Partys</a>
-        <details class="nav-more">
-          <summary>Acervo <span aria-hidden="true">▾</span></summary>
-          <div class="nav-more-menu">
-            <a href="explorar.html">Explorar</a>
-            <a href="cronicas.html">Crônicas</a>
-            <a href="legado.html">Legado</a>
-            <a href="regras.html">Regulamento</a>
-          </div>
-        </details>
-      <span data-auth-area></span>
-    </div>
-  </nav>
+<nav class="nav">
+<a class="logo" href="index.html">Tales of Vanity</a>
+<div class="nav-links">
+<a href="jogadores.html">Jogadores</a>
+<a href="personagens.html">Personagens</a>
+<a href="ranking.html">Ranking</a>
+<a href="clans.html">Partys</a>
+<details class="nav-more">
+<summary>Acervo <span aria-hidden="true">▾</span></summary>
+<div class="nav-more-menu">
+<a href="explorar.html">Explorar</a>
+<a href="cronicas.html">Temporadas</a>
+<a href="legado.html">Hall da Fama</a>
+<a href="regras.html">Regulamento</a>
+</div>
+</details>
+<span data-auth-area=""></span>
+</div>
+</nav>
 </header>
-
 <main class="container">
-  <section class="section achievements-page">
-    <div class="section-heading achievements-heading">
-      <div>
-        <span class="eyebrow">Seu progresso</span>
-        <h1>Conquistas</h1>
-        <p>Seu acervo de Brasões em Tales of Vanity. Conquistas ainda não obtidas permanecem seladas até o primeiro grau.</p>
-      </div>
-      <div class="achievement-summary" id="achievement-summary" aria-live="polite"></div>
-    </div>
-
-    <p id="achievements-status" class="status"></p>
-    <div id="achievements-grid" class="achievements-grid"></div>
-  </section>
+<section class="section achievements-page">
+<div class="section-heading achievements-heading">
+<div>
+<span class="eyebrow">Seu progresso</span>
+<h1>Conquistas</h1>
+<p>Seu acervo de brasões em Tales of Vanity. Conquistas ainda não obtidas permanecem seladas até o primeiro grau.</p>
+</div>
+<div aria-live="polite" class="achievement-summary" id="achievement-summary"></div>
+</div>
+<p class="status" id="achievements-status"></p>
+<div class="achievements-grid" id="achievements-grid"></div>
+</section>
 </main>
-
-<script type="module" src="js/auth.js?v=80"></script>
-<script type="module" src="js/conquistas.js?v=5"></script>
-<script type="module" src="js/ux.js?v=80"></script></body>
+<script src="js/auth.js?v=80" type="module"></script>
+<script src="js/conquistas.js?v=5" type="module"></script>
+<script src="js/ux.js?v=80" type="module"></script></body>
 </html>

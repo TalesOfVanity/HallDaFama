@@ -1,89 +1,82 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Gerenciar Crônicas — Tales of Vanity</title>
-  <link rel="stylesheet" href="css/global.css?v=80">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Gerenciar Temporadas — Tales of Vanity</title>
+<link href="css/global.css?v=80" rel="stylesheet"/>
 </head>
 <body>
 <header class="site-header">
-  <nav class="nav">
-    <a class="logo" href="index.html">Tales of Vanity</a>
-    <div class="nav-links"><span data-auth-area></span></div>
-  </nav>
+<nav class="nav">
+<a class="logo" href="index.html">Tales of Vanity</a>
+<div class="nav-links"><span data-auth-area=""></span></div>
+</nav>
 </header>
 <main class="container section chronicles-admin-page">
-  <div class="section-heading chronicles-admin-heading">
-    <span class="eyebrow">Administração</span>
-    <h1>Temporadas & Eventos</h1>
-    <p>Organize as fases do RPG e registre acontecimentos que passam a integrar a linha do tempo oficial.</p>
-    <a class="text-link" href="cronicas.html">Ver Crônicas públicas →</a>
-  </div>
-
-  <form id="season-form" class="chronicle-admin-card season-admin-card">
-    <div class="chronicle-card-title">
-      <span class="chronicle-card-index">01</span>
-      <div><span class="eyebrow">Período</span><h2>Nova Temporada / Patch</h2><p>Crie o período que agrupará eventos, conquistas e registros históricos.</p></div>
-    </div>
-    <div class="season-fields">
-      <label class="field-wide"><span>Nome</span><input name="name" required maxlength="100" placeholder="Ex.: Temporada 1 — O Primeiro Reino"></label>
-      <label><span>Início</span><input type="date" name="starts_at"></label>
-      <label><span>Fim</span><input type="date" name="ends_at"></label>
-      <label class="current-season-toggle"><input type="checkbox" name="is_current"><span>Marcar como temporada atual</span></label>
-      <label class="field-description"><span>Descrição</span><textarea name="description" rows="3" placeholder="Descreva brevemente o contexto desta fase do RPG."></textarea></label>
-      <div class="card-action"><button class="button">Criar temporada</button><p class="status"></p></div>
-    </div>
-  </form>
-
-  <form id="event-form" class="chronicle-admin-card event-admin-card">
-    <div class="chronicle-card-title">
-      <span class="chronicle-card-index">02</span>
-      <div><span class="eyebrow">Linha do tempo</span><h2>Novo Evento Canônico</h2><p>Registre um acontecimento e conecte-o às pessoas, personagens e Brasões envolvidos.</p></div>
-    </div>
-
-    <input type="hidden" name="id">
-    <div class="event-editor-grid">
-      <section class="event-form-card">
-        <span class="event-form-kicker">Identidade</span>
-        <label><span>Título do evento</span><input name="title" required maxlength="160" placeholder="Ex.: Fundação da Ordem do Leão"></label>
-        <div class="event-inline-fields">
-          <label><span>Temporada</span><select name="season_id"><option value="">Sem temporada</option></select></label>
-          <label><span>Tipo</span><select name="event_type"><option value="arc">Arco</option><option value="war">Guerra</option><option value="death">Morte</option><option value="party">Party</option><option value="world">Evento mundial</option><option value="other">Outro</option></select></label>
-        </div>
-        <label><span>Banner</span><input name="banner_url" placeholder="Cole a URL de uma imagem (opcional)"></label>
-        <div class="event-inline-fields">
-          <label><span>Início</span><input type="date" name="starts_at"></label>
-          <label><span>Fim</span><input type="date" name="ends_at"></label>
-        </div>
-      </section>
-
-      <section class="event-form-card">
-        <span class="event-form-kicker">Participantes</span>
-        <label><span>Personagens relacionados</span><select name="characters" multiple size="5"></select><small>Use Ctrl para selecionar mais de um.</small></label>
-        <label><span>Jogadores relacionados</span><select name="players" multiple size="5"></select><small>Inclua quem participou diretamente do acontecimento.</small></label>
-      </section>
-
-      <section class="event-form-card">
-        <span class="event-form-kicker">Registro</span>
-        <label><span>Resumo da linha do tempo</span><textarea name="summary" rows="4" placeholder="Resuma o que aconteceu em poucas linhas."></textarea></label>
-        <label><span>Brasões relacionados</span><select name="badges" multiple size="5"></select></label>
-      </section>
-    </div>
-
-    <section class="event-narrative-card">
-      <div><span class="event-form-kicker">Arquivo histórico</span><h3>Relato do acontecimento</h3><p>Este texto ficará preservado na página pública do evento.</p></div>
-      <textarea name="content" rows="9" placeholder="Conte o acontecimento com os detalhes que devem permanecer no arquivo histórico do RPG."></textarea>
-    </section>
-
-    <div class="event-submit-row"><p class="status"></p><div class="form-actions"><button id="cancel-event-edit" class="button button-secondary" type="button" hidden>Cancelar Edição</button><button id="event-submit" class="button">Publicar Evento</button></div></div>
-  </form>
-
-  <section class="chronicles-existing">
-    <div class="section-heading compact-heading"><span class="eyebrow">Arquivo</span><h2>Eventos registrados</h2></div>
-    <div id="admin-events" class="request-list"></div>
-  </section>
+<div class="section-heading chronicles-admin-heading">
+<span class="eyebrow">Administração</span>
+<h1>Temporadas &amp; Episódios</h1>
+<p>Organize as fases do RPG e registre acontecimentos que passam a integrar a linha do tempo oficial.</p>
+<a class="text-link" href="cronicas.html">Ver temporadas públicas →</a>
+</div>
+<form class="chronicle-admin-card season-admin-card" id="season-form">
+<div class="chronicle-card-title">
+<span class="chronicle-card-index">01</span>
+<div><span class="eyebrow">Período</span><h2>Nova Temporada</h2><p>Crie o período que agrupará episódios, conquistas e registros históricos.</p></div>
+</div>
+<div class="season-fields">
+<label class="field-wide"><span>Nome</span><input maxlength="100" name="name" placeholder="Ex.: Temporada 1 — O Primeiro Reino" required=""/></label>
+<label><span>Início</span><input name="starts_at" type="date"/></label>
+<label><span>Fim</span><input name="ends_at" type="date"/></label>
+<label class="current-season-toggle"><input name="is_current" type="checkbox"/><span>Marcar como temporada atual</span></label>
+<label class="field-description"><span>Descrição</span><textarea name="description" placeholder="Descreva brevemente o contexto desta fase do RPG." rows="3"></textarea></label>
+<div class="card-action"><button class="button">Criar temporada</button><p class="status"></p></div>
+</div>
+</form>
+<form class="chronicle-admin-card event-admin-card" id="event-form">
+<div class="chronicle-card-title">
+<span class="chronicle-card-index">02</span>
+<div><span class="eyebrow">Linha do tempo</span><h2>Novo Episódio</h2><p>Registre um episódio e conecte-o aos personagens e jogadores participantes.</p></div>
+</div>
+<input name="id" type="hidden"/>
+<div class="event-editor-grid">
+<section class="event-form-card">
+<span class="event-form-kicker">Identidade</span>
+<label><span>Título do episódio</span><input maxlength="160" name="title" placeholder="Ex.: Fundação da Ordem do Leão" required=""/></label>
+<div class="event-inline-fields">
+<label><span>Temporada</span><select name="season_id"><option value="">Sem temporada</option></select></label><label><span>Nº do episódio</span><input min="1" name="episode_number" placeholder="Ex.: 1" type="number"/></label>
+<label><span>Formato</span><select name="episode_type"><option value="regular">Regular</option><option value="special">Especial</option><option value="premiere">Estreia</option><option value="finale">Final de temporada</option></select></label><label hidden=""><span>Tipo</span><select name="event_type"><option value="arc">Arco</option><option value="war">Guerra</option><option value="death">Morte</option><option value="party">Party</option><option value="world">Especial</option><option value="other">Outro</option></select></label>
+</div>
+<label><span>Banner</span><input name="banner_url" placeholder="Cole a URL de uma imagem (opcional)"/></label>
+<div class="event-inline-fields">
+<label><span>Início</span><input name="starts_at" type="date"/></label>
+<label><span>Fim</span><input name="ends_at" type="date"/></label>
+</div>
+</section>
+<section class="event-form-card">
+<span class="event-form-kicker">Participantes</span>
+<label><span>Personagens relacionados</span><select multiple="" name="characters" size="5"></select><small>Use Ctrl para selecionar mais de um.</small></label>
+<label><span>Jogadores relacionados</span><select multiple="" name="players" size="5"></select><small>Inclua quem participou diretamente do acontecimento.</small></label>
+</section>
+<section class="event-form-card">
+<span class="event-form-kicker">Registro</span>
+<label><span>Resumo do episódio</span><textarea name="summary" placeholder="Resuma o que aconteceu em poucas linhas." rows="4"></textarea></label>
+<label><span>Brasões relacionados</span><select multiple="" name="badges" size="5"></select></label>
+</section>
+</div>
+<section class="event-narrative-card">
+<div><span class="event-form-kicker">Arquivo histórico</span><h3>Relato do episódio</h3><p>Este texto ficará preservado na página pública do episódio.</p></div>
+<textarea name="content" placeholder="Conte o acontecimento com os detalhes que devem permanecer no arquivo histórico do RPG." rows="9"></textarea>
+</section>
+<div class="event-submit-row"><p class="status"></p><div class="form-actions"><button class="button button-secondary" hidden="" id="cancel-event-edit" type="button">Cancelar Edição</button><button class="button" id="event-submit">Publicar Episódio</button></div></div>
+</form>
+<section class="chronicles-existing">
+<div class="section-heading compact-heading"><span class="eyebrow">Arquivo</span><h2>Episódios registrados</h2></div>
+<div class="request-list" id="admin-events"></div>
+</section>
 </main>
-<script type="module" src="js/auth.js?v=80"></script>
-<script type="module" src="js/cronicas-admin.js?v=71"></script>
-<script type="module" src="js/ux.js?v=80"></script></body></html>
+<script src="js/auth.js?v=80" type="module"></script>
+<script src="js/cronicas-admin.js?v=71" type="module"></script>
+<script src="js/ux.js?v=80" type="module"></script></body></html>

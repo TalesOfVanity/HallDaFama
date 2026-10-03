@@ -1,44 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Entrar</title>
-  <link rel="stylesheet" href="css/global.css?v=80">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Entrar</title>
+<link href="css/global.css?v=80" rel="stylesheet"/>
 </head>
 <body>
 <header class="site-header">
-  <nav class="nav">
-    <a class="logo" href="index.html">Tales of Vanity</a>
-    <div class="nav-links">
-      <a href="jogadores.html">Jogadores</a>
-      <a href="personagens.html">Personagens</a>
-      <a href="ranking.html">Ranking</a>
-    </div>
-  </nav>
+<nav class="nav">
+<a class="logo" href="index.html">Tales of Vanity</a>
+<div class="nav-links">
+<a href="jogadores.html">Jogadores</a>
+<a href="personagens.html">Personagens</a>
+<a href="ranking.html">Ranking</a>
+</div>
+</nav>
 </header>
-
 <main class="container">
-  <form id="login-form" class="form-card">
-    <span class="eyebrow">Acesso</span>
-    <h1>Entrar</h1>
-
-    <div class="field">
-      <label for="identifier">E-mail ou @username</label>
-      <input id="identifier" name="identifier" type="text" autocomplete="username" placeholder="@username ou seu@email.com" required>
-    </div>
-
-    <div class="field">
-      <label for="password">Senha</label>
-      <input id="password" name="password" type="password" autocomplete="current-password" required>
-    </div>
-
-    <button class="button" type="submit">Entrar</button>
-    <p id="login-status" class="status"></p>
-    <p>Não possui conta? <a href="cadastro.html">Cadastre-se</a>.</p>
-  </form>
+<form class="form-card" id="login-form">
+<span class="eyebrow">Acesso</span>
+<h1>Entrar</h1>
+<div class="field">
+<label for="identifier">E-mail ou @username</label>
+<input autocomplete="username" id="identifier" name="identifier" placeholder="@username ou seu@email.com" required="" type="text"/>
+</div>
+<div class="field">
+<label for="password">Senha</label>
+<input autocomplete="current-password" id="password" name="password" required="" type="password"/>
+</div>
+<button class="button" type="submit">Entrar</button>
+<p class="status" id="login-status"></p>
+<p>Não possui conta? <a href="cadastro.html">Cadastre-se</a>.</p>
+</form>
 </main>
-
-<script type="module" src="js/login.js?v=2"></script>
-<script type="module" src="js/ux.js?v=80"></script></body>
+<script src="js/login.js?v=2" type="module"></script>
+<script src="js/ux.js?v=80" type="module"></script></body>
 </html>

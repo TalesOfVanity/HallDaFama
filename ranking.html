@@ -1,17 +1,18 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Ranking — Tales of Vanity</title><link rel="stylesheet" href="css/global.css?v=80"></head><body>
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>Ranking — Tales of Vanity</title><link href="css/global.css?v=80" rel="stylesheet"/></head><body>
 <header class="site-header"><nav class="nav"><a class="logo" href="index.html">Tales of Vanity</a><div class="nav-links"><a href="jogadores.html">Jogadores</a><a href="personagens.html">Personagens</a><a href="ranking.html">Ranking</a><a href="clans.html">Partys</a>
-        <details class="nav-more">
-          <summary>Acervo <span aria-hidden="true">▾</span></summary>
-          <div class="nav-more-menu">
-            <a href="explorar.html">Explorar</a>
-            <a href="cronicas.html">Crônicas</a>
-            <a href="legado.html">Legado</a>
-            <a href="regras.html">Regulamento</a>
-          </div>
-        </details><span data-auth-area></span></div></nav></header>
+<details class="nav-more">
+<summary>Acervo <span aria-hidden="true">▾</span></summary>
+<div class="nav-more-menu">
+<a href="explorar.html">Explorar</a>
+<a href="cronicas.html">Temporadas</a>
+<a href="legado.html">Hall da Fama</a>
+<a href="regras.html">Regulamento</a>
+</div>
+</details><span data-auth-area=""></span></div></nav></header>
 <main class="container"><section class="section"><div class="section-heading"><span class="eyebrow">Classificação</span><h1>Tales of Vanity - Ranking</h1></div>
-<div class="ranking-tabs" role="tablist"><button class="button button-small ranking-tab active" data-ranking-tab="players">Jogadores</button><button class="button button-small ranking-tab" data-ranking-tab="characters">Personagens</button><button class="button button-small ranking-tab" data-ranking-tab="partys">Partys</button></div><p id="ranking-status" class="status"></p>
+<div class="ranking-tabs" role="tablist"><button class="button button-small ranking-tab active" data-ranking-tab="players">Jogadores</button><button class="button button-small ranking-tab" data-ranking-tab="characters">Personagens</button><button class="button button-small ranking-tab" data-ranking-tab="partys">Partys</button></div><p class="status" id="ranking-status"></p>
 <section class="ranking-panel" data-ranking-panel="players"><div class="table-wrap"><table><thead><tr><th>#</th><th>Jogador</th><th>Status</th><th>EXP</th><th>Brasões</th><th>Personagens</th></tr></thead><tbody id="players-ranking-body"></tbody></table></div></section>
-<section class="ranking-panel" data-ranking-panel="characters" hidden><div class="table-wrap"><table><thead><tr><th>#</th><th>Personagem</th><th>Player</th><th>Party</th><th>Pontos</th></tr></thead><tbody id="characters-ranking-body"></tbody></table></div></section>
-<section class="ranking-panel" data-ranking-panel="partys" hidden><div class="table-wrap"><table><thead><tr><th>#</th><th>Party</th><th>Personagens</th><th>Pontos</th></tr></thead><tbody id="partys-ranking-body"></tbody></table></div></section>
-</section></main><script type="module" src="js/auth.js?v=80"></script><script type="module" src="js/ranking.js?v=6"></script><script type="module" src="js/ux.js?v=80"></script></body></html>
+<section class="ranking-panel" data-ranking-panel="characters" hidden=""><div class="table-wrap"><table><thead><tr><th>#</th><th>Personagem</th><th>Player</th><th>Party</th><th>Pontos</th></tr></thead><tbody id="characters-ranking-body"></tbody></table></div></section>
+<section class="ranking-panel" data-ranking-panel="partys" hidden=""><div class="table-wrap"><table><thead><tr><th>#</th><th>Party</th><th>Personagens</th><th>Pontos</th></tr></thead><tbody id="partys-ranking-body"></tbody></table></div></section>
+</section></main><script src="js/auth.js?v=80" type="module"></script><script src="js/ranking.js?v=6" type="module"></script><script src="js/ux.js?v=80" type="module"></script></body></html>

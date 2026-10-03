@@ -1,6 +1,7 @@
 import { supabase } from "./supabase.js";
 import { icon } from "./icons.js";
 import { initGlobalSearch } from "./global-search.js";
+import { initNavigationState } from "./navigation-state.js";
 
 export async function getSession() {
   const { data, error } = await supabase.auth.getSession();
@@ -42,13 +43,13 @@ export async function updateNavigation() {
       <a href="personagens.html">${icon("user","Personagens")}</a>
       <a href="ranking.html">${icon("trophy","Ranking")}</a>
       <a href="clans.html">${icon("shield","Partys")}</a>
-      <a href="cronicas.html">${icon("book","Crônicas")}</a>
+      <a href="cronicas.html">${icon("book","Temporadas")}</a>
       <a href="explorar.html">${icon("compass","Explorar")}</a>
       <a href="regras.html">${icon("scroll","Regulamento")}</a>
       <details class="nav-more nav-archive">
         <summary>${icon("archive","Memória")} ${icon("chevronDown","","nav-chevron")}</summary>
         <div class="nav-more-menu">
-          <a href="legado.html">${icon("archive","Legado")}</a>
+          <a href="legado.html">${icon("trophy","Hall da Fama")}</a>
           <a href="favoritos.html">${icon("bookmark","Minha Coleção")}</a>
         </div>
       </details>
@@ -108,6 +109,7 @@ export async function updateNavigation() {
         <span class="admin-menu-arrow">▾</span>
       </button>
       <div class="user-menu-dropdown">
+        <a href="meu-tales.html">${icon("user","Meu Tales")}</a>
         <a href="${publicProfileUrl}">${icon("user","Meu Perfil")}</a>
         <a href="perfil.html">${icon("settings","Editar Perfil")}</a>
         <a href="notificacoes.html">${icon("bell",`Notificações${(unreadMentions+unreadGeneral) ? ` (${unreadMentions+unreadGeneral})` : ""}`)}</a>
@@ -126,10 +128,11 @@ export async function updateNavigation() {
         <div class="admin-menu-dropdown">
           <a href="administracao.html">${icon("shieldCheck","Painel Administrativo")}</a>
           <a href="solicitacoes.html">${icon("inbox",`Solicitações${pendingRequests ? ` (${pendingRequests})` : ""}`)}</a>
-          <a href="cronicas-admin.html">${icon("calendar","Temporadas & Eventos")}</a>
+          <a href="cronicas-admin.html">${icon("calendar","Temporadas & Episódios")}</a>
           <a href="personagens.html">${icon("plus","Registrar personagem")}</a>
           <a href="registrar-party.html">${icon("plus","Registrar Party")}</a>
           <a href="admin.html">${icon("award","Brasões")}</a>
+          <a href="hall-admin.html">${icon("trophy","Hall da Fama")}</a>
           <a href="gerenciar-jogadores.html">${icon("userCog","Gerenciar Jogadores")}</a>
         </div>
       </div>` : ""}
@@ -183,4 +186,5 @@ function escapeHtml(value) {
   })[char]);
 }
 
+initNavigationState();
 updateNavigation();
