@@ -209,7 +209,7 @@ async function loadRanking() {
           </td>
 
           <td>
-            ${e(party?.name || "Sem Party")}
+            ${e(party?.name || "Sem party")}
           </td>
 
           <td>

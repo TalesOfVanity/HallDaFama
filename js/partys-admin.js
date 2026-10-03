@@ -20,7 +20,7 @@ async function loadParties() {
 
 function render() {
   if (!parties.length) {
-    list.innerHTML = "<p>Nenhuma Party registrada.</p>";
+    list.innerHTML = "<p>Nenhuma party registrada.</p>";
     return;
   }
   list.innerHTML = parties.map(p => `

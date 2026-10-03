@@ -6,7 +6,10 @@ const status = document.querySelector("#clans-status");
 const e = value => escapeHTML(String(value ?? ""));
 
 async function load() {
-  status.textContent = "Carregando acervo de Partys...";
+  status.textContent = "Carregando acervo de partys...";
+  const { data: { user } } = await supabase.auth.getUser();
+  const favRes = user ? await supabase.from("favorites").select("target_id").eq("user_id", user.id).eq("target_type", "party") : { data: [] };
+  const favoriteIds = new Set((favRes.data || []).map(x => x.target_id));
 
   const [partiesRes, charactersRes] = await Promise.all([
     supabase.from("clans").select("*").order("name"),
@@ -45,7 +48,7 @@ async function load() {
 
   const rankMap = new Map(ranked.map((party, index) => [party.id, index + 1]));
 
-  status.textContent = `${parties.length} Party(s) registrada(s).`;
+  status.textContent = `${parties.length} party(s) registrada(s).`;
 
   grid.innerHTML = parties.map(party => {
     const rank = rankMap.get(party.id);
@@ -92,10 +95,11 @@ async function load() {
             <div class="party-member-chips">${members}</div>
           </div>
 
-          <div class="party-archive-footer">${officialLink}</div>
+          <div class="party-archive-footer">${officialLink}${user?`<button class="button button-small party-favorite" data-party-favorite="${party.id}">${favoriteIds.has(party.id)?"★ Na Coleção":"☆ Adicionar à Coleção"}</button>`:""}</div>
         </div>
       </article>`;
-  }).join("") || '<p>Nenhuma Party registrada.</p>';
+  }).join("") || '<p>Nenhuma party registrada.</p>';
+  grid.querySelectorAll('[data-party-favorite]').forEach(btn=>btn.onclick=async()=>{const pid=btn.dataset.partyFavorite,exists=favoriteIds.has(pid);const r=exists?await supabase.from('favorites').delete().match({user_id:user.id,target_type:'party',target_id:pid}):await supabase.from('favorites').insert({user_id:user.id,target_type:'party',target_id:pid});if(!r.error){exists?favoriteIds.delete(pid):favoriteIds.add(pid);btn.textContent=exists?'☆ Adicionar à Coleção':'★ Na Coleção'}});
 }
 
 load();

@@ -1,5 +1,6 @@
 import { supabase } from "./supabase.js";
 import { icon } from "./icons.js";
+import { initGlobalSearch } from "./global-search.js";
 
 export async function getSession() {
   const { data, error } = await supabase.auth.getSession();
@@ -48,10 +49,11 @@ export async function updateNavigation() {
         <summary>${icon("archive","Memória")} ${icon("chevronDown","","nav-chevron")}</summary>
         <div class="nav-more-menu">
           <a href="legado.html">${icon("archive","Legado")}</a>
-          <a href="favoritos.html">${icon("bookmark","Favoritos")}</a>
+          <a href="favoritos.html">${icon("bookmark","Minha Coleção")}</a>
         </div>
       </details>
       <span data-auth-area></span>`;
+    initGlobalSearch();
   }
 
   const authArea = document.querySelector("[data-auth-area]");
@@ -109,7 +111,7 @@ export async function updateNavigation() {
         <a href="${publicProfileUrl}">${icon("user","Meu Perfil")}</a>
         <a href="perfil.html">${icon("settings","Editar Perfil")}</a>
         <a href="notificacoes.html">${icon("bell",`Notificações${(unreadMentions+unreadGeneral) ? ` (${unreadMentions+unreadGeneral})` : ""}`)}</a>
-        <a href="favoritos.html">${icon("bookmark","Favoritos")}</a>
+        <a href="favoritos.html">${icon("bookmark","Minha Coleção")}</a>
         <a href="minhas-solicitacoes.html">${icon("inbox","Minhas Solicitações")}</a>
         <a href="conquistas.html">${icon("award","Conquistas")}</a>
         <div class="menu-separator"></div>
