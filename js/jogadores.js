@@ -15,6 +15,7 @@ async function loadPlayers() {
     .from("profiles")
     .select("id, display_name, username, avatar_url, country, bio, created_at, active, participation_type")
     .eq("active", true)
+    .eq("listed", true)
     .order("display_name", { ascending: true });
 
   if (error) {

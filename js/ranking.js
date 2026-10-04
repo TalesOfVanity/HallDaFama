@@ -29,7 +29,8 @@ async function loadRanking() {
     supabase
       .from("profiles")
       .select("id, display_name, username, active, participation_type, role")
-      .eq("active", true),
+      .eq("active", true)
+      .eq("listed", true),
 
     supabase
       .from("badges")

@@ -24,10 +24,10 @@ function renderPreview(profile) {
         <h3>${escapeHTML(name)}</h3>
         <p>${escapeHTML(profile.country || "Localidade não informada")}</p>
         <div class="player-status-tags">
-          <span class="status-tag">${escapeHTML(participationLabel(profile.participation_type))}</span>
+          ${profile.listed !== false ? `<span class="status-tag">${escapeHTML(participationLabel(profile.participation_type))}</span>` : ""}
           ${profile.role === "admin" ? '<span class="status-tag admin-tag">Admin</span>' : ""}
         </div>
-        ${profile.bio ? `<p class="profile-preview-bio">${escapeHTML(profile.bio)}</p>` : ""}
+        ${profile.bio ? `<p class="profile-preview-bio profile-bio">${escapeHTML(profile.bio)}</p>` : ""}
       </div>
     </div>`;
 }
@@ -39,7 +39,7 @@ async function init() {
   userId = session.user.id;
   const { data: profile, error } = await supabase
     .from("profiles")
-    .select("id, display_name, username, avatar_url, country, bio, participation_type, role")
+    .select("id, display_name, username, avatar_url, country, bio, participation_type, role, listed")
     .eq("id", userId)
     .single();
 
@@ -54,6 +54,8 @@ async function init() {
   form.elements.country.value = profile.country || "";
   form.elements.bio.value = profile.bio || "";
   form.elements.participation_type.value = profile.participation_type || "interpreter";
+  const participationField = form.elements.participation_type?.closest(".field");
+  if (participationField) participationField.hidden = profile.listed === false;
   form.hidden = false;
   renderPreview(profile);
 }
@@ -81,7 +83,7 @@ form?.addEventListener("submit", async event => {
     .from("profiles")
     .update(updates)
     .eq("id", userId)
-    .select("id, display_name, username, avatar_url, country, bio, participation_type, role")
+    .select("id, display_name, username, avatar_url, country, bio, participation_type, role, listed")
     .single();
 
   if (error) { setStatus(status, error.message, "error"); return; }

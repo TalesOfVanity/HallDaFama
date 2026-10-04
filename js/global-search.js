@@ -9,7 +9,7 @@ async function runSearch(q,results){
  results.innerHTML='<p class="global-search-hint">Pesquisando no Acervo...</p>';
  const like=`%${s}%`;
  const [p,c,g,ch]=await Promise.all([
-  supabase.from('profiles').select('id,display_name,username,avatar_url').eq('active',true).or(`display_name.ilike.${like},username.ilike.${like}`).limit(5),
+  supabase.from('profiles').select('id,display_name,username,avatar_url').eq('active',true).eq('listed',true).or(`display_name.ilike.${like},username.ilike.${like}`).limit(5),
   supabase.from('characters').select('id,name,nickname,portrait_url').eq('status','approved').or(`name.ilike.${like},nickname.ilike.${like}`).limit(6),
   supabase.from('clans').select('id,name,acronym,emblem_url').or(`name.ilike.${like},acronym.ilike.${like}`).limit(5),
   supabase.from('timeline_events').select('id,title,summary').or(`title.ilike.${like},summary.ilike.${like}`).limit(5)

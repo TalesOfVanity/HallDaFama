@@ -1145,3 +1145,7 @@ html{scroll-behavior:smooth}body{overflow-x:hidden}button,a,input,select,textare
 .home-manifesto a{text-decoration:none}.home-manifesto a:hover{text-decoration:underline}.home-actions a[target=_blank]{white-space:nowrap}
 @media(max-width:650px){.character-picker-results{position:static;max-height:260px}.character-card-community{filter:none}.compare-picker{grid-template-columns:1fr!important}}
 select:not([multiple]){background-image:linear-gradient(45deg,transparent 50%,#d8b56d 50%),linear-gradient(135deg,#d8b56d 50%,transparent 50%);background-position:calc(100% - 17px) 19px,calc(100% - 12px) 19px;background-size:5px 5px,5px 5px;background-repeat:no-repeat}.tales-select-wrap select{background-image:none}select[multiple]{padding:8px 10px;appearance:auto;-webkit-appearance:auto}
+
+/* 9.1.2 — perfis administrativos e bios multilinha */
+.profile-bio, .profile-preview-bio { white-space: pre-line; }
+.administrative-profile .profile-hero-main { max-width: 760px; }
