@@ -1,5 +1,6 @@
 // Tales of Vanity 6.0 — camada global de UX e acessibilidade.
 import { icon } from './icons.js';
+import { supabase } from './supabase.js';
 
 const actionIcons = [
   [/^salvar\b/i,'save'],[/^editar\b/i,'pencil'],[/^excluir\b|^remover\b/i,'trash'],
@@ -56,9 +57,45 @@ function breadcrumbs(){
 }
 function mobileNav(){
  const nav=document.querySelector('.nav');const links=document.querySelector('.nav-links');if(!nav||!links||nav.querySelector('.mobile-nav-toggle'))return;
- const b=document.createElement('button');b.type='button';b.className='mobile-nav-toggle';b.setAttribute('aria-label','Abrir menu de navegação');b.setAttribute('aria-expanded','false');b.innerHTML=icon('menu');b.onclick=()=>{const open=nav.classList.toggle('mobile-open');b.setAttribute('aria-expanded',String(open));b.setAttribute('aria-label',open?'Fechar menu de navegação':'Abrir menu de navegação')};nav.insertBefore(b,links)
+ const b=document.createElement('button');b.type='button';b.className='mobile-nav-toggle';b.setAttribute('aria-label','Abrir menu de navegação');b.setAttribute('aria-expanded','false');b.innerHTML=icon('menu');const close=()=>{nav.classList.remove('mobile-open');document.body.classList.remove('nav-locked');b.setAttribute('aria-expanded','false');b.setAttribute('aria-label','Abrir menu de navegação');b.innerHTML=icon('menu')};b.onclick=()=>{const open=!nav.classList.contains('mobile-open');if(open){nav.classList.add('mobile-open');document.body.classList.add('nav-locked');b.setAttribute('aria-expanded','true');b.setAttribute('aria-label','Fechar menu de navegação');b.innerHTML=icon('x')}else close()};links.addEventListener('click',e=>{if(e.target.closest('a')&&innerWidth<=820)close()});addEventListener('resize',()=>{if(innerWidth>820)close()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&nav.classList.contains('mobile-open'))close()});nav.insertBefore(b,links)
 }
-function polish(){enhanceButtons();enhanceForms();activeNavigation();enhanceTables();enhanceExternalLinks();enhanceEmptyStates();breadcrumbs();mobileNav()}
+
+
+const MEDIA_FIELDS = new Set(['avatar_url','portrait_url','banner_url','cover_url','image_url']);
+function mediaKind(input){return (input.name||input.id||'image').replace(/_url$/,'').replace(/[^a-z0-9_-]/gi,'-').toLowerCase()}
+function enhanceMediaUploads(root=document){
+  root.querySelectorAll?.('input[type="url"],input[name$="_url"]').forEach(input=>{
+    if(input.dataset.mediaEnhanced || !MEDIA_FIELDS.has(input.name||'')) return;
+    input.dataset.mediaEnhanced='true';
+    const box=document.createElement('div');box.className='media-upload';
+    const picker=document.createElement('div');picker.className='media-upload-picker';picker.innerHTML=`${icon('image')}<span><strong>Escolher imagem</strong><small>JPG, PNG ou WebP · até 5 MB</small></span><button type="button" class="media-upload-button">Selecionar</button><input type="file" accept="image/jpeg,image/png,image/webp" hidden>`;
+    const preview=document.createElement('div');preview.className='media-upload-preview';preview.hidden=true;
+    const divider=document.createElement('span');divider.className='media-upload-divider';divider.textContent='ou use uma URL externa';
+    input.parentNode.insertBefore(box,input);box.append(picker,preview,divider,input);
+    const file=picker.querySelector('input[type=file]');picker.querySelector('.media-upload-button')?.addEventListener('click',()=>file.click());
+    const show=url=>{preview.innerHTML=url?`<img src="${String(url).replace(/"/g,'&quot;')}" alt="Pré-visualização"><button type="button" class="media-upload-clear">Remover</button>`:'';preview.hidden=!url;preview.querySelector('button')?.addEventListener('click',()=>{input.value='';file.value='';preview.hidden=true;preview.innerHTML='';input.dispatchEvent(new Event('input',{bubbles:true}))})};
+    if(input.value) show(input.value);
+    input.addEventListener('change',()=>show(input.value.trim()));
+    file.addEventListener('change',async()=>{
+      const f=file.files?.[0];if(!f)return;
+      if(!['image/jpeg','image/png','image/webp'].includes(f.type)){toast('Formato não suportado. Use JPG, PNG ou WebP.','error');file.value='';return}
+      if(f.size>5*1024*1024){toast('A imagem deve ter no máximo 5 MB.','error');file.value='';return}
+      const {data:{user}}=await supabase.auth.getUser();if(!user){toast('Entre na sua conta para enviar imagens.','error');file.value='';return}
+      picker.classList.add('is-uploading');picker.querySelector('strong').textContent='Enviando...';
+      try{
+        const ext=(f.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');
+        const path=`${user.id}/${mediaKind(input)}/${crypto.randomUUID()}.${ext}`;
+        const {error}=await supabase.storage.from('tov-media').upload(path,f,{cacheControl:'31536000',upsert:false,contentType:f.type});if(error)throw error;
+        const {data}=supabase.storage.from('tov-media').getPublicUrl(path);input.value=data.publicUrl;input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));show(data.publicUrl);toast('Imagem enviada.','success');
+      }catch(err){toast(err?.message||'Não foi possível enviar a imagem.','error')}
+      finally{picker.classList.remove('is-uploading');picker.querySelector('strong').textContent='Escolher imagem'}
+    });
+  });
+}
+function enhanceImagePerformance(root=document){root.querySelectorAll?.('img:not([loading])').forEach((img,i)=>{if(i>1)img.loading='lazy';img.decoding='async';img.addEventListener('error',()=>img.classList.add('image-broken'),{once:true})})}
+
+function polish(){enhanceMediaUploads();enhanceImagePerformance();enhanceButtons();enhanceForms();activeNavigation();enhanceTables();enhanceExternalLinks();enhanceEmptyStates();breadcrumbs();mobileNav()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',polish);else polish();
 // auth.js reconstrói a navegação após o carregamento.
-setTimeout(()=>{activeNavigation();enhanceButtons()},800);
+setTimeout(()=>{activeNavigation();enhanceButtons();enhanceMediaUploads();enhanceImagePerformance()},800);
+const mediaObserver=new MutationObserver(m=>m.forEach(x=>x.addedNodes.forEach(n=>{if(n.nodeType===1){enhanceMediaUploads(n);enhanceImagePerformance(n)}})));if(document.body)mediaObserver.observe(document.body,{childList:true,subtree:true});
