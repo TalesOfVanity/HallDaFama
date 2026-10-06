@@ -1239,3 +1239,132 @@ html[data-theme="light"] ::selection{background:#17345f;color:#fffaf0;}
   .theme-control.open .theme-menu{display:grid;grid-template-columns:repeat(3,1fr);}
   .theme-menu button{justify-content:center;padding:10px 6px;text-align:center;}
 }
+
+/* Tales of Vanity 9.3.2 — Arcane Blue Palette
+   Fantasia noturna azul/índigo com acentos opala, vinho, coral e ouro. */
+:root,
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#080d18;
+  --surface:#0d1628;
+  --surface-2:#14233d;
+  --border:#293b5f;
+  --text:#f0e8d8;
+  --muted:#a9b0c1;
+  --accent:#d4ad59;
+  --accent-light:#efcb78;
+  --danger:#a83255;
+  --success:#6f9b8c;
+  --page-bg:#080d18;
+  --page-glow:#16284a;
+  --surface-soft:#0d1628;
+  --surface-raised:#14233d;
+  --field-bg:#0a1221;
+  --header-bg:rgba(8,13,24,.94);
+  --dropdown-bg:#0d1628;
+  --text-strong:#f4eddf;
+  --text-soft:#c4cada;
+  --shadow:rgba(1,4,12,.56);
+  --arcane:#5367b5;
+  --opal:#7562b8;
+  --blood:#720d38;
+  --fae:#db7955;
+}
+html[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f2eddf;
+  --surface:#fbf7ed;
+  --surface-2:#e5e8ed;
+  --border:#aab5c7;
+  --text:#14284a;
+  --muted:#657086;
+  --accent:#a9792b;
+  --accent-light:#76521b;
+  --danger:#963c54;
+  --success:#557d70;
+  --page-bg:#f2eddf;
+  --page-glow:#dbe4ef;
+  --surface-soft:#fbf7ed;
+  --surface-raised:#e9edf2;
+  --field-bg:#fffaf0;
+  --header-bg:rgba(242,237,223,.95);
+  --dropdown-bg:#fffaf0;
+  --text-strong:#102b52;
+  --text-soft:#405675;
+  --shadow:rgba(22,40,70,.17);
+  --arcane:#365b93;
+  --opal:#6850ad;
+  --blood:#7d2347;
+  --fae:#c96d4e;
+}
+@media(prefers-color-scheme:light){
+  html:not([data-theme]){
+    color-scheme:light;
+    --bg:#f2eddf;--surface:#fbf7ed;--surface-2:#e5e8ed;--border:#aab5c7;
+    --text:#14284a;--muted:#657086;--accent:#a9792b;--accent-light:#76521b;
+    --danger:#963c54;--success:#557d70;--page-bg:#f2eddf;--page-glow:#dbe4ef;
+    --surface-soft:#fbf7ed;--surface-raised:#e9edf2;--field-bg:#fffaf0;
+    --header-bg:rgba(242,237,223,.95);--dropdown-bg:#fffaf0;--text-strong:#102b52;
+    --text-soft:#405675;--shadow:rgba(22,40,70,.17);--arcane:#365b93;
+    --opal:#6850ad;--blood:#7d2347;--fae:#c96d4e;
+  }
+}
+
+/* Profundidade azul nas superfícies do tema escuro. */
+html[data-theme="dark"] .panel,
+html[data-theme="dark"] .archive-card,
+html[data-theme="dark"] .timeline-card,
+html[data-theme="dark"] .publication-header,
+html[data-theme="dark"] .publication-section,
+html[data-theme="dark"] .chronicle-admin-card,
+html[data-theme="dark"] .event-form-card,
+html[data-theme="dark"] .event-narrative-card,
+html[data-theme="dark"] .inline-community-form{
+  background:rgba(13,22,40,.82);
+}
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select,
+html[data-theme="dark"] .tales-select,
+html[data-theme="dark"] .global-search input{
+  background:var(--field-bg)!important;
+  color:var(--text)!important;
+}
+html[data-theme="dark"] .user-menu-dropdown,
+html[data-theme="dark"] .admin-menu-dropdown,
+html[data-theme="dark"] .nav-more-menu,
+html[data-theme="dark"] .mention-suggestions{
+  background:var(--dropdown-bg)!important;
+  box-shadow:0 16px 42px var(--shadow)!important;
+}
+html[data-theme="dark"] .home-portal-card:hover,
+html[data-theme="dark"] .theme-menu button:hover,
+html[data-theme="dark"] .theme-menu button[aria-checked="true"]{
+  background:rgba(83,103,181,.13);
+}
+html[data-theme="dark"] ::selection{background:var(--arcane);color:var(--text-strong);}
+
+/* No claro, a tinta azul assume a identidade editorial; ouro fica como prestígio. */
+html[data-theme="light"] .logo,
+html[data-theme="light"] .section-heading h1,
+html[data-theme="light"] .home-hero h1,
+html[data-theme="light"] .profile-hero h1,
+html[data-theme="light"] .event-page h1{color:#173b69;}
+html[data-theme="light"] .panel,
+html[data-theme="light"] .archive-card,
+html[data-theme="light"] .timeline-card,
+html[data-theme="light"] .publication-header,
+html[data-theme="light"] .publication-section,
+html[data-theme="light"] .chronicle-admin-card,
+html[data-theme="light"] .event-form-card,
+html[data-theme="light"] .event-narrative-card,
+html[data-theme="light"] .inline-community-form{background:rgba(251,247,237,.86)!important;}
+html[data-theme="light"] .home-portal-card:hover{background:rgba(54,91,147,.08);}
+html[data-theme="light"] ::selection{background:#173b69;color:#fffaf0;}
+
+/* Microinterações: azul arcano para navegação/foco, ouro para ações de prestígio. */
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:2px solid var(--arcane, var(--accent));
+  outline-offset:2px;
+}
+.theme-toggle:hover{background:color-mix(in srgb,var(--arcane, var(--accent)) 12%,transparent);border-color:var(--arcane,var(--accent));}
