@@ -13,7 +13,13 @@ function applyTheme(pref=savedTheme()){
   else document.documentElement.dataset.theme=pref;
   document.documentElement.dataset.themePreference=pref;
   document.querySelectorAll('.theme-menu button[data-theme-choice]').forEach(b=>b.setAttribute('aria-checked',String(b.dataset.themeChoice===pref)));
-  document.querySelectorAll('.theme-toggle').forEach(b=>{const e=effectiveTheme(pref);b.textContent=e==='light'?'☀':'☾';b.title=`Aparência: ${pref==='system'?'Sistema':pref==='light'?'Claro':'Escuro'}`});
+  const resolved=effectiveTheme(pref);
+  document.querySelectorAll('.theme-toggle').forEach(b=>{b.textContent=resolved==='light'?'☀':'☾';b.title=`Aparência: ${pref==='system'?'Sistema':pref==='light'?'Claro':'Escuro'}`});
+  const favicon=document.getElementById('site-favicon');
+  if(favicon){
+    favicon.href=resolved==='light'?'assets/brand/favicon-finn.png':'assets/brand/favicon-lich.png';
+    favicon.type='image/png';
+  }
 }
 function themeControl(){
   const nav=document.querySelector('.nav-links');if(!nav||nav.querySelector('.theme-control'))return;
