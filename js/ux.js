@@ -2,6 +2,32 @@
 import { icon } from './icons.js';
 import { supabase } from './supabase.js';
 
+
+
+// Tales of Vanity 9.3.1 — preferência de aparência (Sistema / Claro / Escuro).
+const THEME_KEY='tov-theme';
+function savedTheme(){try{const v=localStorage.getItem(THEME_KEY);return ['light','dark'].includes(v)?v:'system'}catch{return 'system'}}
+function effectiveTheme(pref=savedTheme()){return pref==='system'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):pref}
+function applyTheme(pref=savedTheme()){
+  if(pref==='system') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.dataset.theme=pref;
+  document.documentElement.dataset.themePreference=pref;
+  document.querySelectorAll('.theme-menu button[data-theme-choice]').forEach(b=>b.setAttribute('aria-checked',String(b.dataset.themeChoice===pref)));
+  document.querySelectorAll('.theme-toggle').forEach(b=>{const e=effectiveTheme(pref);b.textContent=e==='light'?'☀':'☾';b.title=`Aparência: ${pref==='system'?'Sistema':pref==='light'?'Claro':'Escuro'}`});
+}
+function themeControl(){
+  const nav=document.querySelector('.nav-links');if(!nav||nav.querySelector('.theme-control'))return;
+  const auth=nav.querySelector('[data-auth-area]');const wrap=document.createElement('div');wrap.className='theme-control';
+  wrap.innerHTML=`<button type="button" class="theme-toggle" aria-label="Alterar aparência" aria-expanded="false"></button><div class="theme-menu" role="radiogroup" aria-label="Aparência"><button type="button" role="radio" data-theme-choice="system">Sistema</button><button type="button" role="radio" data-theme-choice="light">Claro</button><button type="button" role="radio" data-theme-choice="dark">Escuro</button></div>`;
+  nav.insertBefore(wrap,auth||null);const toggle=wrap.querySelector('.theme-toggle');
+  toggle.addEventListener('click',e=>{e.stopPropagation();const open=wrap.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open))});
+  wrap.querySelectorAll('[data-theme-choice]').forEach(b=>b.addEventListener('click',()=>{const pref=b.dataset.themeChoice;try{pref==='system'?localStorage.removeItem(THEME_KEY):localStorage.setItem(THEME_KEY,pref)}catch{}applyTheme(pref);wrap.classList.remove('open');toggle.setAttribute('aria-expanded','false')}));
+  document.addEventListener('click',e=>{if(!wrap.contains(e.target)){wrap.classList.remove('open');toggle.setAttribute('aria-expanded','false')}});
+  applyTheme();
+}
+const themeMedia=matchMedia('(prefers-color-scheme: light)');themeMedia.addEventListener?.('change',()=>{if(savedTheme()==='system')applyTheme('system')});
+applyTheme();
+
 const actionIcons = [
   [/^salvar\b/i,'save'],[/^editar\b/i,'pencil'],[/^excluir\b|^remover\b/i,'trash'],
   [/^aprovar\b/i,'check'],[/^recusar\b|^rejeitar\b/i,'xCircle'],[/^cancelar\b|^fechar\b/i,'x'],
@@ -94,8 +120,8 @@ function enhanceMediaUploads(root=document){
 }
 function enhanceImagePerformance(root=document){root.querySelectorAll?.('img:not([loading])').forEach((img,i)=>{if(i>1)img.loading='lazy';img.decoding='async';img.addEventListener('error',()=>img.classList.add('image-broken'),{once:true})})}
 
-function polish(){enhanceMediaUploads();enhanceImagePerformance();enhanceButtons();enhanceForms();activeNavigation();enhanceTables();enhanceExternalLinks();enhanceEmptyStates();breadcrumbs();mobileNav()}
+function polish(){themeControl();enhanceMediaUploads();enhanceImagePerformance();enhanceButtons();enhanceForms();activeNavigation();enhanceTables();enhanceExternalLinks();enhanceEmptyStates();breadcrumbs();mobileNav()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',polish);else polish();
 // auth.js reconstrói a navegação após o carregamento.
-setTimeout(()=>{activeNavigation();enhanceButtons();enhanceMediaUploads();enhanceImagePerformance()},800);
-const mediaObserver=new MutationObserver(m=>m.forEach(x=>x.addedNodes.forEach(n=>{if(n.nodeType===1){enhanceMediaUploads(n);enhanceImagePerformance(n)}})));if(document.body)mediaObserver.observe(document.body,{childList:true,subtree:true});
+setTimeout(()=>{themeControl();activeNavigation();enhanceButtons();enhanceMediaUploads();enhanceImagePerformance()},800);
+const mediaObserver=new MutationObserver(m=>m.forEach(x=>x.addedNodes.forEach(n=>{if(n.nodeType===1){themeControl();enhanceMediaUploads(n);enhanceImagePerformance(n)}})));if(document.body)mediaObserver.observe(document.body,{childList:true,subtree:true});
