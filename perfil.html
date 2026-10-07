@@ -1,1 +1,82 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Tales of Vanity</title><link rel="canonical" href="https://talesofvanity.com.br/perfil"><script>(function(){var d="/perfil";location.replace(d+location.search+location.hash)})();</script></head><body><p>Redirecionando para <a href="/perfil">/perfil</a>…</p></body></html>
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head><script>(function(){try{var t=localStorage.getItem('tov-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);else document.documentElement.removeAttribute('data-theme')}catch(e){}})();</script>
+<link id="site-favicon" rel="icon" type="image/png" href="assets/brand/favicon-finn.png">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Meu Perfil — Tales of Vanity</title>
+<link href="css/global.css?v=9332" rel="stylesheet"/>
+</head>
+<body>
+<header class="site-header">
+<nav class="nav">
+<a class="logo" href="/">Tales of Vanity</a>
+<div class="nav-links">
+<a href="/jogadores">Jogadores</a>
+<a href="/personagens">Personagens</a>
+<a href="/ranking">Ranking</a>
+<a href="/party">Partys</a>
+<details class="nav-more">
+<summary>Acervo <span aria-hidden="true">▾</span></summary>
+<div class="nav-more-menu">
+<a href="/explorar">Explorar</a>
+<a href="/temporadas">Temporadas</a>
+<a href="/hall-da-fama">Hall da Fama</a>
+<a href="/regulamento">Regulamento</a>
+</div>
+</details>
+<span data-auth-area=""></span>
+</div>
+</nav>
+</header>
+<main class="container">
+<section class="section profile-edit-section">
+<div class="section-heading">
+<span class="eyebrow">Conta do Jogador</span>
+<h1>Meu Perfil</h1>
+<p>Estas informações aparecem no seu perfil público e nos demais espaços do Hall da Fama.</p>
+</div>
+<div class="profile-edit-preview" id="profile-preview"></div>
+<form class="form-card profile-edit-form" hidden="" id="profile-form">
+<div class="field">
+<label for="profile-display-name">Nome de Player</label>
+<input id="profile-display-name" maxlength="80" name="display_name" required=""/>
+</div>
+<div class="field">
+<label for="profile-username">@Username</label>
+<input autocomplete="username" id="profile-username" maxlength="30" name="username" placeholder="seu_username"/>
+<small>Seu identificador único no site. Use de 3 a 30 caracteres: letras minúsculas, números, ponto, hífen ou _.</small>
+</div>
+<div class="field">
+<label for="profile-avatar">Foto / PFP</label>
+<input id="profile-avatar" name="avatar_url" placeholder="https://site.com/sua-imagem.png" type="url"/>
+<small>Cole o link direto de uma imagem pública. PNG, JPG, WebP e GIF funcionam melhor.</small>
+</div>
+<div class="field participation-field">
+<label for="profile-participation">Participação no RPG</label>
+<select id="profile-participation" name="participation_type" required="">
+<option value="interpreter">Intérprete</option>
+<option value="narrator">Narrador</option>
+<option value="both">Ambos</option>
+</select>
+<small>Escolha a função que melhor representa sua participação atual no RPG.</small>
+</div>
+<div class="field">
+<label for="profile-country">Localidade</label>
+<input id="profile-country" maxlength="100" name="country" placeholder="Ex.: Reino Doce, Ooo, São Paulo..."/>
+</div>
+<div class="field">
+<label for="profile-bio">Bio</label>
+<textarea id="profile-bio" maxlength="600" name="bio" placeholder="Apresente-se para os outros jogadores: interesses, estilo de jogo, personagens ou o que quiser destacar." rows="5"></textarea>
+</div>
+<button class="button" type="submit">Salvar alterações</button>
+<p aria-live="polite" class="status" id="profile-status"></p>
+</form>
+</section>
+</main>
+<footer class="site-footer"><div class="container">Tales of Vanity</div></footer>
+<script src="js/auth.js?v=80" type="module"></script>
+<script src="js/perfil.js?v=8" type="module"></script>
+<script src="js/ux.js?v=9332" type="module"></script></body>
+</html>

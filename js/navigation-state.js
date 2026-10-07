@@ -1,6 +1,6 @@
 const KEY='tales:last-location';
 export function initNavigationState(){
-  const page=location.pathname.replace(/\/+$/,'')||'/';
+  const page=location.pathname.split('/').pop()||'/';
   const key=`tales:scroll:${page}${location.search}`;
   const saved=sessionStorage.getItem(key);
   if(saved && performance.getEntriesByType('navigation')[0]?.type==='back_forward') requestAnimationFrame(()=>scrollTo(0,Number(saved)||0));

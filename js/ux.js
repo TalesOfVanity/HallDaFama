@@ -67,8 +67,8 @@ function enhanceForms(){
   }));
 }
 function activeNavigation(){
-  const current=(location.pathname.replace(/\/+$/,'')||'/').toLowerCase();
-  document.querySelectorAll('.nav-links a[href]').forEach(a=>{ if((new URL(a.getAttribute('href')||'/',location.origin).pathname.replace(/\/+$/,'')||'/').toLowerCase()===current){a.classList.add('is-current');a.setAttribute('aria-current','page')} });
+  const current=(location.pathname.split('/').pop()||'/').toLowerCase();
+  document.querySelectorAll('.nav-links a[href]').forEach(a=>{ if((a.getAttribute('href')||'').split('?')[0].toLowerCase()===current){a.classList.add('is-current');a.setAttribute('aria-current','page')} });
 }
 function enhanceTables(){document.querySelectorAll('table').forEach(t=>{if(t.parentElement?.classList.contains('table-scroll'))return;const w=document.createElement('div');w.className='table-scroll';t.parentNode.insertBefore(w,t);w.appendChild(t)})}
 function enhanceExternalLinks(){document.querySelectorAll('a[target="_blank"]').forEach(a=>{a.rel='noopener noreferrer';if(!a.querySelector('.ui-icon'))a.insertAdjacentHTML('beforeend',icon('externalLink'))})}
