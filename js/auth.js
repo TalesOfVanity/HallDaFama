@@ -126,12 +126,12 @@ export async function updateNavigation() {
           ${icon("shieldCheck","Administração")} ${icon("chevronDown","","nav-chevron")}
         </button>
         <div class="admin-menu-dropdown">
-          <a href="/admin/destaques">${icon("shieldCheck","Painel Administrativo")}</a>
+          <a href="/admin">${icon("shieldCheck","Painel Administrativo")}</a>
           <a href="/admin/solicitacoes">${icon("inbox",`Solicitações${pendingRequests ? ` (${pendingRequests})` : ""}`)}</a>
           <a href="/admin/temporadas">${icon("calendar","Temporadas & Episódios")}</a>
           <a href="/personagens">${icon("plus","Registrar personagem")}</a>
           <a href="/admin/party">${icon("plus","Registrar Party")}</a>
-          <a href="/admin/personagens">${icon("award","Brasões")}</a>
+          <a href="/admin/brasoes">${icon("award","Brasões")}</a>
           <a href="/admin/hall-da-fama">${icon("trophy","Hall da Fama")}</a>
           <a href="/admin/jogadores">${icon("userCog","Gerenciar Jogadores")}</a>
         </div>
