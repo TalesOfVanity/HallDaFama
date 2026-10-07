@@ -11,7 +11,7 @@ let events = [];
 
 async function guard() {
   const session = await getSession();
-  if (!session) { location.href = "login.html"; return null; }
+  if (!session) { location.href = "/login"; return null; }
   const profile = await getProfile(session.user.id);
   if (profile.role !== "admin") {
     document.querySelector("#players-admin").innerHTML = '<p class="status error">Acesso restrito aos administradores.</p>';

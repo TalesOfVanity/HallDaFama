@@ -65,7 +65,7 @@ form?.addEventListener("submit", async (event) => {
         refresh_token: result.session.refresh_token
       });
       if (error) throw error;
-      location.href = "index.html";
+      location.href = "/";
       return;
     }
 

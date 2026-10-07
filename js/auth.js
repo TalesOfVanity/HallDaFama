@@ -12,7 +12,7 @@ export async function getSession() {
 export async function requireAuth() {
   const session = await getSession();
   if (!session) {
-    window.location.href = "login.html";
+    window.location.href = "/login";
     return null;
   }
   return session;
@@ -30,7 +30,7 @@ export async function getProfile(userId) {
 
 export async function logout() {
   await supabase.auth.signOut();
-  window.location.href = "index.html";
+  window.location.href = "/";
 }
 
 export async function updateNavigation() {
@@ -39,18 +39,18 @@ export async function updateNavigation() {
   const navLinks = document.querySelector(".nav-links");
   if (navLinks) {
     navLinks.innerHTML = `
-      <a href="jogadores.html">${icon("users","Jogadores")}</a>
-      <a href="personagens.html">${icon("user","Personagens")}</a>
-      <a href="ranking.html">${icon("trophy","Ranking")}</a>
-      <a href="clans.html">${icon("shield","Partys")}</a>
-      <a href="cronicas.html">${icon("book","Temporadas")}</a>
-      <a href="explorar.html">${icon("compass","Explorar")}</a>
-      <a href="regras.html">${icon("scroll","Regulamento")}</a>
+      <a href="/jogadores">${icon("users","Jogadores")}</a>
+      <a href="/personagens">${icon("user","Personagens")}</a>
+      <a href="/ranking">${icon("trophy","Ranking")}</a>
+      <a href="/party">${icon("shield","Partys")}</a>
+      <a href="/temporadas">${icon("book","Temporadas")}</a>
+      <a href="/explorar">${icon("compass","Explorar")}</a>
+      <a href="/regulamento">${icon("scroll","Regulamento")}</a>
       <details class="nav-more nav-archive">
         <summary>${icon("archive","Memória")} ${icon("chevronDown","","nav-chevron")}</summary>
         <div class="nav-more-menu">
-          <a href="legado.html">${icon("trophy","Hall da Fama")}</a>
-          <a href="favoritos.html">${icon("bookmark","Minha Coleção")}</a>
+          <a href="/hall-da-fama">${icon("trophy","Hall da Fama")}</a>
+          <a href="/colecao">${icon("bookmark","Minha Coleção")}</a>
         </div>
       </details>
       <span data-auth-area></span>`;
@@ -68,7 +68,7 @@ export async function updateNavigation() {
   }
 
   if (!session) {
-    authArea.innerHTML = `<a class="button button-small" href="login.html">Entrar</a>`;
+    authArea.innerHTML = `<a class="button button-small" href="/login">Entrar</a>`;
     return;
   }
 
@@ -97,8 +97,8 @@ export async function updateNavigation() {
 
   const username = profile?.username?.trim();
   const publicProfileUrl = username
-    ? `jogador.html?u=${encodeURIComponent(username)}`
-    : `jogador.html?id=${encodeURIComponent(session.user.id)}`;
+    ? `/jogador?u=${encodeURIComponent(username)}`
+    : `/jogador?id=${encodeURIComponent(session.user.id)}`;
   const displayName = profile?.display_name || username || session.user.email || "Meu Perfil";
 
   authArea.innerHTML = `
@@ -109,13 +109,13 @@ export async function updateNavigation() {
         <span class="admin-menu-arrow">▾</span>
       </button>
       <div class="user-menu-dropdown">
-        <a href="meu-tales.html">${icon("user","Meu Tales")}</a>
+        <a href="/meu-tales">${icon("user","Meu Tales")}</a>
         <a href="${publicProfileUrl}">${icon("user","Meu Perfil")}</a>
-        <a href="perfil.html">${icon("settings","Editar Perfil")}</a>
-        <a href="notificacoes.html">${icon("bell",`Notificações${(unreadMentions+unreadGeneral) ? ` (${unreadMentions+unreadGeneral})` : ""}`)}</a>
-        <a href="favoritos.html">${icon("bookmark","Minha Coleção")}</a>
-        <a href="minhas-solicitacoes.html">${icon("inbox","Minhas Solicitações")}</a>
-        <a href="conquistas.html">${icon("award","Conquistas")}</a>
+        <a href="/perfil">${icon("settings","Editar Perfil")}</a>
+        <a href="/notificacoes">${icon("bell",`Notificações${(unreadMentions+unreadGeneral) ? ` (${unreadMentions+unreadGeneral})` : ""}`)}</a>
+        <a href="/colecao">${icon("bookmark","Minha Coleção")}</a>
+        <a href="/minhas-solicitacoes">${icon("inbox","Minhas Solicitações")}</a>
+        <a href="/conquistas">${icon("award","Conquistas")}</a>
         <div class="menu-separator"></div>
         <button class="dropdown-logout" id="logout-button" type="button">${icon("logout","Sair")}</button>
       </div>
@@ -126,14 +126,14 @@ export async function updateNavigation() {
           ${icon("shieldCheck","Administração")} ${icon("chevronDown","","nav-chevron")}
         </button>
         <div class="admin-menu-dropdown">
-          <a href="administracao.html">${icon("shieldCheck","Painel Administrativo")}</a>
-          <a href="solicitacoes.html">${icon("inbox",`Solicitações${pendingRequests ? ` (${pendingRequests})` : ""}`)}</a>
-          <a href="cronicas-admin.html">${icon("calendar","Temporadas & Episódios")}</a>
-          <a href="personagens.html">${icon("plus","Registrar personagem")}</a>
-          <a href="registrar-party.html">${icon("plus","Registrar Party")}</a>
-          <a href="admin.html">${icon("award","Brasões")}</a>
-          <a href="hall-admin.html">${icon("trophy","Hall da Fama")}</a>
-          <a href="gerenciar-jogadores.html">${icon("userCog","Gerenciar Jogadores")}</a>
+          <a href="/admin/destaques">${icon("shieldCheck","Painel Administrativo")}</a>
+          <a href="/admin/solicitacoes">${icon("inbox",`Solicitações${pendingRequests ? ` (${pendingRequests})` : ""}`)}</a>
+          <a href="/admin/temporadas">${icon("calendar","Temporadas & Episódios")}</a>
+          <a href="/personagens">${icon("plus","Registrar personagem")}</a>
+          <a href="/admin/party">${icon("plus","Registrar Party")}</a>
+          <a href="/admin/personagens">${icon("award","Brasões")}</a>
+          <a href="/admin/hall-da-fama">${icon("trophy","Hall da Fama")}</a>
+          <a href="/admin/jogadores">${icon("userCog","Gerenciar Jogadores")}</a>
         </div>
       </div>` : ""}
   `;

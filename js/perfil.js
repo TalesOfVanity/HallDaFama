@@ -34,7 +34,7 @@ function renderPreview(profile) {
 
 async function init() {
   const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-  if (sessionError || !session) { window.location.href = "login.html"; return; }
+  if (sessionError || !session) { window.location.href = "/login"; return; }
 
   userId = session.user.id;
   const { data: profile, error } = await supabase

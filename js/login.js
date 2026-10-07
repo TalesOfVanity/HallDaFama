@@ -62,7 +62,7 @@ form?.addEventListener("submit", async (event) => {
       if (sessionError) throw sessionError;
     }
 
-    window.location.href = "index.html";
+    window.location.href = "/";
   } catch (error) {
     setStatus(status, error?.message || "Não foi possível entrar.", "error");
   }

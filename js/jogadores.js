@@ -46,7 +46,7 @@ function renderPlayers() {
     const name = player.display_name || player.username || "Jogador";
 
     return `
-      <a class="player-card" href="jogador.html?id=${encodeURIComponent(player.id)}">
+      <a class="player-card" href="/jogador?id=${encodeURIComponent(player.id)}">
         <div class="avatar">
           ${avatarHTML(name, player.avatar_url, `Foto de ${name}`)}
         </div>

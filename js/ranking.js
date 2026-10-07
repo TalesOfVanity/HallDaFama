@@ -131,7 +131,7 @@ async function loadRanking() {
 
         <td>
           <div class="ranking-player-name">
-            <a href="jogador.html?id=${encodeURIComponent(p.id)}">${e(p.display_name || p.username || "Jogador")}</a>
+            <a href="/jogador?id=${encodeURIComponent(p.id)}">${e(p.display_name || p.username || "Jogador")}</a>
             ${p.isMvp ? `<span class="mvp-name-icon" title="MVP — Jogador de maior destaque do período atual">${p.mvpBadge?.icon ? `<img src="${e(p.mvpBadge.icon)}" alt="MVP">` : "◆"}</span>` : ""}
           </div>
         </td>

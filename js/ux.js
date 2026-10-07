@@ -67,8 +67,8 @@ function enhanceForms(){
   }));
 }
 function activeNavigation(){
-  const current=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-  document.querySelectorAll('.nav-links a[href]').forEach(a=>{ if((a.getAttribute('href')||'').split('?')[0].toLowerCase()===current){a.classList.add('is-current');a.setAttribute('aria-current','page')} });
+  const current=(location.pathname.replace(/\/+$/,'')||'/').toLowerCase();
+  document.querySelectorAll('.nav-links a[href]').forEach(a=>{ if((new URL(a.getAttribute('href')||'/',location.origin).pathname.replace(/\/+$/,'')||'/').toLowerCase()===current){a.classList.add('is-current');a.setAttribute('aria-current','page')} });
 }
 function enhanceTables(){document.querySelectorAll('table').forEach(t=>{if(t.parentElement?.classList.contains('table-scroll'))return;const w=document.createElement('div');w.className='table-scroll';t.parentNode.insertBefore(w,t);w.appendChild(t)})}
 function enhanceExternalLinks(){document.querySelectorAll('a[target="_blank"]').forEach(a=>{a.rel='noopener noreferrer';if(!a.querySelector('.ui-icon'))a.insertAdjacentHTML('beforeend',icon('externalLink'))})}
@@ -85,7 +85,7 @@ function breadcrumbs(){
   const main=document.querySelector('main.container, main > .container'); if(!main || document.body.classList.contains('home-page')) return;
   const heading=main.querySelector('h1'); if(!heading || main.querySelector('.ux-breadcrumbs')) return;
   const page=(heading.textContent||document.title.split('—')[0]).trim();
-  const nav=document.createElement('nav');nav.className='ux-breadcrumbs';nav.setAttribute('aria-label','Navegação estrutural');nav.innerHTML=`<a href="index.html">Início</a><span aria-hidden="true">›</span><span aria-current="page"></span>`;nav.lastElementChild.textContent=page;main.insertBefore(nav,main.firstChild)
+  const nav=document.createElement('nav');nav.className='ux-breadcrumbs';nav.setAttribute('aria-label','Navegação estrutural');nav.innerHTML=`<a href="/">Início</a><span aria-hidden="true">›</span><span aria-current="page"></span>`;nav.lastElementChild.textContent=page;main.insertBefore(nav,main.firstChild)
 }
 function mobileNav(){
  const nav=document.querySelector('.nav');const links=document.querySelector('.nav-links');if(!nav||!links||nav.querySelector('.mobile-nav-toggle'))return;

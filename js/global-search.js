@@ -14,7 +14,7 @@ async function runSearch(q,results){
   supabase.from('clans').select('id,name,acronym,emblem_url').or(`name.ilike.${like},acronym.ilike.${like}`).limit(5),
   supabase.from('timeline_events').select('id,title,summary').or(`title.ilike.${like},summary.ilike.${like}`).limit(5)
  ]);
- const html=group('Jogadores',p.data,x=>`<a href="jogador.html?u=${encodeURIComponent(x.username||'')}"><strong>${e(x.display_name||x.username)}</strong><span>${x.username?'@'+e(x.username):''}</span></a>`)+group('Personagens',c.data,x=>`<a href="personagem.html?id=${x.id}"><strong>${e(x.name)}</strong><span>${e(x.nickname||'')}</span></a>`)+group('Partys',g.data,x=>`<a href="clans.html#${x.id}"><strong>${e(x.name)}</strong><span>${e(x.acronym||'')}</span></a>`)+group('Episódios',ch.data,x=>`<a href="evento.html?id=${x.id}"><strong>${e(x.title)}</strong><span>${e((x.summary||'').slice(0,90))}</span></a>`);
+ const html=group('Jogadores',p.data,x=>`<a href="/jogador?u=${encodeURIComponent(x.username||'')}"><strong>${e(x.display_name||x.username)}</strong><span>${x.username?'@'+e(x.username):''}</span></a>`)+group('Personagens',c.data,x=>`<a href="/personagem?id=${x.id}"><strong>${e(x.name)}</strong><span>${e(x.nickname||'')}</span></a>`)+group('Partys',g.data,x=>`<a href="/party#${x.id}"><strong>${e(x.name)}</strong><span>${e(x.acronym||'')}</span></a>`)+group('Episódios',ch.data,x=>`<a href="/episodio?id=${x.id}"><strong>${e(x.title)}</strong><span>${e((x.summary||'').slice(0,90))}</span></a>`);
  results.innerHTML=html||'<p class="global-search-hint">Nenhum resultado encontrado.</p>';
 }
 export function initGlobalSearch(){
