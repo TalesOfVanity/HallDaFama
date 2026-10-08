@@ -8,7 +8,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Personagens — Tales of Vanity</title>
-<link href="css/global.css?v=939" rel="stylesheet"/>
+<link href="css/global.css?v=940" rel="stylesheet"/>
 </head>
 <body>
 <header class="site-header">
@@ -41,7 +41,7 @@
         seus responsáveis e seus respectivos status.
       </p>
 </div>
-<section hidden="" id="character-player-create">
+<details class="character-create-disclosure" hidden id="character-player-create"><summary><span><b>＋ Criar personagem</b><small>Abra somente quando quiser enviar um novo personagem ao acervo.</small></span><span class="disclosure-chevron" aria-hidden="true">⌄</span></summary><div class="character-create-disclosure-body">
 <form class="form-card character-request-form character-form-horizontal" id="player-character-form">
 <div class="character-form-heading"><div><span class="eyebrow">Novo Personagem</span><h2>Criar Personagem</h2></div><p class="form-help">Preencha os dados da ficha. A administração revisará a solicitação antes de o personagem entrar no acervo oficial.</p></div>
 <div class="character-form-grid">
@@ -52,13 +52,13 @@
 <div class="field"><label>Nível</label><input min="1" name="level" type="number" value="1"/></div>
 <div class="field"><label>Fama</label><input name="notoriety" placeholder="Ex.: Região"/><small>Use a classificação adotada pelo RPG.</small></div>
 <div class="field"><label>Reputação</label><input name="reputation" placeholder="Ex.: 250"/></div>
-<div class="field span-2"><label>Retrato do personagem</label><input name="portrait_url" placeholder="https://site.com/retrato.png" type="url"/><small>Cole o link direto de uma imagem pública.</small></div>
+<div class="field span-full character-attributes-form"><div class="character-attributes-form-head"><div><span class="eyebrow">Atributos</span><strong>Distribuição atual</strong></div><small>Registre valores de 0 a 10. Por enquanto, eles são apenas informativos.</small></div><div class="character-attribute-inputs"><label>Força<input name="strength" type="number" min="0" max="10" step="1" value="0"></label><label>Vitalidade<input name="vitality" type="number" min="0" max="10" step="1" value="0"></label><label>Sabedoria<input name="wisdom" type="number" min="0" max="10" step="1" value="0"></label><label>Agilidade<input name="agility" type="number" min="0" max="10" step="1" value="0"></label><label>Espírito<input name="spirit" type="number" min="0" max="10" step="1" value="0"></label></div></div><div class="field span-2"><label>Retrato do personagem</label><input name="portrait_url" placeholder="https://site.com/retrato.png" type="url"/><small>Cole o link direto de uma imagem pública.</small></div>
 <div class="field span-2"><label>Ficha externa</label><input name="ficha_url" placeholder="https://..." type="url"/><small>Facebook, Google Docs, Notion ou outro endereço público.</small></div>
 <div class="field span-full"><label>Descrição</label><textarea name="description" placeholder="Apresente o personagem: conceito, personalidade, aparência, história ou outras informações relevantes." rows="5"></textarea></div>
 </div>
 <div class="form-actions character-form-actions"><button class="button" type="submit">Enviar para aprovação</button><button class="button button-small" id="save-character-draft" type="button">Salvar rascunho</button></div><p class="status" id="player-character-status"></p>
 </form>
-</section>
+</div></details>
 <section hidden="" id="character-admin">
 <form class="form-card character-form-horizontal" id="character-form">
 <div class="character-form-heading"><div><span class="eyebrow">Administração</span><h2 id="form-title">Novo Personagem (admin)</h2></div><p class="form-help">Cadastre ou edite diretamente um personagem oficial.</p></div>
@@ -73,7 +73,7 @@
 <div class="field"><label for="character-reputation">Reputação</label><input id="character-reputation" name="reputation" placeholder="Ex.: 250"/></div>
 <div class="field"><label for="character-points">Pontos de ranking</label><input id="character-points" min="0" name="points" type="number" value="0"/></div>
 <div class="field"><label for="character-status">Status</label><select id="character-status" name="status" required=""><option value="pending">Pendente</option><option value="approved">Aprovado</option><option value="rejected">Rejeitado</option></select></div>
-<div class="field span-2"><label for="character-portrait">URL do retrato</label><input id="character-portrait" name="portrait_url" placeholder="https://..." type="url"/></div>
+<div class="field span-full character-attributes-form"><div class="character-attributes-form-head"><div><span class="eyebrow">Atributos</span><strong>Distribuição atual</strong></div><small>Registre valores de 0 a 10. Por enquanto, eles são apenas informativos.</small></div><div class="character-attribute-inputs"><label>Força<input id="character-strength" name="strength" type="number" min="0" max="10" step="1" value="0"></label><label>Vitalidade<input id="character-vitality" name="vitality" type="number" min="0" max="10" step="1" value="0"></label><label>Sabedoria<input id="character-wisdom" name="wisdom" type="number" min="0" max="10" step="1" value="0"></label><label>Agilidade<input id="character-agility" name="agility" type="number" min="0" max="10" step="1" value="0"></label><label>Espírito<input id="character-spirit" name="spirit" type="number" min="0" max="10" step="1" value="0"></label></div></div><div class="field span-2"><label for="character-portrait">URL do retrato</label><input id="character-portrait" name="portrait_url" placeholder="https://..." type="url"/></div>
 <div class="field span-2"><label for="character-ficha">Ficha externa</label><input id="character-ficha" name="ficha_url" placeholder="https://..." type="url"/></div>
 <div class="field span-full"><label for="character-description">Descrição</label><textarea id="character-description" name="description" placeholder="Conceito, personalidade, aparência, história e outras informações relevantes." rows="5"></textarea></div>
 </div>
@@ -99,5 +99,5 @@
 </footer>
 <script src="js/auth.js?v=80" type="module"></script>
 <script src="js/personagens.js?v=91" type="module"></script>
-<script src="js/ux.js?v=939" type="module"></script></body>
+<script src="js/ux.js?v=940" type="module"></script></body>
 </html>
