@@ -88,13 +88,65 @@ function breadcrumbs(){
   const nav=document.createElement('nav');nav.className='ux-breadcrumbs';nav.setAttribute('aria-label','Navegação estrutural');nav.innerHTML=`<a href="/">Início</a><span aria-hidden="true">›</span><span aria-current="page"></span>`;nav.lastElementChild.textContent=page;main.insertBefore(nav,main.firstChild)
 }
 function mobileNav(){
- const nav=document.querySelector('.nav');const links=document.querySelector('.nav-links');if(!nav||!links||nav.querySelector('.mobile-nav-toggle'))return;
- const b=document.createElement('button');b.type='button';b.className='mobile-nav-toggle';b.setAttribute('aria-label','Abrir menu de navegação');b.setAttribute('aria-expanded','false');b.innerHTML=icon('menu');
- let lockedY=0;
- const unlock=()=>{const y=lockedY;document.body.classList.remove('nav-locked');document.body.style.removeProperty('top');document.body.style.removeProperty('position');document.body.style.removeProperty('width');window.scrollTo(0,y)};
- const close=()=>{if(!nav.classList.contains('mobile-open'))return;nav.classList.remove('mobile-open');unlock();b.setAttribute('aria-expanded','false');b.setAttribute('aria-label','Abrir menu de navegação');b.innerHTML=icon('menu')};
- b.onclick=()=>{const open=!nav.classList.contains('mobile-open');if(open){lockedY=window.scrollY||document.documentElement.scrollTop||0;document.body.style.top=`-${lockedY}px`;document.body.style.position='fixed';document.body.style.width='100%';document.body.classList.add('nav-locked');links.scrollTop=0;nav.classList.add('mobile-open');b.setAttribute('aria-expanded','true');b.setAttribute('aria-label','Fechar menu de navegação');b.innerHTML=icon('x');requestAnimationFrame(()=>{links.scrollTop=0})}else close()};
- links.addEventListener('click',e=>{if(e.target.closest('a')&&innerWidth<=820)close()});addEventListener('resize',()=>{if(innerWidth>820)close()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&nav.classList.contains('mobile-open'))close()});nav.insertBefore(b,links)
+  const nav=document.querySelector('.nav');
+  if(!nav)return;
+
+  let button=nav.querySelector('.mobile-nav-toggle');
+  if(!button){
+    button=document.createElement('button');
+    button.type='button';
+    button.className='mobile-nav-toggle';
+    button.setAttribute('aria-controls','site-mobile-navigation');
+    const links=nav.querySelector('.nav-links');
+    if(links){
+      if(!links.id)links.id='site-mobile-navigation';
+      nav.insertBefore(button,links);
+    }else nav.append(button);
+  }
+
+  const paintButton=open=>{
+    button.setAttribute('aria-expanded',String(open));
+    button.setAttribute('aria-label',open?'Fechar menu de navegação':'Abrir menu de navegação');
+    button.innerHTML=icon(open?'x':'menu');
+  };
+  const close=()=>{
+    nav.classList.remove('mobile-open');
+    document.documentElement.classList.remove('mobile-nav-open');
+    document.body?.classList.remove('nav-locked');
+    paintButton(false);
+  };
+  const open=()=>{
+    // auth.js reconstrói .nav-links após carregar a sessão; consulte sempre o nó atual.
+    const links=nav.querySelector('.nav-links');
+    if(!links)return;
+    if(!links.id)links.id='site-mobile-navigation';
+    links.scrollTop=0;
+    nav.classList.add('mobile-open');
+    document.documentElement.classList.add('mobile-nav-open');
+    // Não fixe o body: no Safari/iOS isso pode invalidar o hit-test do header após scroll.
+    document.body?.classList.remove('nav-locked');
+    paintButton(true);
+    requestAnimationFrame(()=>{nav.querySelector('.nav-links')?.scrollTo?.({top:0,left:0,behavior:'instant'})});
+  };
+  const toggle=()=>nav.classList.contains('mobile-open')?close():open();
+
+  // Handler delegado permanece válido mesmo quando auth.js substitui o conteúdo da navegação.
+  if(!nav.dataset.mobileNavBound){
+    nav.dataset.mobileNavBound='true';
+    nav.addEventListener('click',event=>{
+      const toggleButton=event.target.closest('.mobile-nav-toggle');
+      if(toggleButton&&nav.contains(toggleButton)){
+        event.preventDefault();
+        event.stopPropagation();
+        toggle();
+        return;
+      }
+      if(innerWidth<=820&&event.target.closest('.nav-links a'))close();
+    });
+    addEventListener('resize',()=>{if(innerWidth>820)close()},{passive:true});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&nav.classList.contains('mobile-open'))close()});
+  }
+  paintButton(nav.classList.contains('mobile-open'));
 }
 
 

@@ -1557,3 +1557,28 @@ body.nav-locked{overflow:hidden!important;touch-action:auto!important;overscroll
 @media(max-width:360px){.logo{font-size:16px!important}.nav{padding-inline:10px!important}.profile-stat-grid{grid-template-columns:1fr}.container{width:calc(100% - 20px)}}
 .privacy-badge{display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:3px 7px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:.68rem;font-weight:600;vertical-align:middle}.privacy-badge.private{color:var(--accent-light)}
 .privacy-action{border:0;background:transparent;color:var(--accent-light);font:inherit;font-size:.78rem;cursor:pointer;padding:5px 7px}.privacy-action:hover{text-decoration:underline}
+
+
+/* =========================================================
+   TALES OF VANITY 9.3.6 — MOBILE NAV / iOS HIT-TEST FIX
+   ========================================================= */
+@media(max-width:820px){
+  .site-header{z-index:2147481000!important;isolation:isolate}
+  .mobile-nav-toggle{
+    position:relative!important;z-index:2147483000!important;
+    pointer-events:auto!important;touch-action:manipulation!important;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .nav-links{
+    z-index:2147482000!important;
+    pointer-events:auto!important;
+    transform:translateZ(0);
+    -webkit-transform:translateZ(0);
+  }
+  .nav.mobile-open .nav-links{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+  html.mobile-nav-open{overscroll-behavior:none}
+  /* 9.3.5 congelava o body; removido para evitar perda de hit-test após scroll no Safari/iOS. */
+  body.nav-locked{position:static!important;top:auto!important;width:auto!important;overflow:visible!important;touch-action:auto!important}
+  body.nav-locked .site-header{position:sticky!important;inset:auto!important;width:auto!important}
+  body.nav-locked main,body.nav-locked .site-footer{pointer-events:auto!important}
+}
