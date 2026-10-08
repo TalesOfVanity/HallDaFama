@@ -1687,3 +1687,36 @@ body.nav-locked{overflow:hidden!important;touch-action:auto!important;overscroll
     }
   }
 }
+
+/* =========================================================
+   TALES OF VANITY 9.3.9 — MOBILE NAV FULL-VIEWPORT SHELL
+   The drawer itself owns the entire visual viewport. The sticky header
+   remains above it; nav content starts below the measured header.
+   ========================================================= */
+@media (max-width:820px){
+  .site-header{z-index:5000!important}
+  .nav-links{
+    position:fixed!important;
+    inset:0!important;
+    top:0!important;right:0!important;bottom:0!important;left:0!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:100%!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:max(var(--tov-mobile-nav-top,72px),calc(env(safe-area-inset-top) + 72px)) 18px max(28px,calc(18px + env(safe-area-inset-bottom)))!important;
+    box-sizing:border-box!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    background:#0d0c0a!important;
+    z-index:4900!important;
+  }
+  .nav.mobile-open .nav-links{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+  .nav-links>*{flex:0 0 auto!important}
+  .mobile-nav-toggle{position:relative!important;z-index:5100!important}
+}
+@supports (height:100dvh){
+  @media (max-width:820px){.nav-links{height:100dvh!important;min-height:100dvh!important}}
+}

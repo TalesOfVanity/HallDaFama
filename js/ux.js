@@ -128,13 +128,23 @@ function mobileNav(){
     const links=nav.querySelector('.nav-links');
     if(!links)return;
     if(!links.id)links.id='site-mobile-navigation';
-    links.scrollTop=0;
+    // Safari may preserve an old scroll offset on a fixed overflow container.
+    // Reset before and after display, and once more after async navigation/auth paint.
+    const resetDrawerScroll=()=>{
+      const current=nav.querySelector('.nav-links');
+      if(!current)return;
+      current.scrollTop=0;
+      current.scrollLeft=0;
+      try{current.scrollTo({top:0,left:0,behavior:'auto'})}catch{}
+    };
+    resetDrawerScroll();
     nav.classList.add('mobile-open');
     document.documentElement.classList.add('mobile-nav-open');
-    // Não fixe o body: no Safari/iOS isso pode invalidar o hit-test do header após scroll.
     document.body?.classList.remove('nav-locked');
     paintButton(true);
-    requestAnimationFrame(()=>{nav.querySelector('.nav-links')?.scrollTo?.({top:0,left:0,behavior:'instant'})});
+    requestAnimationFrame(()=>{resetDrawerScroll();requestAnimationFrame(resetDrawerScroll)});
+    setTimeout(resetDrawerScroll,80);
+    setTimeout(resetDrawerScroll,240);
   };
   const toggle=()=>nav.classList.contains('mobile-open')?close():open();
 
@@ -154,6 +164,15 @@ function mobileNav(){
     addEventListener('resize',()=>{syncMobileViewport();if(innerWidth>820)close()},{passive:true});
     addEventListener('orientationchange',()=>setTimeout(syncMobileViewport,80),{passive:true});
     document.addEventListener('keydown',event=>{if(event.key==='Escape'&&nav.classList.contains('mobile-open'))close()});
+  }
+  if(!nav.dataset.mobileNavObserver){
+    nav.dataset.mobileNavObserver='true';
+    const observer=new MutationObserver(()=>{
+      if(!nav.classList.contains('mobile-open'))return;
+      const links=nav.querySelector('.nav-links');
+      if(links){links.scrollTop=0;links.scrollLeft=0}
+    });
+    observer.observe(nav,{childList:true,subtree:true});
   }
   paintButton(nav.classList.contains('mobile-open'));
 }
