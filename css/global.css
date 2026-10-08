@@ -1646,3 +1646,44 @@ body.nav-locked{overflow:hidden!important;touch-action:auto!important;overscroll
   .user-menu-dropdown,.admin-menu-dropdown,.nav-more-menu{flex:0 0 auto!important}
 }
 .rules-chapter{scroll-margin-top:calc(var(--tov-header-height,72px) + 18px)!important}
+
+/* =========================================================
+   TALES OF VANITY 9.3.8 — MOBILE DRAWER HEIGHT HOTFIX
+   Safari/iOS: avoid bottom/inset sizing on the fixed drawer.
+   Give the panel an explicit dynamic-viewport height instead.
+   ========================================================= */
+@media (max-width:820px){
+  .nav-links{
+    position:fixed!important;
+    top:var(--tov-mobile-nav-top,72px)!important;
+    right:0!important;
+    bottom:auto!important;
+    left:0!important;
+    inset-block:auto!important;
+    inset-inline:0!important;
+    width:100vw!important;
+    height:calc(100dvh - var(--tov-mobile-nav-top,72px))!important;
+    min-height:calc(100dvh - var(--tov-mobile-nav-top,72px))!important;
+    max-height:calc(100dvh - var(--tov-mobile-nav-top,72px))!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior-y:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    box-sizing:border-box!important;
+    padding:14px 18px max(28px,calc(18px + env(safe-area-inset-bottom)))!important;
+  }
+  .nav.mobile-open .nav-links{
+    display:flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+}
+@supports not (height:100dvh){
+  @media (max-width:820px){
+    .nav-links{
+      height:calc(100vh - var(--tov-mobile-nav-top,72px))!important;
+      min-height:calc(100vh - var(--tov-mobile-nav-top,72px))!important;
+      max-height:calc(100vh - var(--tov-mobile-nav-top,72px))!important;
+    }
+  }
+}
